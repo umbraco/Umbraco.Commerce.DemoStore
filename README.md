@@ -1,12 +1,12 @@
 # Umbraco Commerce Demo Store
 
-Welcome to the Umbraco Commerce Demo Store, an example webstore setup using Umbraco Commercein [Umbraco v11](https://umbraco.com).
+Welcome to the Umbraco Commerce Demo Store, an example webstore setup using Umbraco Commerce in [Umbraco v11+](https://umbraco.com).
 
 ![Screenshot](assets/screenshot.png)
 
 ## About this Demo
 
-In this demo you will find a fully configured basic webstore using Umbraco Commerce on Umbraco v10. The store is based around a fictitious tea retailer called Blendid which lists a variety of teas from multiple companies and also displays them in categories. Where products have multiple pricing options, variant nodes are used to provide buying options for those particular product choices.
+In this demo you will find a fully configured basic webstore using Umbraco Commerce on Umbraco v11+. The store is based around a fictitious tea retailer called Blendid which lists a variety of teas from multiple companies and also displays them in categories. Where products have multiple pricing options, variant nodes are used to provide buying options for those particular product choices.
 
 The site also showcases a basic shopping cart setup with cart management features via the Umbraco Commerce API as well as a checkout flow following all the main steps required for a Umbraco Commerce order entity. On checkout, there will also be examples of order confirmation emails that will be sent (**TIP** Use something like [Papercut](https://github.com/ChangemakerStudios/Papercut) to capture these without them needing to be actually sent).
 
