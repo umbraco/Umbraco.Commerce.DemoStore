@@ -1,0 +1,3 @@
+﻿@using Umbraco.Commerce.Common.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<PagedResult<Umbraco.Commerce.DemoStore.Models.ProductPage>>
+@await Html.PartialAsync("PagedProductList", Model) 

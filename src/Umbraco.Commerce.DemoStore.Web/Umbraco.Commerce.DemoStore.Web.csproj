@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+      <TargetFramework>net7.0</TargetFramework>
+      <EnablePackageValidation>false</EnablePackageValidation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms" Version="11.3.0" />
+        <PackageReference Include="Umbraco.Commerce" Version="12.0.0--rc.preview.11.gf61ed32" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Compile Remove="umbraco\Data\**" />
+        <Compile Remove="umbraco\logs\**" />
+        <Compile Remove="umbraco\MediaCache\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Remove="umbraco\Data\**" />
+        <EmbeddedResource Remove="umbraco\logs\**" />
+        <EmbeddedResource Remove="umbraco\MediaCache\**" /> 
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="umbraco\Data\**" />
+        <None Remove="umbraco\logs\**" />
+        <None Remove="umbraco\MediaCache\**" />
+        <None Include="config\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </None>
+        <None Include="umbraco\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Remove="umbraco\Data\**" />
+        <Content Remove="umbraco\logs\**" />
+        <Content Remove="umbraco\MediaCache\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Umbraco.Commerce.DemoStore\Umbraco.Commerce.DemoStore.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="umbraco\Logs\" />
+    </ItemGroup>
+
+    <!-- Set this to true if ModelsBuilder mode is not InMemoryAuto-->
+    <PropertyGroup>
+        <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    </PropertyGroup>
+    
+</Project>

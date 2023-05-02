@@ -1,0 +1,6 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.HomePage>
+@{
+    Layout = "Page.cshtml";
+}
+
+@await Component.InvokeAsync("FeaturedProducts", new { currentPage = Model })

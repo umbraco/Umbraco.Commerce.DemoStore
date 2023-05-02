@@ -1,0 +1,10 @@
+﻿@using Umbraco.Commerce.DemoStore;
+@using Umbraco.Commerce.DemoStore.Models;
+@using Umbraco.Commerce.Common.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<PagedResult<ProductPage>>
+
+@if (Model.TotalItems > 0)
+{
+    @await Html.PartialAsync("ProductList", Model.Items)
+    @await Html.PartialAsync("Pagination", Model.Cast<ProductPage, object>())
+}
