@@ -13,27 +13,27 @@
 
     // Get order entities
     var store = UmbracoCommerceApi.GetStore(Model.StoreId);
-    var themeColor = "249bff";
+    var themeColor = "4fd1c5";
 }
 <style type="text/css">
-    #umbraco-commerce, #umbraco-commerce td, #umbraco-commerce p {
+    #uc, #uc td, #uc p {
         font-family: sans-serif;
         font-size: 14px;
         line-height: 18px;
         color: #5f6a70;
     }
 
-    #umbraco-commerce td {
+    #uc td {
         vertical-align: top;
     }
 
-    #umbraco-commerce .rounded {
+    #uc .rounded {
         border-radius: 4px;
         -moz-border-radius: 4px;
         -webkit-border-radius: 4px;
     }
 </style>
-<div id="umbraco-commerce" style="font-family: sans-serif; font-size: 14px; line-height: 18px; color: #5f6a70;">
+<div id="uc" style="font-family: sans-serif; font-size: 14px; line-height: 18px; color: #5f6a70;">
     <table style="background-color: #f5f5f5; width: 100%;">
         <tr>
             <td style="padding: 40px;">
@@ -43,7 +43,7 @@
                         <td style="padding: 40px;">
                             <div style="text-align: center;">
 
-                                <h1 class="margin: 0 0 20px; font-size: 30px; line-height: 38px; color: #000;"><a href="@(BaseUrl)" style="color: #000;" target="_blank">@(store.Name)</a></h1>
+                                <a href="https://umbraco.com" target="_blank"><img src="@(BaseUrl)/images/logo.png?height=74" alt="Blendid." border="0" height="74" /></a>
 
                                 <hr style="border: 0; height: 1px; background: #ebebe9; margin: 20px 0;" />
                                 <h2 style="margin: 0 0 20px; font-size: 20px; line-height: 28px; color: #@(themeColor);">Here is your Gift Card for @(store.Name)</h2>
