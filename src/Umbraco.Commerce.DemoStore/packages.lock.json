@@ -13,30 +13,30 @@
       },
       "Umbraco.Commerce.Cms.Startup": {
         "type": "Direct",
-        "requested": "[12.0.0--rc.preview.42.g91ead24, )",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "gfX7ZNY4J1p+BhxPL05iiSlv5IdzBGrCySF0H3B8896UlBgcLftQf336M+bbjKGUUkwEiMr3EEzjioL5VKnAgg==",
+        "requested": "[12.0.0--rc1, )",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "HDxFkrgbYl3zKlmfK+b0eXn5McR6h4FMDMcx+Ean5O0DqUWxqOe473mVJnnqpeMFPHvxBB4mfF5377Tb+YbQLg==",
         "dependencies": {
           "Umbraco.Cms.Web.BackOffice": "[12.0.0-rc2, 13.0.0)",
-          "Umbraco.Commerce.Cms": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Cms.Web": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Common": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Infrastructure": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Persistence": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Persistence.SqlServer": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Web": "12.0.0--rc.preview.42.g91ead24"
+          "Umbraco.Commerce.Cms": "12.0.0-rc1",
+          "Umbraco.Commerce.Cms.Web": "12.0.0-rc1",
+          "Umbraco.Commerce.Common": "12.0.0-rc1",
+          "Umbraco.Commerce.Core": "12.0.0-rc1",
+          "Umbraco.Commerce.Infrastructure": "12.0.0-rc1",
+          "Umbraco.Commerce.Persistence": "12.0.0-rc1",
+          "Umbraco.Commerce.Persistence.SqlServer": "12.0.0-rc1",
+          "Umbraco.Commerce.Web": "12.0.0-rc1"
         }
       },
       "Umbraco.Commerce.Persistence.Sqlite": {
         "type": "Direct",
-        "requested": "[12.0.0--rc.preview.42.g91ead24, )",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "WY/KoYT5MO+QdfInpKjh7j+M0OIu1jJtncMSgsaAPpFwGBImx2GfnZY95xSSAqyOfR0xolfUajFMierwgI3V1A==",
+        "requested": "[12.0.0--rc1, )",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "JQl+rc4tqzTlvod4XQoz0Nlz7CkpaK8lL6hIy4SJd/s7vel+74evJ1V302euPYGUdlN4wYvLBLSUM4v99rht5w==",
         "dependencies": {
           "Microsoft.Data.Sqlite": "[7.0.0, 8.0.0)",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Persistence": "12.0.0--rc.preview.42.g91ead24",
+          "Umbraco.Commerce.Core": "12.0.0-rc1",
+          "Umbraco.Commerce.Persistence": "12.0.0-rc1",
           "dbup-sqlite": "[4.6.0, 5.0.0)"
         }
       },
@@ -2832,35 +2832,35 @@
       },
       "Umbraco.Commerce.Cms": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "YG99uPweR18TkpNIYBLwIf9NdhQHPO+Pzepsxpavs8/37KDB7YurHC3LK0j+j2Jh9kARS5hES3ydQk4IpnGmwg==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "IGcEjm0FNKizl0isclfOnfvp5JECY7YfbcqY2wLXxEqbMPk/XxLCRBRl667kMm9kNZwBGdI9fm7l5bcXfaXxbA==",
         "dependencies": {
           "Umbraco.Cms.Web.BackOffice": "[12.0.0-rc2, 13.0.0)",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Infrastructure": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Persistence": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Web": "12.0.0--rc.preview.42.g91ead24",
+          "Umbraco.Commerce.Core": "12.0.0-rc1",
+          "Umbraco.Commerce.Infrastructure": "12.0.0-rc1",
+          "Umbraco.Commerce.Persistence": "12.0.0-rc1",
+          "Umbraco.Commerce.Web": "12.0.0-rc1",
           "Umbraco.Licenses": "[12.0.0-rc2, 13.0.0)"
         }
       },
       "Umbraco.Commerce.Cms.Web": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "JVrfV88XFHVPaBQ6w5IGLWzFrgFmIolbNN8RUou9+8re/5IXmzHZHa1mokitLoy2F4u3loGBhKV+NR/E1FXf4A==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "fUA4V2XhW8mLUisBfL7s5WQG4ENVIheT+0YsfLFAR3WavA8HSL4zohx/Iaz5J5V805a8ujvIQuXVb/0s0Mp4EQ==",
         "dependencies": {
           "Microsoft.AspNet.WebApi.Client": "[5.2.7, 6.0.0)",
           "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "[2.2.0, 3.0.0)",
           "System.IO.Compression": "[4.3.0, 5.0.0)",
           "Umbraco.Cms.Web.BackOffice": "[12.0.0-rc2, 13.0.0)",
-          "Umbraco.Commerce.Cms": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Web": "12.0.0--rc.preview.42.g91ead24"
+          "Umbraco.Commerce.Cms": "12.0.0-rc1",
+          "Umbraco.Commerce.Core": "12.0.0-rc1",
+          "Umbraco.Commerce.Web": "12.0.0-rc1"
         }
       },
       "Umbraco.Commerce.Common": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "KgGLLo4m6Ruc6KFcwdHg9s0CzwbBU3JvnM0j8K/8eGEI0woKPXs8p8xXSHx4JyPzmYsiDhwMlR2oDavxU/qQ0g==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "iyOg7W3pjxyR6l+EwNYF6wB9Jj2f7/GWOwscz6gV7VKqTdVWbhoPHyOAT27u+J3xufS7BK85l7kBmTydjcgLNA==",
         "dependencies": {
           "CompareNETObjects": "[4.75.0, 5.0.0)",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, 8.0.0)",
@@ -2869,8 +2869,8 @@
       },
       "Umbraco.Commerce.Core": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "bwl+OWPm3Hb2qBF/syhNWdtX6eO7WnF6rLAUqVZNinEiuPOKN55Kx7O9dfkfnVr2obgHGCJD2QYpFZY1zGJifA==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "Hnuo0lL+TdIf2Dmnz2VTneuAb3QLjzdXDT5DuNWdcjOMDX6knOeldvnWAif+q7REkHLC0zrf2MO8R2uPBB4ZVQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "[7.0.0, 8.0.0)",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, 8.0.0)",
@@ -2879,58 +2879,58 @@
           "RT.Comb": "[2.5.0, 3.0.0)",
           "System.Linq.Dynamic.Core": "[1.2.10, 2.0.0)",
           "System.Runtime.Caching": "[7.0.0, 8.0.0)",
-          "Umbraco.Commerce.Common": "12.0.0--rc.preview.42.g91ead24"
+          "Umbraco.Commerce.Common": "12.0.0-rc1"
         }
       },
       "Umbraco.Commerce.Infrastructure": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "PytKUgqJzCtfXVoGRwQbl0bG/gq8r3r8WOVpyhs13GQHLghedzrJQBq8Rs3lBVyX2/3KYnVhqrq7ZbhPBuIcaw==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "LzRiZtocRG3KkIt/xyZPXvY3eZ4IJ2b3VyX/O1OBV/2nIvAHmaGVmJTdGACLW7YlS5HubK9VN8+aLk3h0DSRoA==",
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "[2.2.0, 3.0.0)",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, 8.0.0)",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, 8.0.0)",
           "Polly": "[7.2.3, 8.0.0)",
           "System.Runtime.Caching": "[7.0.0, 8.0.0)",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24"
+          "Umbraco.Commerce.Core": "12.0.0-rc1"
         }
       },
       "Umbraco.Commerce.Persistence": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "s0lRgzA/Rjs4QAVaBCKRl7idHaeUQlFMVk6LuTjJ8NA3CwftT83NjDJ/FKw50neGp3gcQjrHdV8P2XWPUBRqEA==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "NxXYNcfEEbHvz11y5HmGyZ99Y3SFI8On0JjJRHEO8jYNCv489NKQ2NPUvC7dhHCGIups2flGDlrebQZqlYWrnA==",
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "[2.2.0, 3.0.0)",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, 8.0.0)",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, 8.0.0)",
           "NPoco.SqlServer": "[5.3.2, 6.0.0)",
           "SqlKata": "[2.3.7, 3.0.0)",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Infrastructure": "12.0.0--rc.preview.42.g91ead24",
+          "Umbraco.Commerce.Core": "12.0.0-rc1",
+          "Umbraco.Commerce.Infrastructure": "12.0.0-rc1",
           "dbup-core": "[4.6.0, 5.0.0)"
         }
       },
       "Umbraco.Commerce.Persistence.SqlServer": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "tIm22iRe5pFLHq01JdUTGC4a0hijA/G2/DrtWFNkcAKred+EzDZ3gBctcj8MzQqN0708zfG2RCkboO3fPx+QvQ==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "NTOHCEXpEbU+KFhZ21Jad41NmFS8QV0oMpwow4IRbWjah8tvRZ9E4SolHo1SLBxyPFgP/s5huUzu5A07UXKCRg==",
         "dependencies": {
-          "Umbraco.Commerce.Infrastructure": "12.0.0--rc.preview.42.g91ead24",
-          "Umbraco.Commerce.Persistence": "12.0.0--rc.preview.42.g91ead24",
+          "Umbraco.Commerce.Infrastructure": "12.0.0-rc1",
+          "Umbraco.Commerce.Persistence": "12.0.0-rc1",
           "dbup-sqlserver": "[4.6.0, 5.0.0)"
         }
       },
       "Umbraco.Commerce.Web": {
         "type": "Transitive",
-        "resolved": "12.0.0--rc.preview.42.g91ead24",
-        "contentHash": "Ys3RLbEktDVsfuSr24PW2yU1UtLAECQfQ5Bu6C//fNstkbD9e09mcAJR/Z59d9VxiNMi/MIMhGhRhwLdhMWaLQ==",
+        "resolved": "12.0.0-rc1",
+        "contentHash": "tyOHD1PnxbekiQvZxAXjjSejJeD02rxNOqAJSyXKEeTJDpmouMbRHGkDx1FMMuGjSVPZHl47iEwzN6VOVZI8Qw==",
         "dependencies": {
           "Microsoft.AspNet.WebApi.Client": "[5.2.7, 6.0.0)",
           "Microsoft.AspNetCore.Hosting.Abstractions": "[2.2.0, 3.0.0)",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "[2.2.0, 3.0.0)",
           "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "[2.2.0, 3.0.0)",
           "System.Runtime.Caching": "[7.0.0, 8.0.0)",
-          "Umbraco.Commerce.Core": "12.0.0--rc.preview.42.g91ead24"
+          "Umbraco.Commerce.Core": "12.0.0-rc1"
         }
       },
       "Umbraco.CSharpTest.Net.Collections": {
