@@ -24,7 +24,7 @@ To get started with the Umbraco Commerce demo store you will need:
 Clone or download this repository locally (it includes all the files you will need including a fully configured SQLlite database)
 
 ````
-git clone https://github.com/umbraco/Umbraco.Commerce.DemoStore.git
+git clone -b support/10.x https://github.com/umbraco/Umbraco.Commerce.DemoStore.git
 ````
 
 Once you have all the files downloaded you can open the `Umbraco.Commerce.DemoStore.sln` solution file in the root of the repository in Visual Studio. Make sure the `Umbraco.Commerce.DemoStore.Web` project is the startup project by right clicking the project in the Solution Explorer and choosing `Set as StartUp Project`, and then press `Ctrl + F5` to launch the site.
