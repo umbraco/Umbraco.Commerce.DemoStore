@@ -1,6 +1,6 @@
 # Umbraco Commerce Demo Store
 
-Welcome to the Umbraco Commerce Demo Store, an example webstore setup using Umbraco Commerce in [Umbraco v11+](https://umbraco.com).
+Welcome to the Umbraco Commerce Demo Store, an example webstore setup using Umbraco Commerce in [Umbraco v10](https://umbraco.com).
 
 ![Screenshot](assets/screenshot.png)
 
