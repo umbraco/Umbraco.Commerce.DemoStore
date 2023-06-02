@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Umbraco.Commerce.Core.Api;
 using Umbraco.Commerce.Core.Models;
 
@@ -15,10 +15,10 @@ namespace Umbraco.Commerce.DemoStore.Models
         public CheckoutStepPage NextStep => CheckoutPage.Steps.SkipWhile(x => !x.Id.Equals(this.Id)).Skip(1).FirstOrDefault();
 
         public PaymentMethodReadOnly PaymentMethod => Order?.PaymentInfo.PaymentMethodId != null
-            ? UmbracoCommerceApi.Instance.GetPaymentMethod(Order.PaymentInfo.PaymentMethodId.Value)
+            ? CommerceApi.Instance.GetPaymentMethod(Order.PaymentInfo.PaymentMethodId.Value)
             : null;
         public ShippingMethodReadOnly ShippingMethod => Order?.ShippingInfo.ShippingMethodId != null
-            ? UmbracoCommerceApi.Instance.GetShippingMethod(Order.ShippingInfo.ShippingMethodId.Value)
+            ? CommerceApi.Instance.GetShippingMethod(Order.ShippingInfo.ShippingMethodId.Value)
             : null;
     }
 }

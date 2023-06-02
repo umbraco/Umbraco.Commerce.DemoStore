@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;

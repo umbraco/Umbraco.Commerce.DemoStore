@@ -1,4 +1,4 @@
-﻿using Umbraco.Commerce.Core.Events.Notification;
+using Umbraco.Commerce.Core.Events.Notification;
 using Umbraco.Commerce.DemoStore.Events;
 using Umbraco.Commerce.DemoStore.Web.Extractors;
 using Umbraco.Commerce.Cms.Extractors;
@@ -13,31 +13,31 @@ namespace Umbraco.Commerce.DemoStore
     {
         public static IUmbracoBuilder AddDemoStore(this IUmbracoBuilder umbracoBuilder)
         {
-            umbracoBuilder.AddUmbracoCommerce(v =>
+            umbracoBuilder.AddUmbracoCommerce(b =>
             {
                 // Enable SQLite support
-                v.AddSQLite();
+                b.AddSQLite();
 
                 // Replace the umbraco product name extractor with one that supports child variants
-                v.Services.AddUnique<IUmbracoProductNameExtractor, CompositeProductNameExtractor>();
+                b.Services.AddUnique<IUmbracoProductNameExtractor, CompositeProductNameExtractor>();
 
                 // Register event handlers
-                v.WithNotificationEvent<OrderProductAddingNotification>()
+                b.WithNotificationEvent<OrderProductAddingNotification>()
                     .RegisterHandler<OrderProductAddingHandler>();
 
-                v.WithNotificationEvent<OrderLineChangingNotification>()
+                b.WithNotificationEvent<OrderLineChangingNotification>()
                     .RegisterHandler<OrderLineChangingHandler>();
 
-                v.WithNotificationEvent<OrderLineRemovingNotification>()
+                b.WithNotificationEvent<OrderLineRemovingNotification>()
                     .RegisterHandler<OrderLineRemovingHandler>();
 
-                v.WithNotificationEvent<OrderPaymentCountryRegionChangingNotification>()
+                b.WithNotificationEvent<OrderPaymentCountryRegionChangingNotification>()
                     .RegisterHandler<OrderPaymentCountryRegionChangingHandler>();
 
-                v.WithNotificationEvent<OrderShippingCountryRegionChangingNotification>()
+                b.WithNotificationEvent<OrderShippingCountryRegionChangingNotification>()
                     .RegisterHandler<OrderShippingCountryRegionChangingHandler>();
 
-                v.WithNotificationEvent<OrderShippingMethodChangingNotification>()
+                b.WithNotificationEvent<OrderShippingMethodChangingNotification>()
                     .RegisterHandler<OrderShippingMethodChangingHandler>();
 
             });

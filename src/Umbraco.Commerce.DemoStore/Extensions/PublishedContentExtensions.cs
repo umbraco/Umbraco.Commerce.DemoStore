@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 using Umbraco.Commerce.Core.Api;
@@ -27,7 +27,7 @@ namespace Umbraco.Commerce.DemoStore
 
         public static OrderReadOnly GetCurrentOrder(this IPublishedContent content)
         {
-            return UmbracoCommerceApi.Instance.GetCurrentOrder(content.GetStore().Id);
+            return CommerceApi.Instance.GetCurrentOrder(content.GetStore().Id);
         }
 
         public static string GetProductReference(this IProductComp content)
@@ -35,7 +35,7 @@ namespace Umbraco.Commerce.DemoStore
             return content.Key.ToString();
         }
 
-        public static IProductSnapshot AsProduct(this IProductComp content)
+        public static IProductSnapshot AsVendrProduct(this IProductComp content)
         {
             var page = content as IPublishedContent;
             if (page == null)
@@ -43,10 +43,10 @@ namespace Umbraco.Commerce.DemoStore
 
             var store = page.GetStore();
 
-            return UmbracoCommerceApi.Instance.GetProduct(store.Id, content.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
+            return CommerceApi.Instance.GetProduct(store.Id, content.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
         }
 
-        public static IProductSnapshot AsProduct(this IProductComp variant, IProductComp parent)
+        public static IProductSnapshot AsVendrProduct(this IProductComp variant, IProductComp parent)
         {
             var page = parent as IPublishedContent;
             if (page == null)
@@ -56,17 +56,17 @@ namespace Umbraco.Commerce.DemoStore
 
             var store = page.GetStore();
 
-            return UmbracoCommerceApi.Instance.GetProduct(store.Id, parent.GetProductReference(), variant.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
+            return CommerceApi.Instance.GetProduct(store.Id, parent.GetProductReference(), variant.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
         }
 
         public static Price CalculatePrice(this IProductComp content)
         {
-            return content.AsProduct()?.CalculatePrice();
+            return content.AsVendrProduct()?.CalculatePrice();
         }
 
         public static Price CalculatePrice(this IProductComp variant, IProductComp parent)
         {
-            return variant.AsProduct(parent)?.CalculatePrice();
+            return variant.AsVendrProduct(parent)?.CalculatePrice();
         }
 
         public static CheckoutPage GetCheckoutPage(this CheckoutStepPage content)
