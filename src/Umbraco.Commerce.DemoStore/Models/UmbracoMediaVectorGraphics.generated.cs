@@ -18,35 +18,58 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Commerce.DemoStore.Models
 {
-	/// <summary>Checkout Payment Method Page</summary>
-	[PublishedModel("checkoutPaymentMethodPage")]
-	public partial class CheckoutPaymentMethodPage : CheckoutStepPage
+	/// <summary>Vector Graphics (SVG)</summary>
+	[PublishedModel("umbracoMediaVectorGraphics")]
+	public partial class UmbracoMediaVectorGraphics : PublishedContentModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
-		public new const string ModelTypeAlias = "checkoutPaymentMethodPage";
+		public new const string ModelTypeAlias = "umbracoMediaVectorGraphics";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
-		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+		public new const PublishedItemType ModelItemType = PublishedItemType.Media;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<CheckoutPaymentMethodPage, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<UmbracoMediaVectorGraphics, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public CheckoutPaymentMethodPage(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public UmbracoMediaVectorGraphics(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
 		}
 
 		// properties
+
+		///<summary>
+		/// Size: in bytes
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
+		[ImplementPropertyType("umbracoBytes")]
+		public virtual long UmbracoBytes => this.Value<long>(_publishedValueFallback, "umbracoBytes");
+
+		///<summary>
+		/// Type
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("umbracoExtension")]
+		public virtual string UmbracoExtension => this.Value<string>(_publishedValueFallback, "umbracoExtension");
+
+		///<summary>
+		/// Vector Graphics
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("umbracoFile")]
+		public virtual string UmbracoFile => this.Value<string>(_publishedValueFallback, "umbracoFile");
 	}
 }

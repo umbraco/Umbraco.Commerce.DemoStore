@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Commerce.DemoStore.Models
 {
-	/// <summary>Checkout Payment Method Page</summary>
-	[PublishedModel("checkoutPaymentMethodPage")]
-	public partial class CheckoutPaymentMethodPage : CheckoutStepPage
+	/// <summary>Sitemap</summary>
+	[PublishedModel("sitemap")]
+	public partial class Sitemap : PublishedContentModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
-		public new const string ModelTypeAlias = "checkoutPaymentMethodPage";
+		public new const string ModelTypeAlias = "sitemap";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
@@ -34,14 +34,14 @@ namespace Umbraco.Commerce.DemoStore.Models
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.2.0+ae516b2")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<CheckoutPaymentMethodPage, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<Sitemap, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public CheckoutPaymentMethodPage(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public Sitemap(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
