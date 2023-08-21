@@ -1,4 +1,7 @@
-(function(){
+(function () {
+
+    /* break us out of any containing iframes */
+    if (top != self) { top.location.replace(self.location.href); }
 
     // Helpers
     function openMenu(){
