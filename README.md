@@ -31,7 +31,7 @@ Once you have all the files downloaded you can open the `Umbraco.Commerce.DemoSt
 
 To login to the back office you can do so using the credentails:
 
-* **Email** admin@admin.com
+* **Email** admin@example.com
 * **Password** password1234
 
 

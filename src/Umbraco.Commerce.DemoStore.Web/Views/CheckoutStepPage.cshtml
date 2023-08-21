@@ -5,7 +5,7 @@
 @using Umbraco.Commerce.Extensions;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<CheckoutStepPage>
 @{
-    Layout = "Master.cshtml";
+    Layout = "Layout.cshtml";
 }
 
 @section head {
@@ -13,7 +13,7 @@
 }
 
 @section foot {
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="/scripts/checkout.js"></script>
     @RenderSection("foot", false)
 }
