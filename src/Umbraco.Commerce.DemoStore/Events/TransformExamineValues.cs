@@ -8,6 +8,9 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 using Umbraco.Commerce.DemoStore.Models;
 using System.Text;
+using Newtonsoft.Json;
+using Umbraco.Commerce.Core.Services;
+using System;
 
 namespace Umbraco.Commerce.DemoStore.Events
 {
@@ -15,19 +18,21 @@ namespace Umbraco.Commerce.DemoStore.Events
     {
         private readonly IExamineManager _examineManager;
         private readonly IUmbracoContextFactory _umbracoContextFactory;
+        private readonly ICurrencyService _currencyService;
 
         public TransformExamineValues(IExamineManager examineManager,
-            IUmbracoContextFactory umbracoContextFactory)
+            IUmbracoContextFactory umbracoContextFactory,
+            ICurrencyService currencyService)
         {
             _examineManager = examineManager;
             _umbracoContextFactory = umbracoContextFactory;
+            _currencyService = currencyService;
         }
-
 
         public void Handle(UmbracoApplicationStartingNotification notification)
         {
             // Listen for nodes being reindexed in the external index set
-            if (_examineManager.TryGetIndex("ExternalIndex", out var index))
+            if (_examineManager.TryGetIndex(Constants.UmbracoIndexes.ExternalIndexName, out var index))
             {
                 ((BaseIndexProvider)index).TransformingIndexValues += (object sender, IndexingItemEventArgs e) =>
                 {
@@ -70,6 +75,20 @@ namespace Umbraco.Commerce.DemoStore.Events
                             if (categoryAliases.Count > 0)
                             {
                                 values.Add("categoryAliases", new[] { string.Join(" ", categoryAliases) });
+                            }
+                        }
+
+                        if (e.ValueSet.Values.ContainsKey("price"))
+                        {
+                            var prices = JsonConvert.DeserializeObject<Dictionary<Guid, string>>(e.ValueSet.GetValue("price").ToString());
+
+                            foreach (var price in prices)
+                            {
+                                var currency = _currencyService.GetCurrency(price.Key);
+                                if (currency == null)
+                                    continue;
+
+                                values.Add($"price_{currency.Code}", new[] { price.Value });
                             }
                         }
                     }

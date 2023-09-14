@@ -6,6 +6,8 @@ using Umbraco.Commerce.Extensions;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Notifications;
+using Umbraco.Commerce.DemoStore.Web.Index;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Umbraco.Commerce.DemoStore
 {
@@ -43,6 +45,7 @@ namespace Umbraco.Commerce.DemoStore
             });
 
             umbracoBuilder.AddNotificationHandler<UmbracoApplicationStartingNotification, TransformExamineValues>();
+            umbracoBuilder.Services.ConfigureOptions<ConfigureIndexOptions>();
 
             return umbracoBuilder;
         }
