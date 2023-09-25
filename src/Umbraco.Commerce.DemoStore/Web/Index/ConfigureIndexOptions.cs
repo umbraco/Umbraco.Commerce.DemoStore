@@ -34,6 +34,9 @@ namespace Umbraco.Commerce.DemoStore.Web.Index
                     // Create a config
                     var facetsConfig = new FacetsConfig();
 
+                    options.FieldDefinitions.TryAdd(new FieldDefinition("isGiftCard", FieldDefinitionTypes.FacetInteger));
+                    facetsConfig.SetIndexFieldName("isGiftCard", $"facet_isGiftCard");
+
                     foreach (var field in priceFields)
                     {
                         options.FieldDefinitions.TryAdd(new FieldDefinition(field, FieldDefinitionTypes.FacetDouble));
