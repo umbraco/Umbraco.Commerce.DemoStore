@@ -2,19 +2,19 @@
 @using Umbraco.Commerce.DemoStore;
 @using Umbraco.Commerce.DemoStore.Models;
 @using Umbraco.Commerce.Common.Models;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<FacetResult>>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<FacetGroup>>
 
 <aside>
-    @foreach (var facet in Model)
+    @foreach (var group in Model)
     {
         <details>
-            <summary>@facet</summary>
+            <summary>@group.Name</summary>
 
-            @foreach (var facetValue in facet)
+            @foreach (var facet in group.Facets)
             {
                 <div>
-                    <input type="checkbox" id="@facetValue.Label" name="@facetValue.Label" value="@facetValue.Value">
-                    <label for="@facetValue.Label">@facetValue.Label</label>
+                    <input type="checkbox" id="@facet.Name" name="@facet.Name" value="@facet.Value">
+                    <label for="@facet.Name">@facet.Name</label>
                 </div>
             }
         </details>
