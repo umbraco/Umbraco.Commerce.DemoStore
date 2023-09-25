@@ -13,10 +13,22 @@
             @foreach (var facet in group.Facets)
             {
                 <div>
-                    <input type="checkbox" id="@facet.Name" name="@facet.Name" value="@facet.Value">
+                    <input type="checkbox" id="@facet.Name" name="@group.Name" value="@facet.Value" class="filter">
                     <label for="@facet.Name">@facet.Name (@facet.Count)</label>
                 </div>
             }
         </details>
     }
 </aside>
+
+<script>
+    document.querySelectorAll('.filter').forEach(filter => {
+        filter.addEventListener('change', event => {
+            if (event.currentTarget.checked) {
+                //alert('checked');
+            } else {
+                //alert('not checked');
+            }
+        })
+    });
+</script>

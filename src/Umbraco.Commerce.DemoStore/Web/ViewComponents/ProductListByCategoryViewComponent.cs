@@ -35,9 +35,9 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
         private static IEnumerable<FacetGroup> MapFacets(IList<FacetResult> facets)
         {
             var mappedFacets = facets
-                .Select(x => new FacetGroup()
+                .Select((x, i) => new FacetGroup()
                 {
-                    Name = "", //GetFacetName(x),
+                    Name = i == 0 ? "Gift Card" : "Price", //GetFacetName(x),
                     Facets = x.Select(f => new Facet()
                     {
                         Name = f.Label,
