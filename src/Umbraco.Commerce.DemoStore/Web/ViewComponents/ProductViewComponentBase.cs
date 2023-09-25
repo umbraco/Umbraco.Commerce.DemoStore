@@ -6,6 +6,10 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 using Umbraco.Commerce.Common.Models;
 using Umbraco.Commerce.DemoStore.Models;
+using Examine.Lucene;
+using Umbraco.Cms.Core;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 {
@@ -20,9 +24,9 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
             _umbracoContextFactory = umbracoContextFactory;
         }
 
-        protected PagedResult<ProductPage> GetPagedProducts(int? collectionId, string category, int page, int pageSize)
+        protected PagedResult<ProductPage> GetPagedProducts(int? collectionId, string category, int page, int pageSize, out IEnumerable<IFacetResult> facets)
         {
-            if (_examineManager.TryGetIndex("ExternalIndex", out var index))
+            if (_examineManager.TryGetIndex(Constants.UmbracoIndexes.ExternalIndexName, out var index))
             {
                 var q = $"+(__NodeTypeAlias:{ProductPage.ModelTypeAlias} __NodeTypeAlias:{MultiVariantProductPage.ModelTypeAlias})";
 
@@ -38,8 +42,22 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 
                 var searcher = index.Searcher;
                 var query = searcher.CreateQuery().NativeQuery(q);
+
                 var results = query.OrderBy(new SortableField("name", SortType.String))
+                    .WithFacets(facets => facets
+                        .FacetLongRange("isGiftCard", new Int64Range[] {
+                            new Int64Range("no", 0, true, 1, false),
+                            new Int64Range("yes", 0, false, 1, true)
+                        })
+                        .FacetDoubleRange("price_GBP", new DoubleRange[] {
+                            new DoubleRange("0-10", 0, true, 10, true),
+                            new DoubleRange("11-20", 11, true, 20, true),
+                            new DoubleRange("20-30", 21, true, 30, true)
+                        })) // Get facets of the price field
                     .Execute(QueryOptions.SkipTake(pageSize * (page - 1), pageSize));
+
+                facets = results.GetFacets();
+
                 var totalResults = results.TotalItemCount;
 
                 using (var ctx = _umbracoContextFactory.EnsureUmbracoContext())
@@ -55,6 +73,8 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
                     };
                 }
             }
+
+            facets = null;
 
             return new PagedResult<ProductPage>(0, page, pageSize);
         }

@@ -1,6 +1,11 @@
 ﻿using Examine;
+using Examine.Search;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Commerce.DemoStore.Models;
 using Umbraco.Commerce.DemoStore.Web.Extensions;
 
 namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
@@ -17,7 +22,34 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
             var p = Request.Query.GetInt("p", 1);
             var ps = Request.Query.GetInt("ps", 12);
 
-            return View("PagedProductList", GetPagedProducts(collectionId, null, p, ps));
+            var products = GetPagedProducts(collectionId, null, p, ps, out IEnumerable<IFacetResult> facets);
+
+            var model = new ProductListViewModel
+            {
+                Facets = MapFacets(facets.Select(x => x as FacetResult).ToList()),
+                Products = products
+            };
+
+            return View("PagedProductList", model);
         }
+
+        private static IEnumerable<FacetGroup> MapFacets(IList<FacetResult> facets)
+        {
+            var mappedFacets = facets
+                .Select(x => new FacetGroup()
+                {
+                    Name = "", //GetFacetName(x),
+                    Facets = x.Select(f => new Facet()
+                    {
+                        Name = f.Label,
+                        //Value = f.Value,
+                        //Count = f.Count
+                    })
+                    .OrderBy(f => f.Name)
+                });
+
+            return mappedFacets;
+        }
+
     }
 }

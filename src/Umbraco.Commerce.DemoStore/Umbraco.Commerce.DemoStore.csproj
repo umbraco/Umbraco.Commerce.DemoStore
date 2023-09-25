@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+      <PackageReference Include="Examine.Core" Version="4.0.0-beta.231" />
+      <PackageReference Include="Examine.Lucene" Version="4.0.0-beta.231" />
       <PackageReference Include="Umbraco.Cms.Web.Website" Version="12.1.1" />
       <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="12.1.0-rc1" />
       <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="12.1.0-rc1" />

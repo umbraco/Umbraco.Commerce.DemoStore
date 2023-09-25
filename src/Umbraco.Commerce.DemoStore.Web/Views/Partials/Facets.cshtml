@@ -1,0 +1,22 @@
+﻿@using Examine.Search;
+@using Umbraco.Commerce.DemoStore;
+@using Umbraco.Commerce.DemoStore.Models;
+@using Umbraco.Commerce.Common.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<FacetResult>>
+
+<aside>
+    @foreach (var facet in Model)
+    {
+        <details>
+            <summary>@facet</summary>
+
+            @foreach (var facetValue in facet)
+            {
+                <div>
+                    <input type="checkbox" id="@facetValue.Label" name="@facetValue.Label" value="@facetValue.Value">
+                    <label for="@facetValue.Label">@facetValue.Label</label>
+                </div>
+            }
+        </details>
+    }
+</aside>
