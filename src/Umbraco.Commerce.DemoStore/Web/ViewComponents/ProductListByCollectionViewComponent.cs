@@ -42,8 +42,8 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
                     Facets = x.Select(f => new Facet()
                     {
                         Name = f.Label,
-                        Value = f.Value,
-                        //Count = f.Count
+                        Value = "",
+                        Count = (int)f.Value
                     })
                     .OrderBy(f => f.Name)
                 });

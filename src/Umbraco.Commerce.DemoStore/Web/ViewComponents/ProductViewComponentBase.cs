@@ -52,7 +52,9 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
                         .FacetDoubleRange("price_GBP", new DoubleRange[] {
                             new DoubleRange("0-10", 0, true, 10, true),
                             new DoubleRange("11-20", 11, true, 20, true),
-                            new DoubleRange("20-30", 21, true, 30, true)
+                            new DoubleRange("20-30", 21, true, 30, true),
+                            new DoubleRange("30-40", 31, true, 40, true),
+                            new DoubleRange("40-50", 41, true, 50, true)
                         })) // Get facets of the price field
                     .Execute(QueryOptions.SkipTake(pageSize * (page - 1), pageSize));
 

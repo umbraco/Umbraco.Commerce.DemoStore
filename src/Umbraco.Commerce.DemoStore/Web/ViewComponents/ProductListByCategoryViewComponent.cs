@@ -42,7 +42,7 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
                     {
                         Name = f.Label,
                         //Value = f.Value,
-                        //Count = f.Count
+                        Count = (int)f.Value
                     })
                     .OrderBy(f => f.Name)
                 });
