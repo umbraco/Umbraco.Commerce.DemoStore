@@ -15,6 +15,6 @@ namespace Umbraco.Commerce.DemoStore.Models
 
         public string Value { get; set; }
 
-        public int Count { get; set; }
+        public long Count { get; set; }
     }
 }

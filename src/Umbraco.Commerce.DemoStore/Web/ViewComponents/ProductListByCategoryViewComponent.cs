@@ -25,14 +25,14 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 
             var model = new ProductListViewModel
             {
-                Facets = MapFacets(facets.Select(x => x as FacetResult).ToList()),
+                Facets = MapFacets(facets.ToList()),
                 Products = products
             };
 
             return View("PagedProductList", model);
         }
 
-        private static IEnumerable<FacetGroup> MapFacets(IList<FacetResult> facets)
+        private static IEnumerable<FacetGroup> MapFacets(IList<IFacetResult> facets)
         {
             var mappedFacets = facets
                 .Select((x, i) => new FacetGroup()
@@ -42,7 +42,7 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
                     {
                         Name = f.Label,
                         //Value = f.Value,
-                        Count = (int)f.Value
+                        Count = (long)f.Value
                     })
                     .OrderBy(f => f.Name)
                 });
