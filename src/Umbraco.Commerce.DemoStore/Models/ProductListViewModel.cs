@@ -1,5 +1,4 @@
-﻿using Examine.Search;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Umbraco.Commerce.Common.Models;
 
 namespace Umbraco.Commerce.DemoStore.Models

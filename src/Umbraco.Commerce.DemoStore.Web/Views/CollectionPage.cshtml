@@ -4,4 +4,5 @@
 }
 
 @await Html.PartialAsync("Intro")
+@await Component.InvokeAsync("Facet", new { collectionId = Model.Id })
 @await Component.InvokeAsync("ProductListByCollection", new { collectionId = Model.Id })

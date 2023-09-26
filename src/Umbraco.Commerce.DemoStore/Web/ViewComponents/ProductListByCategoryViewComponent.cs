@@ -1,11 +1,9 @@
 ﻿using Examine;
-using Examine.Search;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Commerce.DemoStore.Models;
 using Umbraco.Commerce.DemoStore.Web.Extensions;
+using Umbraco.Commerce.DemoStore.Web.Services;
 
 namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 {
@@ -14,40 +12,17 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
     {
         public ProductListByCategoryViewComponent(IExamineManager examineManager, IUmbracoContextFactory umbracoContextFactory)
             : base(examineManager, umbracoContextFactory)
-        { }
+        {
+        }
 
         public IViewComponentResult Invoke(string category)
         {
             var p = Request.Query.GetInt("p", 1);
             var ps = Request.Query.GetInt("ps", 12);
 
-            var products = GetPagedProducts(null, category, p, ps, out IEnumerable<IFacetResult> facets);
+            var products = GetPagedProducts(null, category, p, ps);
 
-            var model = new ProductListViewModel
-            {
-                Facets = MapFacets(facets.ToList()),
-                Products = products
-            };
-
-            return View("PagedProductList", model);
-        }
-
-        private static IEnumerable<FacetGroup> MapFacets(IList<IFacetResult> facets)
-        {
-            var mappedFacets = facets
-                .Select((x, i) => new FacetGroup()
-                {
-                    Name = i == 0 ? "Gift Card" : "Price", //GetFacetName(x),
-                    Facets = x.Select(f => new Facet()
-                    {
-                        Name = f.Label,
-                        //Value = f.Value,
-                        Count = (long)f.Value
-                    })
-                    .OrderBy(f => f.Name)
-                });
-
-            return mappedFacets;
+            return View("PagedProductList", products);
         }
     }
 }
