@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Examine" Version="4.0.0-beta.231" />
+        <PackageReference Include="Examine" Version="4.0.0-beta.1" />
         <PackageReference Include="Umbraco.Cms" Version="12.1.1" />
         <PackageReference Include="Umbraco.Commerce" Version="12.1.0-rc1" />
     </ItemGroup>
