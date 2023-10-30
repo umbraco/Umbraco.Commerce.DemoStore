@@ -1,5 +1,6 @@
 ﻿using Examine;
 using Examine.Lucene;
+using Examine.Lucene.Search;
 using Examine.Search;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,10 +45,11 @@ namespace Umbraco.Commerce.DemoStore.Web.Services
 
                 var results = query.OrderBy(new SortableField("name", SortType.String))
                     .WithFacets(facets => facets
-                        .FacetLongRange("isGiftCard", new Int64Range[] {
-                            new Int64Range("no", 0, true, 1, false),
-                            new Int64Range("yes", 0, false, 1, true)
-                        })
+                        .FacetString("isGiftCard", null, new[] { "1" })
+                        //.FacetLongRange("isGiftCard", new Int64Range[] {
+                        //    new Int64Range("no", 0, true, 1, false),
+                        //    new Int64Range("yes", 0, false, 1, true)
+                        //})
                         .FacetDoubleRange("price_GBP", new DoubleRange[] {
                             new DoubleRange("0-10", 0, true, 10, true),
                             new DoubleRange("11-20", 11, true, 20, true),
