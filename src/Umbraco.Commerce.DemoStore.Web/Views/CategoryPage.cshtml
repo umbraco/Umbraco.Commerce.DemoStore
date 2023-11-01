@@ -4,4 +4,5 @@
 }
 
 @await Html.PartialAsync("Intro")
+@await Component.InvokeAsync("Facet", new { category = Model.UrlSegment })
 @await Component.InvokeAsync("ProductListByCategory", new { category = Model.UrlSegment })

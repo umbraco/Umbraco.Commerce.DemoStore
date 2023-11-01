@@ -1,0 +1,32 @@
+﻿@using Umbraco.Commerce.Common.Models;
+@using Umbraco.Commerce.DemoStore.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<FacetGroup>>
+
+<aside>
+    @foreach (var group in Model)
+    {
+        <details>
+            <summary>@group.Name</summary>
+
+            @foreach (var facet in group.Facets)
+            {
+                <div>
+                    <input type="checkbox" id="@facet.Name" name="@group.Name" value="@facet.Value" class="filter">
+                    <label for="@facet.Name">@facet.Name (@facet.Count)</label>
+                </div>
+            }
+        </details>
+    }
+</aside>
+
+<script>
+    document.querySelectorAll('.filter').forEach(filter => {
+        filter.addEventListener('change', event => {
+            if (event.currentTarget.checked) {
+                //alert('checked');
+            } else {
+                //alert('not checked');
+            }
+        })
+    });
+</script>

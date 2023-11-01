@@ -1,11 +1,12 @@
 ﻿using Examine;
 using Examine.Search;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Web;
-using Umbraco.Extensions;
 using Umbraco.Commerce.Common.Models;
 using Umbraco.Commerce.DemoStore.Models;
+using Umbraco.Extensions;
 
 namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 {
@@ -22,7 +23,7 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 
         protected PagedResult<ProductPage> GetPagedProducts(int? collectionId, string category, int page, int pageSize)
         {
-            if (_examineManager.TryGetIndex("ExternalIndex", out var index))
+            if (_examineManager.TryGetIndex(Constants.UmbracoIndexes.ExternalIndexName, out var index))
             {
                 var q = $"+(__NodeTypeAlias:{ProductPage.ModelTypeAlias} __NodeTypeAlias:{MultiVariantProductPage.ModelTypeAlias})";
 
@@ -38,8 +39,10 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
 
                 var searcher = index.Searcher;
                 var query = searcher.CreateQuery().NativeQuery(q);
+
                 var results = query.OrderBy(new SortableField("name", SortType.String))
                     .Execute(QueryOptions.SkipTake(pageSize * (page - 1), pageSize));
+
                 var totalResults = results.TotalItemCount;
 
                 using (var ctx = _umbracoContextFactory.EnsureUmbracoContext())
