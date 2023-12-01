@@ -1,9 +1,12 @@
-using System;
+using Flurl.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
 
@@ -65,6 +68,21 @@ namespace Umbraco.Commerce.DemoStore.Web
                 context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
                 await next();
+            });
+
+            FlurlHttp.Configure(settings => settings.OnErrorAsync = async Task (fullRequest) =>
+            {
+                // When error happens, try to log the response body if possible.
+                try
+                {
+                    ILogger<IFlurlRequest> logger = app.ApplicationServices.GetRequiredService<ILogger<IFlurlRequest>>();
+                    string responseBody = await fullRequest.Response.GetStringAsync();
+                    logger.LogError("Http request failed. Response body: \"{responseBody}\"", responseBody);
+                }
+                catch
+                {
+                    // Ignore any error when logging.
+                }
             });
 
             app.UseUmbraco()
