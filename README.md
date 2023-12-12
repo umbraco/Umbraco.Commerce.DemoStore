@@ -17,7 +17,8 @@ In the back office you'll find a suggested content structure for a working Umbra
 To get started with the Umbraco Commerce demo store you will need:
 
 * Visual Studio 2019
-* .NET Core SDK 7.0.0 or newer
+* .NET Core SDK 8.1.0 or newer
+* SQL Server 2019
 
 ## Getting Started
 
@@ -31,8 +32,8 @@ Once you have all the files downloaded you can open the `Umbraco.Commerce.DemoSt
 
 To login to the back office you can do so using the credentails:
 
-* **Email** admin@example.com
-* **Password** password1234
+* **Email** `admin@example.com`
+* **Password** `password1234`
 
 
 ## License
