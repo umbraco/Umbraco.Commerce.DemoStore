@@ -19,7 +19,7 @@
     "Kestrel": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:44322;http://localhost:54506",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

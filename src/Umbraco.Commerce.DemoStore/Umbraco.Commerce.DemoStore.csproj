@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <EnablePackageValidation>false</EnablePackageValidation>
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Web.Website" Version="12.1.1" />
-      <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="12.1.2" />
-      <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="12.1.2" />
+      <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.0.0-rc1" />
+      <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="13.0.0-rc1" />
+      <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="13.0.0-rc1" />
   </ItemGroup>
 
 </Project>
