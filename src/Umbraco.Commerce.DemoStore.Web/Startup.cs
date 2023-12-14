@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
 
@@ -70,20 +69,20 @@ namespace Umbraco.Commerce.DemoStore.Web
                 await next();
             });
 
-            FlurlHttp.Configure(settings => settings.OnErrorAsync = async Task (fullRequest) =>
+            FlurlHttp.Clients.WithDefaults(cfg => cfg.OnError(async (req) =>
             {
                 // When error happens, try to log the response body if possible.
                 try
                 {
                     ILogger<IFlurlRequest> logger = app.ApplicationServices.GetRequiredService<ILogger<IFlurlRequest>>();
-                    string responseBody = await fullRequest.Response.GetStringAsync();
+                    string responseBody = await req.Response.GetStringAsync();
                     logger.LogError("Http request failed. Response body: \"{responseBody}\"", responseBody);
                 }
                 catch
                 {
                     // Ignore any error when logging.
                 }
-            });
+            }));
 
             app.UseUmbraco()
                 .WithMiddleware(u =>
