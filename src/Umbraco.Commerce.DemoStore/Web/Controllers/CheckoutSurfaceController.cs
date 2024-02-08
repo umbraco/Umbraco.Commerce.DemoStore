@@ -12,6 +12,7 @@ using Umbraco.Commerce.Core;
 using Umbraco.Commerce.Core.Api;
 using Umbraco.Commerce.DemoStore.Web.Dtos;
 using Umbraco.Commerce.Extensions;
+using Umbraco.Extensions;
 
 namespace Umbraco.Commerce.DemoStore.Web.Controllers
 {
@@ -141,8 +142,19 @@ namespace Umbraco.Commerce.DemoStore.Web.Controllers
                 {
                     var store = CurrentPage.GetStore();
                     var order = _commerceApi.GetOrCreateCurrentOrder(store.Id)
-                        .AsWritable(uow)
-                        .SetShippingMethod(model.ShippingMethod);
+                        .AsWritable(uow);
+
+                    if (!model.ShippingOptionId.IsNullOrWhiteSpace())
+                    {
+                        var shippingMethod = _commerceApi.GetShippingMethod(model.ShippingMethod);
+                        var shippingRateAttempt = shippingMethod.TryCalculateRate(model.ShippingOptionId, order);
+
+                        order.SetShippingMethod(model.ShippingMethod, shippingRateAttempt.Result.Option);
+                    }
+                    else
+                    {
+                        order.SetShippingMethod(model.ShippingMethod);
+                    }
 
                     _commerceApi.SaveOrder(order);
 

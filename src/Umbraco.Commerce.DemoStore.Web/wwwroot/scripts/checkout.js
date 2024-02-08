@@ -29,6 +29,12 @@
             showHideShippingInfo(true);
         });
 
+        document.querySelectorAll("input[name=shippingMethod]").forEach(el => {
+            var h = () => { document.querySelector("input[name=shippingOptionId]").value = document.querySelector("input[name=shippingMethod]:checked").dataset.optionId; console.log('run') }
+            el.addEventListener("change", h);
+            if (el.checked) h();
+        });
+
         $("#acceptTerms").on("click", enableDisableContinueButton);
 
         var errors = $(".validation-summary-errors");

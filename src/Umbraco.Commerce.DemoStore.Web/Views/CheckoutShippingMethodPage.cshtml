@@ -2,6 +2,16 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CheckoutShippingMethodPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
+
+    var selectedShippingMethodId = Model.Order.ShippingInfo.ShippingMethodId.HasValue
+        ? Model.Order.ShippingInfo.ShippingMethodId.Value
+        : Model.ShippingCountry != null && Model.ShippingCountry.DefaultShippingMethodId.HasValue
+            ? Model.ShippingCountry.DefaultShippingMethodId.Value
+            : (Guid?)null;
+
+    var selectedShippinOptionId = selectedShippingMethodId.HasValue && Model.Order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == Model.Order.ShippingInfo.ShippingMethodId
+        ? Model.Order.ShippingInfo.ShippingOption?.Id
+        : null;
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderShippingMethod", "CheckoutSurface"))
@@ -12,15 +22,54 @@
     <ul class="border border-gray-300 rounded">
         @foreach (var item in Model.ShippingMethods.Select((sm, i) => new { ShippingMethod = sm, Index = i }))
         {
-            <li class="border-gray-300 @(item.Index > 0 ? "border-t " : "")">
-                <label class="flex items-center py-4 px-4 cursor-pointer hover:bg-gray-100">
-                    <input name="shippingMethod" type="radio" value="@item.ShippingMethod.Id" class="mr-3" @Html.Raw((Model.Order.ShippingInfo.ShippingMethodId.HasValue && Model.Order.ShippingInfo.ShippingMethodId.Value == item.ShippingMethod.Id) || (!Model.Order.ShippingInfo.ShippingMethodId.HasValue && Model.ShippingCountry != null && Model.ShippingCountry.DefaultShippingMethodId == item.ShippingMethod.Id) ? "checked=\"checked\"" : "") required />
-                    <span class="font-medium">@(item.ShippingMethod.Name)</span>
-                    <span class="flex-1 text-right">@(item.ShippingMethod.CalculatePrice()?.Formatted())</span>
-                </label>
-            </li>
+            var rates = item.ShippingMethod.TryCalculateRates();
+            if (rates.Success)
+            {
+                foreach (var rate in rates.Result)
+                {
+                    var isSelected = false;
+
+                    if (selectedShippingMethodId.HasValue && selectedShippingMethodId.Value == item.ShippingMethod.Id)
+                    {
+                        if (rate.Option != null)
+                        {
+                            if (selectedShippinOptionId == null)
+                            {
+                                selectedShippinOptionId = rate.Option?.Id;
+                                isSelected = true;
+                            }
+                            else if (selectedShippinOptionId == rate.Option?.Id)
+                            {
+                                isSelected = true;
+                            }
+                        }
+                        else
+                        {
+                            isSelected = true;
+                        }
+                    }
+
+                    <li class="border-gray-300 @(item.Index > 0 ? "border-t " : "")">
+                        <label class="flex items-center py-4 px-4 cursor-pointer hover:bg-gray-100">
+                            <input name="shippingMethod" type="radio" value="@item.ShippingMethod.Id" class="mr-3" required
+                                   data-option-id="@rate.Option?.Id"
+                            @Html.Raw(isSelected ? " checked=\"checked\"" : "") />
+                            <span class="font-medium">
+                                @(item.ShippingMethod.Name)
+                                @if (rate.Option != null)
+                                {
+                                    <text> - @rate.Option.Name</text>
+                                }
+                            </span>
+                            <span class="flex-1 text-right">@(rate.Value?.Formatted())</span>
+                        </label>
+                    </li>
+                }
+            }
         }
     </ul>
+
+    <input type="hidden" name="shippingOptionId" value="@(selectedShippinOptionId)" />
 
     @await Html.PartialAsync("CheckoutPrevNext")
 }
