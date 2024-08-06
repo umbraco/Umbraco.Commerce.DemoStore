@@ -3,12 +3,14 @@
         <TargetFramework>net8.0</TargetFramework>
         <EnablePackageValidation>false</EnablePackageValidation>
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.0" />
-        <PackageReference Include="Umbraco.Cms" Version="13.1.1" />
-        <PackageReference Include="Umbraco.Commerce" Version="13.1.0" />
+        <PackageReference Include="Umbraco.Cms" Version="14.1.1" />
+        <PackageReference Include="Umbraco.Commerce" Version="14.0.0-rc2" />
     </ItemGroup>
 
     <ItemGroup>

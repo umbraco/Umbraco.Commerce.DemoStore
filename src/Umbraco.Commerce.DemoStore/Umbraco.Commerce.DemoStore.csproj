@@ -3,12 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <EnablePackageValidation>false</EnablePackageValidation>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.1.1" />
-      <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="13.1.0" />
-      <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="13.1.0" />
+      <PackageReference Include="Umbraco.Cms.Web.Website" Version="14.1.1" />
+      <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="14.0.0-rc2" />
+      <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="14.0.0-rc2" />
   </ItemGroup>
 
 </Project>
