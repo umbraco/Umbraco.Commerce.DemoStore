@@ -79,7 +79,7 @@ namespace Umbraco.Commerce.DemoStore.Events
                     // ================================================================
 
                     // Create searchable path
-                    if (e.ValueSet.Values.ContainsKey("path"))
+                    if (e.ValueSet.Values.ContainsKey("path") && !e.ValueSet.Values.ContainsKey("searchPath"))
                     {
                         values.Add("searchPath", new[] { e.ValueSet.GetValue("path").ToString().Replace(',', ' ') });
                     }
