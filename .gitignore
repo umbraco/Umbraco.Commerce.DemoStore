@@ -484,7 +484,7 @@ $RECYCLE.BIN/
 **/Data/cache/
 **/Umbraco/Logs/
 **/Umbraco/mediacache/
-/Vendr.DemoStore.local.sln
+*.local.sln
 
 *.sqlite.db-wal
 *.sqlite.db-shm
