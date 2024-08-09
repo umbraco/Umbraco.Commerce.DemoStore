@@ -489,3 +489,4 @@ $RECYCLE.BIN/
 *.sqlite.db-wal
 *.sqlite.db-shm
 /src/Umbraco.Commerce.DemoStore.Web/wwwroot/media/**
+/src/Umbraco.Commerce.DemoStore.Web/appsettings-schema.Umbraco.Cms.json
