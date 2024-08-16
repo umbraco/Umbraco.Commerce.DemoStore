@@ -96,7 +96,7 @@
             <select name="shippingAddress.Country" placeholder="Country" class="block placeholder-gray-700 border border-gray-300 rounded py-2 px-4 mb-2 mx-1 w-full">
                 @foreach (var country in Model.Countries)
                 {
-                    <!option value="@(country.Id)" @Html.Raw(Model.Order.PaymentInfo.CountryId == country.Id ? "selected=\"selected\"" : "")>@(country.Name)</!option>
+                    <!option value="@(country.Id)" @Html.Raw(Model.Order.ShippingInfo.CountryId == country.Id ? "selected=\"selected\"" : "")>@(country.Name)</!option>
                 }
             </select>
             <input name="shippingAddress.ZipCode" type="text" placeholder="Postcode" class="block placeholder-gray-700 border border-gray-300 rounded py-2 px-4 mb-2 mx-1 w-full"
