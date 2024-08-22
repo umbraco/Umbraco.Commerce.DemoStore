@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Web.Website" Version="14.1.1" />
-      <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="14.0.0--rc3.preview.663.g18c601e" />
-      <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="14.0.0--rc3.preview.663.g18c601e" />
+      <PackageReference Include="Umbraco.Cms.Web.Website" Version="14.2.0" />
+      <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="14.0.0" />
+      <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="14.0.0" />
   </ItemGroup>
 
 </Project>

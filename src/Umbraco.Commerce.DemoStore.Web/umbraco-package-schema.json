@@ -1246,7 +1246,13 @@
                     "$ref": "#/definitions/SectionAliasConditionConfig"
                 },
                 {
+                    "$ref": "#/definitions/UmbConditionConfigBase<string>"
+                },
+                {
                     "$ref": "#/definitions/UmbDocumentUserPermissionConditionConfig"
+                },
+                {
+                    "$ref": "#/definitions/UmbMultipleAppLanguageConditionConfig"
                 },
                 {
                     "$ref": "#/definitions/UmbSectionUserPermissionConditionConfig"
@@ -1256,9 +1262,6 @@
                 },
                 {
                     "$ref": "#/definitions/WorkspaceEntityTypeConditionConfig"
-                },
-                {
-                    "$ref": "#/definitions/UmbConditionConfigBase<string>"
                 }
             ]
         },
@@ -8861,7 +8864,7 @@
         },
         "FontFaceSet": {
             "properties": {
-                "__@toStringTag@819": {
+                "__@toStringTag@841": {
                     "type": "string"
                 },
                 "onloading": {
@@ -8893,7 +8896,7 @@
                 }
             },
             "required": [
-                "__@toStringTag@819",
+                "__@toStringTag@841",
                 "onloading",
                 "onloadingdone",
                 "onloadingerror",
@@ -40726,6 +40729,34 @@
                     "description": "The HTML web component name to use such as 'my-dashboard'\nNote it is NOT <my-dashboard></my-dashboard>, just the element name.",
                     "type": "string"
                 },
+                "forBlockEditor": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Optional condition if you like this custom view to only appear at a specific type of Block Editor."
+                },
+                "forContentTypeAlias": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Optional condition if you like this custom view to only appear at for one or more specific Content Types."
+                },
                 "js": {
                     "description": "The file location of the javascript file to load",
                     "type": "string"
@@ -46359,16 +46390,6 @@
             "type": "object"
         },
         "MetaEntityBulkAction": {
-            "properties": {
-                "label": {
-                    "description": "The friendly name of the action to perform",
-                    "examples": [
-                        "Create",
-                        "Create Content Template"
-                    ],
-                    "type": "string"
-                }
-            },
             "type": "object"
         },
         "MetaEntityUserPermission": {
@@ -48403,23 +48424,23 @@
         },
         "Promise<FontFaceSet>": {
             "properties": {
-                "__@toStringTag@819": {
+                "__@toStringTag@841": {
                     "type": "string"
                 }
             },
             "required": [
-                "__@toStringTag@819"
+                "__@toStringTag@841"
             ],
             "type": "object"
         },
         "Promise<ServiceWorkerRegistration>": {
             "properties": {
-                "__@toStringTag@819": {
+                "__@toStringTag@841": {
                     "type": "string"
                 }
             },
             "required": [
-                "__@toStringTag@819"
+                "__@toStringTag@841"
             ],
             "type": "object"
         },
@@ -62175,6 +62196,17 @@
                     "$ref": "#/definitions/UmbPickerModalValue"
                 }
             },
+            "type": "object"
+        },
+        "UmbMultipleAppLanguageConditionConfig": {
+            "properties": {
+                "alias": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "alias"
+            ],
             "type": "object"
         },
         "UmbPickerModalData<any>": {
