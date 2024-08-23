@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Flurl.Http" Version="4.0.0" />
+        <PackageReference Include="Flurl.Http" Version="4.0.2" />
         <PackageReference Include="Umbraco.Cms" Version="14.2.0" />
         <PackageReference Include="Umbraco.Commerce" Version="14.0.0" />
     </ItemGroup>
