@@ -1,0 +1,17 @@
+{
+  "alias": "login.extensions",
+  "name": "Login extensions",
+  "version": "1.0.0",
+  "allowPublicAccess": true,
+  "extensions": [
+    {
+      "type": "localization",
+      "alias": "Login.Localize.EnUS",
+      "name": "English",
+      "js": "/App_Plugins/Login/en-us.js",
+      "meta": {
+        "culture": "en-US"
+      }
+    }
+  ]
+}
