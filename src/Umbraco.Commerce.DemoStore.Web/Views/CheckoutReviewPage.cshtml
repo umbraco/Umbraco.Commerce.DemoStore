@@ -2,11 +2,13 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CheckoutReviewPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
+
+    var order = await Model.Order;
 }
 
 @await Html.PartialAsync("OrderInformationSummary")
 
-@using (await Html.BeginPaymentFormAsync(Model.Order)) 
+@using (await Html.BeginPaymentFormAsync(order))
 {
     <div class="border border-gray-300 rounded">
         <label class="flex items-center py-4 px-4 cursor-pointer hover:bg-gray-100">

@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Umbraco.Commerce.Common;
 using Umbraco.Commerce.Core.Models;
+using Umbraco.Extensions;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class CheckoutPage
 {
-    public partial class CheckoutPage
-    {
-        public OrderReadOnly Order => this.GetCurrentOrder();
+    public AsyncLazy<OrderReadOnly?> Order => new(this.GetCurrentOrderAsync);
 
-        public IEnumerable<CheckoutStepPage> Steps => Children.OfType<CheckoutStepPage>();
-    }
+    public IEnumerable<CheckoutStepPage> Steps => this.Children<CheckoutStepPage>() ?? [];
+    
 }

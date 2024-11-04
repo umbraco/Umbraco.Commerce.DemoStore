@@ -7,44 +7,45 @@ using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
 using Umbraco.Cms.Core.Notifications;
 
-namespace Umbraco.Commerce.DemoStore
+namespace Umbraco.Commerce.DemoStore;
+
+public static class DemoStoreBuilderExtensions
 {
-    public static class DemoStoreBuilderExtensions
+    public static IUmbracoBuilder AddDemoStore(this IUmbracoBuilder umbracoBuilder)
     {
-        public static IUmbracoBuilder AddDemoStore(this IUmbracoBuilder umbracoBuilder)
+        umbracoBuilder.AddUmbracoCommerce(v =>
         {
-            umbracoBuilder.AddUmbracoCommerce(v =>
-            {
-                // Enable SQLite support
-                v.AddSQLite();
+            // Enable SQLite support
+            v.AddSQLite();
 
-                // Replace the umbraco product name extractor with one that supports child variants
-                v.Services.AddUnique<IUmbracoProductNameExtractor, CompositeProductNameExtractor>();
+            v.AddStorefrontApi();
 
-                // Register event handlers
-                v.WithNotificationEvent<OrderProductAddingNotification>()
-                    .RegisterHandler<OrderProductAddingHandler>();
+            // Replace the umbraco product name extractor with one that supports child variants
+            v.Services.AddUnique<IUmbracoProductNameExtractor, CompositeProductNameExtractor>();
 
-                v.WithNotificationEvent<OrderLineChangingNotification>()
-                    .RegisterHandler<OrderLineChangingHandler>();
+            // Register event handlers
+            // v.WithNotificationEvent<OrderProductAddingNotification>()
+            //     .RegisterHandler<OrderProductAddingHandler>();
+            //
+            // v.WithNotificationEvent<OrderLineChangingNotification>()
+            //     .RegisterHandler<OrderLineChangingHandler>();
+            //
+            // v.WithNotificationEvent<OrderLineRemovingNotification>()
+            //     .RegisterHandler<OrderLineRemovingHandler>();
+            //
+            // v.WithNotificationEvent<OrderPaymentCountryRegionChangingNotification>()
+            //     .RegisterHandler<OrderPaymentCountryRegionChangingHandler>();
+            //
+            // v.WithNotificationEvent<OrderShippingCountryRegionChangingNotification>()
+            //     .RegisterHandler<OrderShippingCountryRegionChangingHandler>();
+            //
+            // v.WithNotificationEvent<OrderShippingMethodChangingNotification>()
+            //     .RegisterHandler<OrderShippingMethodChangingHandler>();
 
-                v.WithNotificationEvent<OrderLineRemovingNotification>()
-                    .RegisterHandler<OrderLineRemovingHandler>();
+        });
 
-                v.WithNotificationEvent<OrderPaymentCountryRegionChangingNotification>()
-                    .RegisterHandler<OrderPaymentCountryRegionChangingHandler>();
+        umbracoBuilder.AddNotificationAsyncHandler<UmbracoApplicationStartingNotification, TransformExamineValues>();
 
-                v.WithNotificationEvent<OrderShippingCountryRegionChangingNotification>()
-                    .RegisterHandler<OrderShippingCountryRegionChangingHandler>();
-
-                v.WithNotificationEvent<OrderShippingMethodChangingNotification>()
-                    .RegisterHandler<OrderShippingMethodChangingHandler>();
-
-            });
-
-            umbracoBuilder.AddNotificationHandler<UmbracoApplicationStartingNotification, TransformExamineValues>();
-
-            return umbracoBuilder;
-        }
+        return umbracoBuilder;
     }
 }

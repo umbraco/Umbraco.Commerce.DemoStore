@@ -3,21 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Commerce.DemoStore.Web.Extensions;
 
-namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
+namespace Umbraco.Commerce.DemoStore.Web.ViewComponents;
+
+[ViewComponent]
+public class ProductListByCollectionViewComponent(
+    IExamineManager examineManager,
+    IUmbracoContextFactory umbracoContextFactory)
+    : ProductViewComponentBase(examineManager, umbracoContextFactory)
 {
-    [ViewComponent]
-    public class ProductListByCollectionViewComponent : ProductViewComponentBase
+    public IViewComponentResult Invoke(int collectionId)
     {
-        public ProductListByCollectionViewComponent(IExamineManager examineManager, IUmbracoContextFactory umbracoContextFactory)
-            : base(examineManager, umbracoContextFactory)
-        { }
+        var p = Request.Query.GetInt("p", 1);
+        var ps = Request.Query.GetInt("ps", 12);
 
-        public IViewComponentResult Invoke(int collectionId)
-        {
-            var p = Request.Query.GetInt("p", 1);
-            var ps = Request.Query.GetInt("ps", 12);
-
-            return View("PagedProductList", GetPagedProducts(collectionId, null, p, ps));
-        }
+        return View("PagedProductList", GetPagedProducts(collectionId, null, p, ps));
     }
 }

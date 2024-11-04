@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Umbraco.Commerce.Common;
 using Umbraco.Commerce.Core.Api;
 using Umbraco.Commerce.Core.Models;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class CheckoutInformationPage
 {
-    public partial class CheckoutInformationPage
-    {
-        public IEnumerable<CountryReadOnly> Countries => UmbracoCommerceApi.Instance.GetCountries(this.GetStore().Id);
-    }
+    public AsyncLazy<IEnumerable<CountryReadOnly>> Countries => new(() => UmbracoCommerceApi.Instance.GetCountriesAsync(this.GetStore()!.Id));
 }

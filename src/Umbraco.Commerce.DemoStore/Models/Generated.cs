@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Umbraco.Commerce.DemoStore.Models
-{
-    class Generated
-    { }
-}
+namespace Umbraco.Commerce.DemoStore.Models;
+
+class Generated
+{ }

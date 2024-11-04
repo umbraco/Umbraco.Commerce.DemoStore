@@ -3,15 +3,15 @@
 @{
     Layout = "CheckoutStepPage.cshtml";
 
-    var selectedShippingMethodId = Model.Order.ShippingInfo.ShippingMethodId.HasValue
-        ? Model.Order.ShippingInfo.ShippingMethodId.Value
-        : Model.ShippingCountry != null && Model.ShippingCountry.DefaultShippingMethodId.HasValue
-            ? Model.ShippingCountry.DefaultShippingMethodId.Value
-            : (Guid?)null;
-
-    var selectedShippinOptionId = selectedShippingMethodId.HasValue && Model.Order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == Model.Order.ShippingInfo.ShippingMethodId
-        ? Model.Order.ShippingInfo.ShippingOption?.Id
+    var order = await Model.Order;
+    var shippingCountry = await Model.ShippingCountry;
+    var selectedShippingMethodId = order!.ShippingInfo.ShippingMethodId ?? (shippingCountry != null && shippingCountry.DefaultShippingMethodId.HasValue
+        ? shippingCountry.DefaultShippingMethodId.Value
+        : null);
+    var selectedShippinOptionId = selectedShippingMethodId.HasValue && order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == order.ShippingInfo.ShippingMethodId
+        ? order.ShippingInfo.ShippingOption?.Id
         : null;
+    var shippingMethods = await Model.ShippingMethods.Value.ToListAsync();
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderShippingMethod", "CheckoutSurface"))
@@ -20,12 +20,12 @@
 
     <h3 class="text-xl font-medium mb-4">Shipping Method</h3>
     <ul class="border border-gray-300 rounded">
-        @foreach (var item in Model.ShippingMethods.Select((sm, i) => new { ShippingMethod = sm, Index = i }))
+        @foreach (var item in shippingMethods.Select((sm, i) => new { ShippingMethod = sm, Index = i }))
         {
-            var rates = item.ShippingMethod.TryCalculateRates();
+            var rates = await item.ShippingMethod.TryCalculateRatesAsync();
             if (rates.Success)
             {
-                foreach (var rate in rates.Result)
+                foreach (var rate in rates.Result!)
                 {
                     var isSelected = false;
 
@@ -61,7 +61,7 @@
                                     <text> - @rate.Option.Name</text>
                                 }
                             </span>
-                            <span class="flex-1 text-right">@(rate.Value?.Formatted())</span>
+                            <span class="flex-1 text-right">@(await rate.Value.FormattedAsync())</span>
                         </label>
                     </li>
                 }

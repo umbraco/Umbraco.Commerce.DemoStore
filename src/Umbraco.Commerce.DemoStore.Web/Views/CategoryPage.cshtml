@@ -1,7 +1,11 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CategoryPage>
+﻿@using Umbraco.Cms.Core.Services
+@using System.Threading;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CategoryPage>
+@inject IDocumentUrlService DocumentUrlService;
 @{
     Layout = "Page.cshtml";
-}
 
+    var categoryAlias = DocumentUrlService.GetUrlSegment(Model.Key, Thread.CurrentThread.CurrentUICulture.Name, false);
+}
 @await Html.PartialAsync("Intro")
-@await Component.InvokeAsync("ProductListByCategory", new { category = Model.UrlSegment })
+@await Component.InvokeAsync("ProductListByCategory", new { category = categoryAlias })

@@ -54,7 +54,7 @@
 
                 // Fetch the variant data for the given attribute combination and update the UI accordingly
                 $.ajax({
-                    url: "/umbraco/api/productapi/getproductvariant",
+                    url: "/api/v1/demo-store/product-variants",
                     type: "POST",
                     data: JSON.stringify(postData),
                     contentType: "application/json; charset=utf-8",
@@ -110,7 +110,7 @@
                 <div class="py-10">
                     <h1 class="text-2xl font-bold">@Model.Parent.Name - @Model.Name</h1>
                     @{
-                        RenderVariants(store, Model, addedProductReference);
+                        await RenderVariantsAsync(store, Model, addedProductReference);
                     }
                 </div>
 
@@ -123,7 +123,7 @@
             </div>
         </div>
     </div>
-    <hr class="my-6" /> 
+    <hr class="my-6" />
     <div>
         <h2 class="text-2xl font-bold">Description</h2>
         <div class="rte">
@@ -133,7 +133,7 @@
 </div>
 
 @{
-    void RenderVariants(StoreReadOnly store, ProductPage product, string addedProductReference)
+    async Task RenderVariantsAsync(StoreReadOnly store, ProductPage product, string addedProductReference)
     {
         var multiVariantProductPage = Model as MultiVariantProductPage;
 
@@ -142,7 +142,7 @@
             @Html.Hidden("productReference", Model.GetProductReference())
             @Html.Hidden("productVariantReference", "")
 
-            var attrs = multiVariantProductPage.Variants.GetInUseProductAttributes();
+            var attrs = await multiVariantProductPage.Variants.GetInUseProductAttributesAsync();
 
             foreach (var attr in attrs)
             {
@@ -170,7 +170,7 @@
 
                         <span class="relative">
                             <input type="radio" class="form-radio absolute w-0 h-0" name="productReference" id="giftcard-@productReference" value="@productReference" @Html.Raw(selectedReference == productReference ? "checked=\"checked\"" : "") />
-                            <label class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 cursor-pointer" for="giftcard-@productReference">@(variant.CalculatePrice()?.Formatted())</label>
+                            <label class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 cursor-pointer" for="giftcard-@productReference">@(await variant.CalculatePriceAsync().FormattedAsync())</label>
                         </span>
                     }
                 </div>
@@ -182,7 +182,7 @@
                 {
                     var productReference = variant.GetProductReference();
 
-                    <!option value="@productReference" @Html.Raw(addedProductReference == productReference ? "selected=\" selected\"" : "" )>@(variant.Name) - @(variant.CalculatePrice()?.Formatted())</!option>
+                    <!option value="@productReference" @Html.Raw(addedProductReference == productReference ? "selected=\" selected\"" : "" )>@(variant.Name) - @(await variant.CalculatePriceAsync().FormattedAsync())</!option>
                 }
             </select>
             }
@@ -191,7 +191,7 @@
         {
             @Html.Hidden("productReference", product.GetProductReference())
 
-            <p>@(product.CalculatePrice()?.Formatted())</p>
+            <p>@(await product.CalculatePriceAsync().FormattedAsync())</p>
         }
 
     }

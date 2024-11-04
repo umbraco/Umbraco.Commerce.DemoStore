@@ -1,81 +1,80 @@
 ﻿using Umbraco.Commerce.Common.Events;
 using Umbraco.Commerce.Core.Events.Notification;
 
-namespace Umbraco.Commerce.DemoStore.Events
+namespace Umbraco.Commerce.DemoStore.Events;
+
+// In this store configuration, if someone goes through the checkout flow
+// but then back tracks and modifies the order or previous checkout details
+// then we'll keep clearing out the steps ahead so that the order calculation
+// doesn't show a potential incorrect calculation should the options previously
+// selected no longer be available because of the changes made.
+
+public class OrderProductAddingHandler : NotificationEventHandlerBase<OrderProductAddingNotification>
 {
-    // In this store configuration, if someone goes through the checkout flow
-    // but then back tracks and modifies the order or previous checkout details
-    // then we'll keep clearing out the steps ahead so that the order calculation
-    // doesn't show a potential incorrect calculation should the options previously
-    // selected no longer be available because of the changes made.
-
-    public class OrderProductAddingHandler : NotificationEventHandlerBase<OrderProductAddingNotification>
+    public override async Task HandleAsync(OrderProductAddingNotification evt)
     {
-        public override void Handle(OrderProductAddingNotification evt)
+        if (!evt.Order.IsFinalized)
         {
-            if (!evt.Order.IsFinalized)
-            {
-                evt.Order.ClearShippingMethod();
-                evt.Order.ClearPaymentMethod();
-            }
+            await evt.Order.ClearShippingMethodAsync();
+            await evt.Order.ClearPaymentMethodAsync();
         }
     }
+}
 
-    public class OrderLineChangingHandler : NotificationEventHandlerBase<OrderLineChangingNotification>
+public class OrderLineChangingHandler : NotificationEventHandlerBase<OrderLineChangingNotification>
+{
+    public override async Task HandleAsync(OrderLineChangingNotification evt)
     {
-        public override void Handle(OrderLineChangingNotification evt)
+        if (!evt.Order.IsFinalized)
         {
-            if (!evt.Order.IsFinalized)
-            {
-                evt.Order.ClearShippingMethod();
-                evt.Order.ClearPaymentMethod();
-            }
+            await evt.Order.ClearShippingMethodAsync();
+            await evt.Order.ClearPaymentMethodAsync();
         }
     }
+}
 
-    public class OrderLineRemovingHandler : NotificationEventHandlerBase<OrderLineRemovingNotification>
+public class OrderLineRemovingHandler : NotificationEventHandlerBase<OrderLineRemovingNotification>
+{
+    public override async Task HandleAsync(OrderLineRemovingNotification evt)
     {
-        public override void Handle(OrderLineRemovingNotification evt)
+        if (!evt.Order.IsFinalized)
         {
-            if (!evt.Order.IsFinalized)
-            {
-                evt.Order.ClearShippingMethod();
-                evt.Order.ClearPaymentMethod();
-            }
+            await evt.Order.ClearShippingMethodAsync();
+            await evt.Order.ClearPaymentMethodAsync();
         }
     }
+}
 
-    public class OrderPaymentCountryRegionChangingHandler : NotificationEventHandlerBase<OrderPaymentCountryRegionChangingNotification>
+public class OrderPaymentCountryRegionChangingHandler : NotificationEventHandlerBase<OrderPaymentCountryRegionChangingNotification>
+{
+    public override async Task HandleAsync(OrderPaymentCountryRegionChangingNotification evt)
     {
-        public override void Handle(OrderPaymentCountryRegionChangingNotification evt)
+        if (!evt.Order.IsFinalized)
         {
-            if (!evt.Order.IsFinalized)
-            {
-                evt.Order.ClearPaymentMethod();
-            }
+            await evt.Order.ClearPaymentMethodAsync();
         }
     }
+}
 
-    public class OrderShippingCountryRegionChangingHandler : NotificationEventHandlerBase<OrderShippingCountryRegionChangingNotification>
+public class OrderShippingCountryRegionChangingHandler : NotificationEventHandlerBase<OrderShippingCountryRegionChangingNotification>
+{
+    public override async Task HandleAsync(OrderShippingCountryRegionChangingNotification evt)
     {
-        public override void Handle(OrderShippingCountryRegionChangingNotification evt)
+        if (!evt.Order.IsFinalized)
         {
-            if (!evt.Order.IsFinalized)
-            {
-               evt.Order.ClearShippingMethod();
-                evt.Order.ClearPaymentMethod();
-            }
+            await evt.Order.ClearShippingMethodAsync();
+            await evt.Order.ClearPaymentMethodAsync();
         }
     }
+}
 
-    public class OrderShippingMethodChangingHandler : NotificationEventHandlerBase<OrderShippingMethodChangingNotification>
+public class OrderShippingMethodChangingHandler : NotificationEventHandlerBase<OrderShippingMethodChangingNotification>
+{
+    public override async Task HandleAsync(OrderShippingMethodChangingNotification evt)
     {
-        public override void Handle(OrderShippingMethodChangingNotification evt)
+        if (!evt.Order.IsFinalized)
         {
-            if (!evt.Order.IsFinalized)
-            {
-                evt.Order.ClearPaymentMethod();
-            }
+            await evt.Order.ClearPaymentMethodAsync();
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Umbraco.Commerce.DemoStore.Web.Dtos
+﻿namespace Umbraco.Commerce.DemoStore.Web.Dtos;
+
+public class DiscountOrGiftCardCodeDto
 {
-    public class DiscountOrGiftCardCodeDto
-    {
-        public string Code { get; set; }
-    }
+    public string Code { get; set; }
 }

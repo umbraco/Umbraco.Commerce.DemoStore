@@ -4,6 +4,8 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CartPage>
 @{
     Layout = "Page.cshtml";
+
+    var order = await Model.Order;
 }
 
 @section foot {
@@ -25,7 +27,7 @@
     }
 }
 
-@if (Model != null && Model.Order != null && Model.Order.OrderLines.Count > 0)
+@if (order != null && order.OrderLines.Count > 0)
 {
     using (Html.BeginUmbracoForm("UpdateCart", "CartSurface"))
     {
@@ -39,10 +41,10 @@
                 </tr>
             </thead>
             <tbody class="block -mt-4 md:table-row-group md:mt-0">
-                @foreach (var item in Model.Order.OrderLines.Select((ol, i) => new { OrderLine = ol, Index = i }))
+                @foreach (var item in order.OrderLines.Select((ol, i) => new { OrderLine = ol, Index = i }))
                 {
-                    var node = Umbraco.Content(Guid.Parse(item.OrderLine.ProductReference));
-                    var url = node.ContentType.Alias == ProductVariant.ModelTypeAlias ? node.Parent.Url() : node.Url();
+                    var node = Umbraco.Content(Guid.Parse(item.OrderLine.ProductReference))!;
+                    var url = node.ContentType.Alias == ProductVariant.ModelTypeAlias ? node.Parent!.Url() : node.Url();
 
                     <tr class="block border-b py-2 md:table-row">
                         <td class="block py-4 md:table-cell">
@@ -69,19 +71,19 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="flex w-full justify-between items-center py-1 data-label-visible md:table-cell md:data-label-hidden md:pl-4 md:w-auto" data-label="Price">@(item.OrderLine.UnitPrice.WithoutAdjustments.Formatted())</td>
+                        <td class="flex w-full justify-between items-center py-1 data-label-visible md:table-cell md:data-label-hidden md:pl-4 md:w-auto" data-label="Price">@(await item.OrderLine.UnitPrice.WithoutAdjustments.FormattedAsync())</td>
                         <td class="flex w-full justify-between items-center py-1 data-label-visible md:table-cell md:data-label-hidden md:pl-4 md:w-auto md:text-center" data-label="Quantity">
                             @Html.Hidden($"orderLines[{item.Index}].Id", item.OrderLine.Id)
                             @Html.TextBox($"orderLines[{item.Index}].Quantity", (int)item.OrderLine.Quantity, new { @type = "number", @class = "bg-gray-200 p-2 w-16" })
                         </td>
-                        <td class="flex w-full justify-between items-center py-1 data-label-visible font-bold md:table-cell md:data-label-hidden md:pl-4 md:w-auto" data-label="Total">@(item.OrderLine.TotalPrice.WithoutAdjustments.Formatted())</td>
+                        <td class="flex w-full justify-between items-center py-1 data-label-visible font-bold md:table-cell md:data-label-hidden md:pl-4 md:w-auto" data-label="Total">@(await item.OrderLine.TotalPrice.WithoutAdjustments.FormattedAsync())</td>
                     </tr>
                 }
             </tbody>
             <tfoot class="block md:table-row-group">
                 <tr class="flex justify-between w-full md:table-row">
                     <td colspan="3" class="pb-2 pt-4 text-right font-bold md:font-normal">Subtotal</td>
-                    <td class="pt-4 pb-2 pl-4 text-right font-bold">@(Model.Order.SubtotalPrice.WithoutAdjustments.Formatted())</td>
+                    <td class="pt-4 pb-2 pl-4 text-right font-bold">@(await order.SubtotalPrice.WithoutAdjustments.FormattedAsync())</td>
                 </tr>
                 <tr class="flex justify-center w-full md:table-row">
                     <td colspan="4" class="py-2 text-right italic">Discounts and Shipping calculated at checkout</td>
@@ -90,7 +92,7 @@
                     <td colspan="4">
                         <div class="pt-6 flex justify-end">
                             <button class="align-middle font-bold text-xl border-4 border-gray-900 px-6 py-3 hover:bg-teal-400 hover:border-teal-400 hover:text-white" title="Refresh Cart"><i class="fa fa-refresh"></i></button>
-                            <a href="@(Model.CheckoutPage.Url())" class="align-middle font-bold border-4 border-gray-900 bg-gray-900 text-white px-6 py-3 ml-4 hover:bg-teal-400 hover:border-teal-400 hover:text-white">Checkout</a>
+                            <a href="@(Model.CheckoutPage!.Url())" class="align-middle font-bold border-4 border-gray-900 bg-gray-900 text-white px-6 py-3 ml-4 hover:bg-teal-400 hover:border-teal-400 hover:text-white">Checkout</a>
                         </div>
                     </td>
                 </tr>

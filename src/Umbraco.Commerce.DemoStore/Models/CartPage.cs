@@ -1,11 +1,11 @@
-﻿using Umbraco.Commerce.Core.Models;
+﻿using Umbraco.Commerce.Common;
+using Umbraco.Commerce.Core.Models;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class CartPage
 {
-    public partial class CartPage
-    {
-        public CheckoutPage CheckoutPage => this.GetHomePage().CheckoutPage;
+    public CheckoutPage? CheckoutPage => this.GetHomePage().CheckoutPage;
 
-        public OrderReadOnly Order => this.GetCurrentOrder();
-    }
+    public AsyncLazy<OrderReadOnly?> Order => new(this.GetCurrentOrderAsync);
 }

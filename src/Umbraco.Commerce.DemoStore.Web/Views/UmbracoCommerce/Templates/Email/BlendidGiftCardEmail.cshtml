@@ -12,7 +12,7 @@
     // ========================================================
 
     // Get order entities
-    var store = UmbracoCommerceApi.GetStore(Model.StoreId);
+    var store = await UmbracoCommerceApi.GetStoreAsync(Model.StoreId);
     var themeColor = "4fd1c5";
 }
 <style type="text/css">
@@ -53,7 +53,7 @@
                                         <td style="padding: 40px 20px;">
                                             <table style="width: 100%;">
                                                 <tr>
-                                                    <td style="color:white; font-size: 60px; line-height: 60px; padding-bottom: 15px;text-align: center;">@(Model.OriginalAmount.Formatted())</td>
+                                                    <td style="color:white; font-size: 60px; line-height: 60px; padding-bottom: 15px;text-align: center;">@(await Model.OriginalAmount.FormattedAsync())</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="background-color:white; font-size: 20px; line-height: 20px; color: #@(themeColor); text-align: center; padding: 5px 10px;">@(Model.Code)</td>

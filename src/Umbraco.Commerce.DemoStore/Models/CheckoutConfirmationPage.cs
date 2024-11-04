@@ -1,14 +1,14 @@
-﻿using Umbraco.Commerce.Core.Api;
+﻿using Umbraco.Commerce.Common;
+using Umbraco.Commerce.Core.Api;
 using Umbraco.Commerce.Core.Models;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class CheckoutConfirmationPage : IOrderReviewPage
 {
-    public partial class CheckoutConfirmationPage : IOrderReviewPage
-    {
-        public override OrderReadOnly Order => UmbracoCommerceApi.Instance.GetCurrentFinalizedOrder(this.GetStore().Id);
+    public override AsyncLazy<OrderReadOnly> Order => new(() => UmbracoCommerceApi.Instance.GetCurrentFinalizedOrderAsync(this.GetStore()!.Id));
 
-        public CountryReadOnly PaymentCountry => UmbracoCommerceApi.Instance.GetCountry(this.Order.PaymentInfo.CountryId.Value);
+    public AsyncLazy<CountryReadOnly> PaymentCountry => new(async () => await UmbracoCommerceApi.Instance.GetCountryAsync((await Order).PaymentInfo.CountryId!.Value));
 
-        public CountryReadOnly ShippingCountry => UmbracoCommerceApi.Instance.GetCountry(this.Order.ShippingInfo.CountryId.Value);
-    }
+    public AsyncLazy<CountryReadOnly> ShippingCountry => new(async () => await UmbracoCommerceApi.Instance.GetCountryAsync((await Order).ShippingInfo.CountryId!.Value));
 }

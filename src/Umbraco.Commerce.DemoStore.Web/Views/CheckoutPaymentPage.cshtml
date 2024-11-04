@@ -1,9 +1,12 @@
-﻿@using Umbraco.Commerce.Extensions;
+﻿@using Umbraco.Commerce.Core.Models
+@using Umbraco.Commerce.Extensions;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CheckoutPaymentMethodPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
 
-    var zeroValuePaymentMethod = Model.PaymentMethods.FirstOrDefault(x => x.Alias == "zeroValue");
+    var order = await Model.Order;
+    var paymentMethods = await Model.PaymentMethods.Value.ToListAsync();
+    var zeroValuePaymentMethod = paymentMethods.FirstOrDefault(x => x.Alias == "zeroValue");
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderPaymentMethod", "CheckoutSurface"))
@@ -12,17 +15,17 @@
 
     <h3 class="text-xl font-medium mb-4 mt-8">Payment Method</h3>
 
-    if (Model.Order.TotalPrice.Value.WithTax > 0)
+    if (order.TotalPrice.Value.WithTax > 0)
     {
         <ul class="border border-gray-300 rounded">
-            @foreach (var item in Model.PaymentMethods.Where(x => x.Alias != "zeroValue")
+            @foreach (var item in paymentMethods.Where(x => x.Alias != "zeroValue")
                .Select((pm, i) => new { PaymentMethod = pm, Index = i }))
             {
                 <li class="border-gray-300 @(item.Index > 0 ? "border-t " : "")">
                     <label class="flex items-center py-4 px-4 cursor-pointer hover:bg-gray-100">
-                        <input name="paymentMethod" type="radio" value="@item.PaymentMethod.Id" class="mr-3" @Html.Raw(Model.Order.PaymentInfo.PaymentMethodId.HasValue && Model.Order.PaymentInfo.PaymentMethodId.Value == item.PaymentMethod.Id ? "checked=\"checked\"" : "") required />
+                        <input name="paymentMethod" type="radio" value="@item.PaymentMethod.Id" class="mr-3" @Html.Raw(order.PaymentInfo.PaymentMethodId.HasValue && order.PaymentInfo.PaymentMethodId.Value == item.PaymentMethod.Id ? "checked=\"checked\"" : "") required />
                         <span class="font-medium">@(item.PaymentMethod.Name)</span>
-                        <span class="flex-1 text-right">@(item.PaymentMethod.CalculatePrice()?.Formatted())</span>
+                        <span class="flex-1 text-right">@(await (await item.PaymentMethod.TryCalculateFeeAsync()).ResultOr(Price.ZeroValue(order.CurrencyId)).FormattedAsync())</span>
                     </label>
                 </li>
             }

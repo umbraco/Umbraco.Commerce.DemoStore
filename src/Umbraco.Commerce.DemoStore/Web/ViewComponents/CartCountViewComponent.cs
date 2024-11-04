@@ -1,25 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Commerce.Core.Api;
+using Umbraco.Commerce.Core.Models;
 
-namespace Umbraco.Commerce.DemoStore.Web.ViewComponents
+namespace Umbraco.Commerce.DemoStore.Web.ViewComponents;
+
+[ViewComponent]
+public class CartCountViewComponent(IUmbracoCommerceApi commerceApi) : ViewComponent
 {
-    [ViewComponent]
-    public class CartCountViewComponent : ViewComponent
+    public async Task<IViewComponentResult> InvokeAsync(IPublishedContent currentPage)
     {
-        private readonly IUmbracoCommerceApi _commerceApi;
-
-        public CartCountViewComponent(IUmbracoCommerceApi commerceApi)
-        {
-            _commerceApi = commerceApi;
-        }
-
-        public IViewComponentResult Invoke(IPublishedContent currentPage)
-        {
-            var store = currentPage.GetStore();
-            var order = _commerceApi.GetCurrentOrder(store.Id);
-
-            return View("CartCount", (int)(order?.TotalQuantity ?? 0));
-        }
+        StoreReadOnly store = currentPage.GetStore()!;
+        OrderReadOnly? order = await commerceApi.GetCurrentOrderAsync(store.Id);
+        return View("CartCount", (int)(order?.TotalQuantity ?? 0));
     }
 }

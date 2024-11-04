@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿namespace Umbraco.Commerce.DemoStore.Models;
+using Umbraco.Extensions;
 
-namespace Umbraco.Commerce.DemoStore.Models
+public partial class HomePage
 {
-    public partial class HomePage
-    {
-        public SearchPage SearchPage => this.Children.OfType<SearchPage>().FirstOrDefault();
+    public SearchPage? SearchPage => this.Children<SearchPage>()?.FirstOrDefault();
 
-        public CartPage CartPage => this.Children.OfType<CartPage>().FirstOrDefault();
+    public CartPage? CartPage => this.Children<CartPage>()?.FirstOrDefault();
 
-        public IEnumerable<CategoryPage> CategoryPages => this.Children.FirstOrDefault(x => x.ContentType.Alias == CategoriesPage.ModelTypeAlias)?.Children.OfType<CategoryPage>();
+    public IEnumerable<CategoryPage> CategoryPages => this.Children().FirstOrDefault(x => x.ContentType.Alias == CategoriesPage.ModelTypeAlias)?.Children<CategoryPage>() ?? [];
 
-        public CheckoutPage CheckoutPage => this.Children.OfType<CheckoutPage>().FirstOrDefault();
-    }
+    public CheckoutPage? CheckoutPage => this.Children<CheckoutPage>()?.FirstOrDefault();
 }

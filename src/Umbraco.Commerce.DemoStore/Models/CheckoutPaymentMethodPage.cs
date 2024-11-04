@@ -1,23 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Umbraco.Commerce.Common;
 using Umbraco.Commerce.Core.Api;
 using Umbraco.Commerce.Core.Models;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class CheckoutPaymentMethodPage
 {
-    public partial class CheckoutPaymentMethodPage
+    public AsyncLazy<CountryReadOnly?> PaymentCountry => new(async () =>
     {
-        public CountryReadOnly PaymentCountry => Order.PaymentInfo.CountryId.HasValue
-            ? UmbracoCommerceApi.Instance.GetCountry(Order.PaymentInfo.CountryId.Value)
+        var countryId = (await Order)?.PaymentInfo.CountryId;
+        return countryId.HasValue
+            ? await UmbracoCommerceApi.Instance.GetCountryAsync(countryId.Value)
             : null;
+    });
 
-        public RegionReadOnly PaymentRegion => Order.PaymentInfo.RegionId.HasValue
-            ? UmbracoCommerceApi.Instance.GetRegion(Order.PaymentInfo.RegionId.Value)
+    public AsyncLazy<RegionReadOnly?> PaymentRegion => new(async () =>
+    {
+        var regionId = (await Order)?.PaymentInfo.RegionId;
+        return regionId.HasValue
+            ? await UmbracoCommerceApi.Instance.GetRegionAsync(regionId.Value)
             : null;
+    });
 
-        public IEnumerable<PaymentMethodReadOnly> PaymentMethods
-            => PaymentCountry != null
-            ? UmbracoCommerceApi.Instance.GetPaymentMethodsAllowedIn(PaymentCountry.Id, PaymentRegion?.Id)
-            : Enumerable.Empty<PaymentMethodReadOnly>();
-    }
+    public AsyncLazy<IEnumerable<PaymentMethodReadOnly>> PaymentMethods => new(async () =>
+    {
+        var paymentCountry = await PaymentCountry;
+        var paymentRegion = await PaymentRegion;
+        return paymentCountry != null
+            ? await UmbracoCommerceApi.Instance.GetPaymentMethodsAllowedInAsync(paymentCountry.Id, paymentRegion?.Id)
+            : [];
+    });
 }

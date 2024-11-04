@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Extensions;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class ProductPage
 {
-    public partial class ProductPage
-    {
-        public CollectionPage Collection => this.Parent as CollectionPage;
+    public CollectionPage Collection => this.Parent<CollectionPage>()!;
 
-        public IPublishedContent PrimaryImage => this.Images.FirstOrDefault();
+    public IPublishedContent? PrimaryImage => this.Images?.FirstOrDefault();
 
-        public IEnumerable<ProductVariant> ChildVariants => this.Children.OfType<ProductVariant>();
-    }
+    public IEnumerable<ProductVariant> ChildVariants => this.Children<ProductVariant>() ?? [];
 }

@@ -6,72 +6,56 @@ using Umbraco.Commerce.Core.Models;
 using Umbraco.Commerce.DemoStore.Models;
 using Umbraco.Commerce.Extensions;
 
-namespace Umbraco.Commerce.DemoStore
+namespace Umbraco.Commerce.DemoStore;
+
+public static class PublishedContentExtensions
 {
-    public static class PublishedContentExtensions
+    public static Page AsPage(this IPublishedContent content) => (Page)content;
+
+    public static HomePage GetHomePage(this IPublishedContent content) => content.AsPage().HomePage;
+
+    public static StoreReadOnly? GetStore(this IPublishedContent content) => content.AncestorOrSelf<HomePage>()?.Store;
+
+    public static Task<OrderReadOnly?> GetCurrentOrderAsync(this IPublishedContent content) => UmbracoCommerceApi.Instance.GetCurrentOrderAsync(content.GetStore()!.Id);
+
+    public static string GetProductReference(this IProductComp content) => content.Key.ToString();
+
+    public static async Task<IProductSnapshot?> AsProductAsync(this IProductComp content)
     {
-        public static Page AsPage(this IPublishedContent content)
+        if (content is not IPublishedContent page)
         {
-            return ((Page)content);
+            return null;
         }
 
-        public static HomePage GetHomePage(this IPublishedContent content)
-        {
-            return content.AsPage().HomePage;
-        }
+        var store = page.GetStore()!;
 
-        public static StoreReadOnly GetStore(this IPublishedContent content)
-        {
-            return content.AncestorOrSelf<HomePage>()?.Store;
-        }
-
-        public static OrderReadOnly GetCurrentOrder(this IPublishedContent content)
-        {
-            return UmbracoCommerceApi.Instance.GetCurrentOrder(content.GetStore().Id);
-        }
-
-        public static string GetProductReference(this IProductComp content)
-        {
-            return content.Key.ToString();
-        }
-
-        public static IProductSnapshot AsProduct(this IProductComp content)
-        {
-            var page = content as IPublishedContent;
-            if (page == null)
-                return null;
-
-            var store = page.GetStore();
-
-            return UmbracoCommerceApi.Instance.GetProduct(store.Id, content.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
-        }
-
-        public static IProductSnapshot AsProduct(this IProductComp variant, IProductComp parent)
-        {
-            var page = parent as IPublishedContent;
-            if (page == null)
-                page = variant as IPublishedContent;
-            if (page == null)
-                return null;
-
-            var store = page.GetStore();
-
-            return UmbracoCommerceApi.Instance.GetProduct(store.Id, parent.GetProductReference(), variant.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
-        }
-
-        public static Price CalculatePrice(this IProductComp content)
-        {
-            return content.AsProduct()?.CalculatePrice();
-        }
-
-        public static Price CalculatePrice(this IProductComp variant, IProductComp parent)
-        {
-            return variant.AsProduct(parent)?.CalculatePrice();
-        }
-
-        public static CheckoutPage GetCheckoutPage(this CheckoutStepPage content)
-        {
-            return content.AncestorOrSelf<CheckoutPage>();
-        }
+        return await UmbracoCommerceApi.Instance.GetProductAsync(store.Id, content.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
     }
+
+    public static async Task<IProductSnapshot?> AsProductAsync(this IProductComp variant, IProductComp parent)
+    {
+        var page = parent as IPublishedContent;
+        if (page == null)
+        {
+            page = variant as IPublishedContent;
+        }
+
+        if (page == null)
+        {
+            return null;
+        }
+
+        var store = page.GetStore()!;
+
+        return await UmbracoCommerceApi.Instance.GetProductAsync(store.Id, parent.GetProductReference(), variant.GetProductReference(), Thread.CurrentThread.CurrentCulture.Name);
+    }
+
+    public static async Task<IPrice> CalculatePriceAsync(this IProductComp content) =>
+        (await (await content.AsProductAsync()).TryCalculatePriceAsync()).ResultOrThrow("Unable to calculate price");
+
+    public static async Task<IPrice> CalculatePriceAsync(this IProductComp variant, IProductComp parent) =>
+        (await (await variant.AsProductAsync(parent)).TryCalculatePriceAsync()).ResultOrThrow("Unable to calculate price");
+
+    public static CheckoutPage GetCheckoutPage(this CheckoutStepPage content) =>
+        content.AncestorOrSelf<CheckoutPage>()!;
 }

@@ -1,13 +1,14 @@
-﻿using Umbraco.Commerce.Core.Models;
+﻿using Umbraco.Commerce.Common;
+using Umbraco.Commerce.Core.Models;
 
 namespace Umbraco.Commerce.DemoStore.Models
 {
     public interface IOrderReviewPage
     {
-        OrderReadOnly Order { get; }
+        AsyncLazy<OrderReadOnly> Order { get; }
 
-        CountryReadOnly PaymentCountry { get; }
+        AsyncLazy<CountryReadOnly> PaymentCountry { get; }
 
-        CountryReadOnly ShippingCountry { get; }
+        AsyncLazy<CountryReadOnly> ShippingCountry { get; }
     }
 }

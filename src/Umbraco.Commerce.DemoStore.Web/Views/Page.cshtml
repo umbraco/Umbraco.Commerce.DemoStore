@@ -21,12 +21,12 @@
             <!-- Top Bar -->
             <div class="border-b-4 border-gray-300 pb-2 -mt-2 md:mt-0">
                 <div class="flex justify-between w-full text-2xl md:hidden">
-                    <a href="@Model.HomePage.SearchPage.Url()"><i class="fa fa-search"></i></a>
-                    <a href="@Model.HomePage.CartPage.Url()"><i class="fa fa-shopping-cart"></i></a>
+                    <a href="@Model.HomePage.SearchPage?.Url()"><i class="fa fa-search"></i></a>
+                    <a href="@Model.HomePage.CartPage?.Url()"><i class="fa fa-shopping-cart"></i></a>
                 </div>
                 <div class="hidden w-full md:flex">
-                    <form action="@Model.HomePage.SearchPage.Url()" method="get" class="flex flex-1 m-0"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
-                    <div class="pl-6"><a href="@Model.HomePage.CartPage.Url()" class="hover:text-teal-400"><i class="fa fa-shopping-cart"></i> Cart @(await Component.InvokeAsync("CartCount", new { currentPage = Model }))</a></div>
+                    <form action="@Model.HomePage.SearchPage?.Url()" method="get" class="flex flex-1 m-0"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
+                    <div class="pl-6"><a href="@Model.HomePage.CartPage?.Url()" class="hover:text-teal-400"><i class="fa fa-shopping-cart"></i> Cart @(await Component.InvokeAsync("CartCount", new { currentPage = Model }))</a></div>
                 </div>
             </div>
 

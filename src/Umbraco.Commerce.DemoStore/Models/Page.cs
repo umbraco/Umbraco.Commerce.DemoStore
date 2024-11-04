@@ -1,23 +1,26 @@
 ﻿using Umbraco.Extensions;
 
-namespace Umbraco.Commerce.DemoStore.Models
+namespace Umbraco.Commerce.DemoStore.Models;
+
+public partial class Page
 {
-    public partial class Page
+    public HomePage HomePage => this.AncestorOrSelf<HomePage>()!;
+
+    public string MetaTitle
     {
-        public HomePage HomePage => this.AncestorOrSelf<HomePage>();
-
-        public string MetaTitle
+        get
         {
-            get
+            if (!PageTitle.IsNullOrWhiteSpace())
             {
-                if (!PageTitle.IsNullOrWhiteSpace())
-                    return PageTitle;
-
-                if (Id == HomePage.Id)
-                    return $"{HomePage.SiteName} - {HomePage.SiteDescription}";
-
-                return $"{Name} | {HomePage.SiteName}";
+                return PageTitle;
             }
+
+            if (Id == HomePage.Id)
+            {
+                return $"{HomePage.SiteName} - {HomePage.SiteDescription}";
+            }
+
+            return $"{Name} | {HomePage.SiteName}";
         }
     }
 }

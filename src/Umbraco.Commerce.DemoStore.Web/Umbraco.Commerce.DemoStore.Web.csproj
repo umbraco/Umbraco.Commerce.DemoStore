@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <EnablePackageValidation>false</EnablePackageValidation>
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -9,8 +9,8 @@
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Umbraco.Cms" Version="14.2.0" />
-        <PackageReference Include="Umbraco.Commerce" Version="14.1.6" />
+        <PackageReference Include="Umbraco.Cms" Version="15.0.0-rc2" />
+        <PackageReference Include="Umbraco.Commerce" Version="15.0.0-rc1" />
     </ItemGroup>
 
     <ItemGroup>

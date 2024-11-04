@@ -13,18 +13,18 @@
 
 
     // Get order entities
-    var store = UmbracoCommerceApi.GetStore(Model.StoreId);
+    var store = await UmbracoCommerceApi.GetStoreAsync(Model.StoreId);
     var paymentMethod = Model.PaymentInfo.PaymentMethodId.HasValue
-        ? UmbracoCommerceApi.GetPaymentMethod(Model.PaymentInfo.PaymentMethodId.Value)
+        ? await UmbracoCommerceApi.GetPaymentMethodAsync(Model.PaymentInfo.PaymentMethodId.Value)
         : null;
     var paymentCountry = Model.PaymentInfo.CountryId.HasValue
-        ? UmbracoCommerceApi.GetCountry(Model.PaymentInfo.CountryId.Value)
+        ? await UmbracoCommerceApi.GetCountryAsync(Model.PaymentInfo.CountryId.Value)
         : null;
     var shippingMethod = Model.ShippingInfo.ShippingMethodId.HasValue
-        ? UmbracoCommerceApi.GetShippingMethod(Model.ShippingInfo.ShippingMethodId.Value)
+        ? await UmbracoCommerceApi.GetShippingMethodAsync(Model.ShippingInfo.ShippingMethodId.Value)
         : null;
     var shippingCountry = Model.ShippingInfo.CountryId.HasValue
-        ? UmbracoCommerceApi.GetCountry(Model.ShippingInfo.CountryId.Value)
+        ? await UmbracoCommerceApi.GetCountryAsync(Model.ShippingInfo.CountryId.Value)
         : null;
 
     var themeColor = "4fd1c5";
@@ -150,22 +150,22 @@
                                             </span>
                                         </td>
                                         <td style="vertical-align: top;padding-top:20px; text-align: right;">
-                                            @orderLine.UnitPrice.Value.Formatted().WithoutTax
+                                            @await orderLine.UnitPrice.Value.FormattedAsync(x => x.WithoutTax)
                                             @if (orderLine.UnitPrice.Value != orderLine.UnitPrice.WithoutAdjustments)
                                             {
                                                 <br />
-                                                <span style="color:#a0aec0; font-size: 12px; text-decoration:line-through;">@orderLine.UnitPrice.WithoutAdjustments.Formatted().WithoutTax</span>
+                                                <span style="color:#a0aec0; font-size: 12px; text-decoration:line-through;">@await orderLine.UnitPrice.WithoutAdjustments.FormattedAsync(x => x.WithoutTax)</span>
                                             }
                                         </td>
                                         <td style="vertical-align: top;padding-top:20px; text-align: right;">
                                             @((int)orderLine.Quantity)
                                         </td>
                                         <td style="vertical-align: top;padding-top:20px; text-align: right;">
-                                            @orderLine.TotalPrice.Value.Formatted().WithoutTax
+                                            @await orderLine.TotalPrice.Value.FormattedAsync(x => x.WithoutTax)
                                             @if (orderLine.TotalPrice.Value != orderLine.TotalPrice.WithoutAdjustments)
                                             {
                                                 <br />
-                                                <span style="color:#a0aec0; font-size: 12px; text-decoration:line-through;">@orderLine.TotalPrice.WithoutAdjustments.Formatted().WithoutTax</span>
+                                                <span style="color:#a0aec0; font-size: 12px; text-decoration:line-through;">@await orderLine.TotalPrice.WithoutAdjustments.FormattedAsync(x => x.WithoutTax)</span>
                                             }
                                         </td>
                                     </tr>
@@ -177,7 +177,7 @@
                                     <td style="vertical-align: top;"><strong>Subtotal</strong></td>
                                     <td style="vertical-align: top; text-align: right; white-space: nowrap;">
                                         <strong>
-                                            @Model.SubtotalPrice.WithPreviousAdjustments.Formatted().WithoutTax
+                                            @await Model.SubtotalPrice.WithPreviousAdjustments.FormattedAsync(x => x.WithoutTax)
                                         </strong>
                                     </td>
                                 </tr>
@@ -190,7 +190,7 @@
                                                 Subtotal Fees
                                             </td>
                                             <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                                @subtotalFeesAdjustment.Formatted().WithoutTax
+                                                @await subtotalFeesAdjustment.FormattedAsync(x => x.WithoutTax)
                                             </td>
                                         </tr>
                                     }
@@ -203,7 +203,7 @@
                                                 Subtotal Discount
                                             </td>
                                             <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                                @subtotalDiscountAdjustment.Formatted().WithoutTax
+                                                @await subtotalDiscountAdjustment.FormattedAsync(x => x.WithoutTax)
                                             </td>
                                         </tr>
                                     }
@@ -219,7 +219,7 @@
                                             {
                                                 <text><span style="color:#a0aec0; font-size: 12px; text-decoration:line-through;">@Model.ShippingInfo.TotalPrice.WithoutAdjustments</span> </text>
                                             }
-                                            @Model.ShippingInfo.TotalPrice.Value.Formatted().WithoutTax
+                                            @await Model.ShippingInfo.TotalPrice.Value.FormattedAsync(x => x.WithoutTax)
                                         </td>
                                     </tr>
                                 }
@@ -234,7 +234,7 @@
                                             {
                                                 <text><span style="color:#a0aec0; font-size: 12px; text-decoration:line-through;">@Model.PaymentInfo.TotalPrice.WithoutAdjustments</span> </text>
                                             }
-                                            @Model.PaymentInfo.TotalPrice.Value.Formatted().WithoutTax
+                                            @await Model.PaymentInfo.TotalPrice.Value.FormattedAsync(x => x.WithoutTax)
                                         </td>
                                     </tr>
                                 }
@@ -242,7 +242,7 @@
                                     <td style="vertical-align: top; padding-top: 20px;"><strong>Net Total</strong></td>
                                     <td style="vertical-align: top; padding-top: 20px; text-align: right; white-space: nowrap;">
                                         <strong>
-                                            @Model.TotalPrice.WithPreviousAdjustments.Formatted().WithoutTax
+                                            @await Model.TotalPrice.WithPreviousAdjustments.FormattedAsync(x => x.WithoutTax)
                                         </strong>
                                     </td>
                                 </tr>
@@ -255,7 +255,7 @@
                                                 Net Total Fees
                                             </td>
                                             <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                                @totalFeesAdjustment.Formatted().WithoutTax
+                                                @await totalFeesAdjustment.FormattedAsync(x => x.WithoutTax)
                                             </td>
                                         </tr>
                                     }
@@ -268,7 +268,7 @@
                                                 Net Total Discount
                                             </td>
                                             <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                                @totalDiscountAdjustment.Formatted().WithoutTax
+                                                @await totalDiscountAdjustment.FormattedAsync(x => x.WithoutTax)
                                             </td>
                                         </tr>
                                     }
@@ -278,7 +278,7 @@
                                         TAX
                                     </td>
                                     <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                        @Model.TotalPrice.Value.Formatted().Tax
+                                        @await Model.TotalPrice.Value.FormattedAsync(x => x.Tax)
                                     </td>
                                 </tr>
                                 @{
@@ -291,7 +291,7 @@
                                                 <span class="color:#a0aec0; font-size: 12px;">@(string.Join(", ", Model.GiftCards.Select(x => x.Code)))</span>
                                             </td>
                                             <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                                @(totalGiftCardAdjustment.Formatted())
+                                                @(await totalGiftCardAdjustment.FormattedAsync())
                                             </td>
                                         </tr>
                                     }
@@ -303,7 +303,7 @@
                                             Transaction fee
                                         </td>
                                         <td style="vertical-align: top; text-align: right; white-space: nowrap;">
-                                            @Model.TransactionInfo.TransactionFee.Formatted()
+                                            @await Model.TransactionInfo.TransactionFee.FormattedAsync()
                                         </td>
                                     </tr>
                                 }
@@ -313,7 +313,7 @@
                                     </td>
                                     <td style="vertical-align: top; padding-top: 20px; text-align: right; white-space: nowrap;">
                                         <strong style="color: #@(themeColor);">
-                                            @Model.TransactionAmount.Value.Formatted()
+                                            @await Model.TransactionAmount.Value.FormattedAsync()
                                         </strong>
                                     </td>
                                 </tr>

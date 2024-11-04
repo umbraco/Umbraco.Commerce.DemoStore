@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Umbraco.Commerce.DemoStore.Web.Dtos;
 
-namespace Umbraco.Commerce.DemoStore.Web.Dtos
+public class RemoveFromCartDto
 {
-    public class RemoveFromCartDto
-    {
-        public Guid OrderLineId { get; set; }
-    }
+    public Guid OrderLineId { get; set; }
 }

@@ -6,6 +6,10 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<CheckoutStepPage>
 @{
     Layout = "Layout.cshtml";
+
+    var order = await Model.Order;
+    var paymentMethod = await Model.PaymentMethod;
+    var shippingMethod = await Model.ShippingMethod;
 }
 
 @section head {
@@ -38,13 +42,13 @@
                 <span id="order-summary-toggle__text-closed"><i class="fa fa-shopping-cart mr-2"></i> Show Order Summary <i class="fa fa-angle-down ml-1"></i></span>
                 <span id="order-summary-toggle__text-open" class="hidden"><i class="fa fa-shopping-cart mr-2"></i> Hide Order Summary <i class="fa fa-angle-up ml-1"></i></span>
             </span>
-            <span class="py-4 px-8 text-lg font-medium">@Model.Order.TotalPrice.Value.Formatted().WithoutTax</span>
+            <span class="py-4 px-8 text-lg font-medium">@await order.TotalPrice.Value.FormattedAsync(x => x.WithoutTax)</span>
         </a>
 
         <div id="order-summary" class="hidden bg-gray-100 w-full p-8 lg:w-2/5 lg:border-l lg:block">
 
             <ul>
-                @foreach (var orderLine in Model.Order.OrderLines)
+                @foreach (var orderLine in order.OrderLines)
                 {
                     <li class="border-b border-gray-300 pb-4 mb-4">
                         <div class="flex items-center">
@@ -70,7 +74,7 @@
                                 </div>
                             </div>
 
-                            <div class="pl-4 font-medium">@(orderLine.TotalPrice.WithoutAdjustments.Formatted().WithoutTax)</div>
+                            <div class="pl-4 font-medium">@(await orderLine.TotalPrice.WithoutAdjustments.FormattedAsync(x => x.WithoutTax))</div>
 
                         </div>
                     </li>
@@ -81,50 +85,50 @@
 
             <div class="flex w-full justify-between items-center">
                 <div class="">Subtotal</div>
-                <div class="font-medium">@(Model.Order.SubtotalPrice.WithoutAdjustments.Formatted().WithoutTax)</div>
+                <div class="font-medium">@(await order.SubtotalPrice.WithoutAdjustments.FormattedAsync(x => x.WithoutTax))</div>
             </div>
 
-            @if (Model.ShippingMethod != null)
+            @if (shippingMethod != null)
             {
                 <div class="flex w-full justify-between items-center mt-2">
                     <div class="">
-                        Shipping via @(Model.ShippingMethod.Name)
+                        Shipping via @(shippingMethod.Name)
                     </div>
-                    <div class="font-medium">@(Model.Order.ShippingInfo.TotalPrice.WithoutAdjustments.Formatted().WithoutTax)</div>
+                    <div class="font-medium">@(await order.ShippingInfo.TotalPrice.WithoutAdjustments.FormattedAsync(x => x.WithoutTax))</div>
                 </div>
             }
 
-            @if (Model.PaymentMethod != null && Model.PaymentMethod.Alias != "zeroValue")
+            @if (paymentMethod != null && paymentMethod.Alias != "zeroValue")
             {
                 <div class="flex w-full justify-between items-center mt-2">
                     <div class="">
-                        Payment via @(Model.PaymentMethod.Name)
+                        Payment via @(paymentMethod.Name)
                     </div>
-                    <div class="font-medium">@(Model.Order.PaymentInfo.TotalPrice.WithoutAdjustments.Formatted().WithoutTax)</div>
+                    <div class="font-medium">@(await order.PaymentInfo.TotalPrice.WithoutAdjustments.FormattedAsync(x => x.WithoutTax))</div>
                 </div>
             }
 
             @{
-                var totalDiscount = Model.Order.GetTotalPriceAdjustmentByType<DiscountAdjustment>();
+                var totalDiscount = order.GetTotalPriceAdjustmentByType<DiscountAdjustment>();
                 if (totalDiscount != 0)
                 {
                     <div class="flex w-full justify-between items-center mt-2 ">
                         <div class="">Discounts</div>
-                        <div class="font-medium">@(totalDiscount.Formatted().WithoutTax)</div>
+                        <div class="font-medium">@(await totalDiscount.FormattedAsync(x => x.WithoutTax))</div>
                     </div>
                 }
             }
 
             <div class="flex w-full justify-between items-center mt-2">
                 <div class="">TAX</div>
-                <div class="font-medium">@(Model.Order.TotalPrice.Value.Formatted().Tax)</div>
+                <div class="font-medium">@(await order.TotalPrice.Value.FormattedAsync(x => x.Tax))</div>
             </div>
 
-            @foreach (var giftCardAdjustment in Model.Order.TransactionAmount.Adjustments.OfType<GiftCardAdjustment>())
+            @foreach (var giftCardAdjustment in order.TransactionAmount.Adjustments.OfType<GiftCardAdjustment>())
             {
                 <div class="flex w-full justify-between items-center mt-2">
                     <div class="">Gift Card (@(giftCardAdjustment.GiftCardCode))</div>
-                    <div class="font-medium">@(giftCardAdjustment.Amount.Formatted())</div>
+                    <div class="font-medium">@(await giftCardAdjustment.Amount.FormattedAsync())</div>
                 </div>
             }
 
@@ -132,7 +136,7 @@
 
             <div class="flex w-full justify-between items-center">
                 <div class="font-medium text-base">Total</div>
-                <div class="font-medium text-2xl">@Model.Order.TransactionAmount.Value.Formatted()</div>
+                <div class="font-medium text-2xl">@await order.TransactionAmount.Value.FormattedAsync()</div>
             </div>
 
         </div>
