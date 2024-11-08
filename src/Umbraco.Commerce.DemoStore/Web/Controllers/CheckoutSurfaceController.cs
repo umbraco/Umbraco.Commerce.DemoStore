@@ -38,7 +38,7 @@ public class CheckoutSurfaceController(
                     .AsWritableAsync(uow)
                     .RedeemAsync(model.Code);
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
@@ -62,7 +62,7 @@ public class CheckoutSurfaceController(
                     .AsWritableAsync(uow)
                     .UnredeemAsync(model.Code);
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
@@ -111,7 +111,7 @@ public class CheckoutSurfaceController(
                     .SetPaymentCountryRegionAsync(model.BillingAddress.Country, null)
                     .SetShippingCountryRegionAsync(model.ShippingSameAsBilling ? model.BillingAddress.Country : model.ShippingAddress.Country, null);
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
@@ -151,7 +151,7 @@ public class CheckoutSurfaceController(
                 }
 
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
@@ -180,7 +180,7 @@ public class CheckoutSurfaceController(
                     .AsWritableAsync(uow)
                     .SetPaymentMethodAsync(model.PaymentMethod);
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)

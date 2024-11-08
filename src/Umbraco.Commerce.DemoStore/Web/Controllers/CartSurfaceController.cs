@@ -38,7 +38,7 @@ public class CartSurfaceController(
                     .AsWritableAsync(uow)
                     .AddProductAsync(postModel.ProductReference, postModel.ProductVariantReference, 1);
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
@@ -71,7 +71,7 @@ public class CartSurfaceController(
                 }
 
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
@@ -98,7 +98,7 @@ public class CartSurfaceController(
                     .AsWritableAsync(uow)
                     .RemoveOrderLineAsync(postModel.OrderLineId);
                 await commerceApi.SaveOrderAsync(order);
-                await uow.CompleteAsync();
+                uow.Complete();
             });
         }
         catch (ValidationException ex)
