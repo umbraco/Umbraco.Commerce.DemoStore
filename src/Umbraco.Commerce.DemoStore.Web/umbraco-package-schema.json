@@ -9061,7 +9061,7 @@
         },
         "FontFaceSet": {
             "properties": {
-                "__@toStringTag@1710": {
+                "__@toStringTag@1713": {
                     "type": "string"
                 },
                 "onloading": {
@@ -9093,7 +9093,7 @@
                 }
             },
             "required": [
-                "__@toStringTag@1710",
+                "__@toStringTag@1713",
                 "onloading",
                 "onloadingdone",
                 "onloadingerror",
@@ -54870,23 +54870,23 @@
         },
         "Promise<FontFaceSet>": {
             "properties": {
-                "__@toStringTag@1710": {
+                "__@toStringTag@1713": {
                     "type": "string"
                 }
             },
             "required": [
-                "__@toStringTag@1710"
+                "__@toStringTag@1713"
             ],
             "type": "object"
         },
         "Promise<ServiceWorkerRegistration>": {
             "properties": {
-                "__@toStringTag@1710": {
+                "__@toStringTag@1713": {
                     "type": "string"
                 }
             },
             "required": [
-                "__@toStringTag@1710"
+                "__@toStringTag@1713"
             ],
             "type": "object"
         },
