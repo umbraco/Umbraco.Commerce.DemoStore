@@ -476,6 +476,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Jetbrains Rider
+.idea
+
 ##
 ## Umbraco Commerce specific
 ##
