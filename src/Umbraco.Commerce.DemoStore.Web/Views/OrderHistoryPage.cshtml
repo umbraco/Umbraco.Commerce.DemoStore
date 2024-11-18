@@ -1,0 +1,40 @@
+﻿@using Umbraco.Cms.Core.Security;
+@using Umbraco.Commerce.Core.Api;
+@using Umbraco.Commerce.Core.Models;
+@using Umbraco.Commerce.Extensions;
+@using Umbraco.Commerce.DemoStore;
+@inject IMemberManager memberManager
+@inject IUmbracoCommerceApi commerceApi
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.OrderHistoryPage>
+@{
+    Layout = "Page.cshtml";
+
+    var store = Model.GetStore();
+    var currentMember = await memberManager.GetCurrentMemberAsync();
+
+    var myOrders = currentMember != null
+        ? commerceApi.GetFinalizedOrdersForCustomer(store.Id, currentMember.Email)
+        : Enumerable.Empty<OrderReadOnly>();
+}
+<h1 class="text-4xl font-heading leading-tight tracking-tight mt-6">@Model.Name.</h1>
+@if (myOrders.Any())
+{
+    <ul class="mt-4">
+        @foreach(var order in myOrders.OrderByDescending(x => x.FinalizedDate.Value))
+        {
+            <li class="flex justify-between border-t border-gray-400 py-4">
+                <div>
+                    <h3 class="font-bold">#@order.OrderNumber</h3>
+                    <p>@order.FinalizedDate?.ToString("MMM, d yyyy")</p>
+                </div>
+                <div class="font-bold text-xl">
+                    @order.TotalPrice.Value.Formatted()
+                </div>                
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <h1 class="text-5xl font-bold text-center py-24 text-gray-300">No orders</h1>
+}

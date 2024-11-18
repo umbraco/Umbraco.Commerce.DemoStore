@@ -2,6 +2,8 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.Page>
 @{
     Layout = "Layout.cshtml";
+    
+    var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
 }
 
 @section head {
@@ -26,6 +28,11 @@
                 </div>
                 <div class="hidden w-full md:flex">
                     <form action="@Model.HomePage.SearchPage.Url()" method="get" class="flex flex-1 m-0"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
+                    <div class="pl-6">@await Umbraco.RenderMacroAsync("LoginStatus")</div>
+                    @if (isLoggedIn)
+                    {
+                        <div class="pl-6"><a href="/my-orders" class="hover:text-teal-400"><i class="fa fa-history"></i> My Orders</a></div>
+                    }
                     <div class="pl-6"><a href="@Model.HomePage.CartPage.Url()" class="hover:text-teal-400"><i class="fa fa-shopping-cart"></i> Cart @(await Component.InvokeAsync("CartCount", new { currentPage = Model }))</a></div>
                 </div>
             </div>
