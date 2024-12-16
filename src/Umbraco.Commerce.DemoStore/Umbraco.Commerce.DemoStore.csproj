@@ -11,9 +11,9 @@
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="15.0.0" />
     <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="15.0.0" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="15.0.0--rc2.preview.83.g2cfaf49" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="15.0.0--rc2.preview.83.g2cfaf49" />
-    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="15.0.0--rc2.preview.83.g2cfaf49" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="15.0.0--rc2.preview.86.gf7e1b61" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="15.0.0--rc2.preview.86.gf7e1b61" />
+    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="15.0.0--rc2.preview.86.gf7e1b61" />
   </ItemGroup>
 
 </Project>
