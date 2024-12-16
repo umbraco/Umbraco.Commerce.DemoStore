@@ -8,10 +8,11 @@
     var selectedShippingMethodId = order!.ShippingInfo.ShippingMethodId ?? (shippingCountry != null && shippingCountry.DefaultShippingMethodId.HasValue
         ? shippingCountry.DefaultShippingMethodId.Value
         : null);
-    var selectedShippinOptionId = selectedShippingMethodId.HasValue && order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == order.ShippingInfo.ShippingMethodId
+    var selectedShippingOptionId = selectedShippingMethodId.HasValue && order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == order.ShippingInfo.ShippingMethodId
         ? order.ShippingInfo.ShippingOption?.Id
         : null;
     var shippingMethods = await Model.ShippingMethods.Value.ToListAsync();
+    var shippingMethodsRates = await Task.WhenAll(shippingMethods.Select(sm => sm.TryCalculateRatesAsync()));
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderShippingMethod", "CheckoutSurface"))
@@ -22,7 +23,7 @@
     <ul class="border border-gray-300 rounded">
         @foreach (var item in shippingMethods.Select((sm, i) => new { ShippingMethod = sm, Index = i }))
         {
-            var rates = await item.ShippingMethod.TryCalculateRatesAsync();
+            var rates = shippingMethodsRates[item.Index];
             if (rates.Success)
             {
                 foreach (var rate in rates.Result!)
@@ -33,12 +34,12 @@
                     {
                         if (rate.Option != null)
                         {
-                            if (selectedShippinOptionId == null)
+                            if (selectedShippingOptionId == null)
                             {
-                                selectedShippinOptionId = rate.Option?.Id;
+                                selectedShippingOptionId = rate.Option?.Id;
                                 isSelected = true;
                             }
-                            else if (selectedShippinOptionId == rate.Option?.Id)
+                            else if (selectedShippingOptionId == rate.Option?.Id)
                             {
                                 isSelected = true;
                             }
@@ -69,7 +70,7 @@
         }
     </ul>
 
-    <input type="hidden" name="shippingOptionId" value="@(selectedShippinOptionId)" />
+    <input type="hidden" name="shippingOptionId" value="@(selectedShippingOptionId)" />
 
     @await Html.PartialAsync("CheckoutPrevNext")
 }

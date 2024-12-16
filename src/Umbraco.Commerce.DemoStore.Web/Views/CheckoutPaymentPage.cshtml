@@ -7,6 +7,8 @@
     var order = await Model.Order;
     var paymentMethods = await Model.PaymentMethods.Value.ToListAsync();
     var zeroValuePaymentMethod = paymentMethods.FirstOrDefault(x => x.Alias == "zeroValue");
+    var nonZeroValuePaymentMethods = paymentMethods.Where(x => x.Alias != "zeroValue").ToList();
+    var nonZeroValuePaymentMethodFees = await Task.WhenAll(nonZeroValuePaymentMethods.Select(x => x.TryCalculateFeeAsync()));
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderPaymentMethod", "CheckoutSurface"))
@@ -18,14 +20,14 @@
     if (order.TotalPrice.Value.WithTax > 0)
     {
         <ul class="border border-gray-300 rounded">
-            @foreach (var item in paymentMethods.Where(x => x.Alias != "zeroValue")
-               .Select((pm, i) => new { PaymentMethod = pm, Index = i }))
+            @foreach (var item in nonZeroValuePaymentMethods.Select((pm, i) => new { PaymentMethod = pm, Index = i }))
             {
+                var fee = nonZeroValuePaymentMethodFees[item.Index];
                 <li class="border-gray-300 @(item.Index > 0 ? "border-t " : "")">
                     <label class="flex items-center py-4 px-4 cursor-pointer hover:bg-gray-100">
                         <input name="paymentMethod" type="radio" value="@item.PaymentMethod.Id" class="mr-3" @Html.Raw(order.PaymentInfo.PaymentMethodId.HasValue && order.PaymentInfo.PaymentMethodId.Value == item.PaymentMethod.Id ? "checked=\"checked\"" : "") required />
                         <span class="font-medium">@(item.PaymentMethod.Name)</span>
-                        <span class="flex-1 text-right">@(await (await item.PaymentMethod.TryCalculateFeeAsync()).ResultOr(Price.ZeroValue(order.CurrencyId)).FormattedAsync())</span>
+                        <span class="flex-1 text-right">@(await fee.ResultOr(Price.ZeroValue(order.CurrencyId)).FormattedAsync())</span>
                     </label>
                 </li>
             }
