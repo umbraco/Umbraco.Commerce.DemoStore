@@ -57,9 +57,11 @@ public static class DemoStoreBuilderExtensions
             
             if (!v.Config.GetValue<string>("AzureMonitor:ConnectionString").IsNullOrWhiteSpace())
             {
-                v.Services.AddOpenTelemetry().WithMetrics(opts => opts
-                    .AddRuntimeInstrumentation()
-                ).UseAzureMonitor();
+                v.Services.AddOpenTelemetry()
+                    .UseAzureMonitor()
+                    .WithMetrics(opts => opts
+                        .AddRuntimeInstrumentation()
+                    );
             }
 
         });
