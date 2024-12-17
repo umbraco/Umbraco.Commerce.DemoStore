@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Metrics;
 using Umbraco.Commerce.Core.Events.Notification;
 using Umbraco.Commerce.DemoStore.Events;
 using Umbraco.Commerce.DemoStore.Web.Extractors;
@@ -50,6 +53,13 @@ public static class DemoStoreBuilderExtensions
                 v.WithNotificationEvent<OrderFinalizedNotification>()
                     .RemoveHandler<SendFinalizedOrderEmail>()
                     .RemoveHandler<SendGiftCardEmails>();
+            }
+            
+            if (!v.Config.GetValue<string>("AzureMonitor:ConnectionString").IsNullOrWhiteSpace())
+            {
+                v.Services.AddOpenTelemetry().WithMetrics(opts => opts
+                    .AddRuntimeInstrumentation()
+                ).UseAzureMonitor();
             }
 
         });
