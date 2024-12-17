@@ -55,7 +55,7 @@ public static class DemoStoreBuilderExtensions
                     .RemoveHandler<SendGiftCardEmails>();
             }
             
-            if (!v.Config.GetValue<string>("AzureMonitor:ConnectionString").IsNullOrWhiteSpace())
+            if (!v.Config.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING").IsNullOrWhiteSpace())
             {
                 v.Services.AddOpenTelemetry()
                     .UseAzureMonitor()
