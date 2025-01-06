@@ -27,7 +27,7 @@
                     <a href="@Model.HomePage.CartPage.Url()"><i class="fa fa-shopping-cart"></i></a>
                 </div>
                 <div class="hidden w-full md:flex">
-                    <form action="@Model.HomePage.SearchPage.Url()" method="get" class="flex flex-1 m-0"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
+                    <form action="@Model.HomePage.SearchPage.Url()" method="get" class="flex flex-1 m-0 frm-secondary"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
                     <div class="pl-6">@await Umbraco.RenderMacroAsync("LoginStatus")</div>
                     @if (isLoggedIn)
                     {
@@ -114,7 +114,7 @@
                 <div class="md:w-1/2">
                     <h4 class="text-lg font-bold mb-2">Subscribe to newsletter</h4>
                     <p class="mb-4">Sign up for the latest news, offers and updates</p>
-                    <form class="flex w-full">
+                    <form class="flex w-full frm-secondary">
                         <input type="email" placeholder="Your email" class="flex-1 bg-gray-200 px-4 py-2" />
                         <button type="submit" class="bg-gray-900 text-white px-4 py-2 hover:bg-teal-400">Subscribe</button>
                     </form>
