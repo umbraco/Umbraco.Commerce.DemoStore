@@ -13,9 +13,9 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.8.1" />
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="15.0.0" />
     <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="15.0.0" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="15.0.0--rc2.preview.109.g97763d1" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="15.0.0--rc2.preview.109.g97763d1" />
-    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="15.0.0--rc2.preview.109.g97763d1" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="15.0.0--rc2.preview.111.g83b94aa" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="15.0.0--rc2.preview.111.g83b94aa" />
+    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="15.0.0--rc2.preview.111.g83b94aa" />
   </ItemGroup>
 
 </Project>
