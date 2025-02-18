@@ -1,14 +1,64 @@
-﻿@inherits UmbracoViewPage
+﻿@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits UmbracoViewPage
 @{
     Layout = null;
-
-    // New
+    
     Context.Response.ContentType = "text/xml";
 
-    // Old
-    //Response.ContentType = "text/xml";
+    IPublishedContent siteHomePage = Model.Root();
+
+    // Get the maxSiteMapDepth value as an integer if the value is not empty
+    int maxSiteMapDepth = Model.HasValue("maxSiteMapDepth") ? Model.Value<int>("maxSiteMapDepth") : int.MaxValue;
+    
+    // Separate the values into separate Document Types and add them to an 'array'
+    string[] excludedDocumentTypes = ["sitemap","productVariant"];
 }
 
-<xml>
-    @(await Html.PartialAsync("TestPartial"))
-</xml>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemalocation="http://www.google.com/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    @{
+        // Sitemap entry for the homepage is rendered
+        RenderSiteMapUrlEntry(siteHomePage);
+        
+        // Sitemap for the rest of the site is rendered
+        RenderSiteMapUrlEntriesForChildren(siteHomePage);
+    }
+
+</urlset>
+
+@{
+    // This helper is used to render the sitemap entries
+    void RenderSiteMapUrlEntry(IPublishedContent node)
+    {
+        // The change frequency is recursive and should 'fallback to ancestor' when no value is given.
+        var changeFreq = node.Value("searchEngineChangeFrequency", fallback: Fallback.To(Fallback.Ancestors, Fallback.DefaultValue), defaultValue: "monthly");
+        
+        // The relative priority is a per-page setting only. We will not set Fallback.ToAncestors and instead default to 0.5 if no value is set.
+        var priority = node.HasValue("searchEngineRelativePriority") ? node.Value<string>("searchEngineRelativePriority") : "0.5";
+
+        <url>
+            <loc>@node.Url(mode: UrlMode.Absolute)</loc>
+            <lastmod>@(string.Format("{0:s}+00:00", node.UpdateDate))</lastmod>
+            <changefreq>@changeFreq</changefreq>
+            <priority>@priority</priority>
+        </url>
+    }
+
+    // This helper is used to filter which pages are shown in the sitemap
+    void RenderSiteMapUrlEntriesForChildren(IPublishedContent parentPage)
+    {
+        // Filter the query based on the excludedDocumentTypes and hideFromXmlSiteMap values
+        foreach (var page in parentPage.Children().Where(x => x.IsVisible() && !excludedDocumentTypes.Contains(x.ContentType.Alias) && !x.Value<bool>("hideFromXmlSiteMap")))
+        {
+            RenderSiteMapUrlEntry(page);
+            // Filter the query based on the maxSiteMapDepth and hideFromXmlSiteMap values
+            if (page.Level < maxSiteMapDepth && page.Children().Any(x => !x.Value<bool>("hideFromXmlSiteMap")))
+            {
+                RenderSiteMapUrlEntriesForChildren(page);
+            }
+        }
+    }
+}
