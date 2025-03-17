@@ -13,6 +13,6 @@ public static partial class PublishedContentExtensions
     
     public static IPublishedContent? GetPreviousStep(this ICheckoutStepPage content)
     {
-        return content.GetCheckoutPage()?.Children().SkipWhile(x => !x.Id.Equals(content.Id)).Skip(1).FirstOrDefault();
+        return content.GetCheckoutPage()?.Children().TakeWhile(x => !x.Id.Equals(content.Id)).LastOrDefault();
     }
 }
