@@ -12,7 +12,7 @@
     var paymentCountry = order?.PaymentInfo.CountryId.HasValue ?? false
         ? await UmbracoCommerceApi.GetCountryAsync(order.PaymentInfo.CountryId.Value)
         : null;
-    var paymentMethods = await UmbracoCommerceApi.GetPaymentMethodsAsync(store!.Id).ToListAsync();
+    var paymentMethods = await UmbracoCommerceApi.GetPaymentMethodsAllowedInAsync(order!.PaymentInfo.CountryId!.Value).ToListAsync();
     var zeroValuePaymentMethod = paymentMethods.FirstOrDefault(x => x.Alias == "zeroValue");
     var nonZeroValuePaymentMethods = paymentMethods.Where(x => x.Alias != "zeroValue").ToList();
     var nonZeroValuePaymentMethodFees = await Task.WhenAll(nonZeroValuePaymentMethods.Select(x => x.TryCalculateFeeAsync()));

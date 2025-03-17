@@ -17,7 +17,7 @@
     var selectedShippingOptionId = selectedShippingMethodId.HasValue && order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == order.ShippingInfo.ShippingMethodId
         ? order.ShippingInfo.ShippingOption?.Id
         : null;
-    var shippingMethods = await UmbracoCommerceApi.GetShippingMethodsAsync(store!.Id).ToListAsync();
+    var shippingMethods = await UmbracoCommerceApi.GetShippingMethodsAllowedInAsync(order!.ShippingInfo.CountryId!.Value).ToListAsync();
     var shippingMethodsRates = await Task.WhenAll(shippingMethods.Select(sm => sm.TryCalculateRatesAsync()));
     
     var nextStep = Model.GetNextStep();
