@@ -36,7 +36,7 @@ public class CartSurfaceController(
                 var store = CurrentPage!.GetStore()!;
                 var order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
-                    .AddProductAsync(postModel.ProductReference, postModel.ProductVariantReference, 1);
+                    .AddProductAsync(postModel.ProductReference, postModel.ProductVariantReference, postModel.Quantity);
                 await commerceApi.SaveOrderAsync(order);
                 uow.Complete();
             });
