@@ -5,4 +5,4 @@
 }
 
 @await Html.PartialAsync("Intro")
-@await Html.PartialAsync("ProductGroupList", Model.Children.OfType<IProductGroupComp>())
+@await Html.PartialAsync("ProductGroupList", Model.Children().OfType<IProductGroupPage>())

@@ -1,13 +1,27 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.Page>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Commerce.DemoStore
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.IPage>
 @{
     Layout = null;
+
+    var metaTitle = Model.PageTitle;
+    if (metaTitle.IsNullOrWhiteSpace())
+    {
+        var page = (IPublishedContent)Model;
+        var homePage = page.GetHomePage();
+
+        metaTitle = page.Id == homePage.Id 
+            ? $"{homePage.SiteName} - {homePage.SiteDescription}" 
+            : $"{page.Name} | {homePage.SiteName}";
+    }
 }
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@Model.MetaTitle</title>
+    <title>@metaTitle</title>
     <meta name="description" content="@Model.MetaDescription" />
     <meta name="keywords" content="@Model.MetaKeywords" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.6/tailwind.min.css" rel="stylesheet">

@@ -1,15 +1,26 @@
 ﻿@using Umbraco.Commerce.Core.Models;
 @using Umbraco.Commerce.DemoStore.Models;
-@using Umbraco.Cms.Core.Models;
 @using Umbraco.Cms.Core.Models.PublishedContent;
+@using Umbraco.Commerce.Core.Api
+@using Umbraco.Commerce.DemoStore
 @using Umbraco.Commerce.Extensions;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<CheckoutStepPage>
+@inject IUmbracoCommerceApi UmbracoCommerceApi;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ICheckoutStepPage>
 @{
     Layout = "Layout.cshtml";
-
-    var order = await Model.Order;
-    var paymentMethod = await Model.PaymentMethod;
-    var shippingMethod = await Model.ShippingMethod;
+    
+    var order = await Model.GetCurrentOrderAsync();
+    var paymentMethodId = order?.PaymentInfo?.PaymentMethodId;
+    var paymentMethod = paymentMethodId.HasValue
+        ? await UmbracoCommerceApi.GetPaymentMethodAsync(paymentMethodId.Value)
+        : null;
+    var shippingMethodId = order?.ShippingInfo?.ShippingMethodId;
+    var shippingMethod =  shippingMethodId.HasValue
+        ? await UmbracoCommerceApi.GetShippingMethodAsync(shippingMethodId.Value)
+        : null;
+    
+    var checkoutPage = Model.GetCheckoutPage();
+    var checkoutStepPages = checkoutPage?.Children().OfType<ICheckoutStepPage>().ToList() ?? [];
 }
 
 @section head {
@@ -30,10 +41,10 @@
     <!-- Layout -->
     <div class="relative flex flex-col min-h-full max-w-6xl mx-auto lg:flex-row-reverse lg:flex-row">
 
-        @if (Model.CheckoutPage.Logo != null)
+        @if (checkoutPage.Logo != null)
         {
             <div class="bg-white p-8 text-center lg:hidden">
-                <a href="/"><img src="@(Model.CheckoutPage.Logo.GetCropUrl(200))" class="inline-block" /></a>
+                <a href="/"><img src="@(checkoutPage.Logo.GetCropUrl(200))" class="inline-block" /></a>
             </div>
         }
 
@@ -146,9 +157,9 @@
             <div class="hidden lg:block">
 
                 <div class="bg-white p-8 text-center">
-                    @if (Model.CheckoutPage.HasValue("logo"))
+                    @if (checkoutPage.HasValue("logo"))
                     {
-                        <a href="/"><img src="@(Model.CheckoutPage.Value<IPublishedContent>("logo").GetCropUrl(200))" class="inline-block" /></a>
+                        <a href="/"><img src="@(checkoutPage.Value<IPublishedContent>("logo").GetCropUrl(200))" class="inline-block" /></a>
                     }
                     else
                     {
@@ -160,7 +171,7 @@
                     <ul class="flex justify-center">
                         @{
                             var passedStep = false;
-                            foreach (var item in Model.CheckoutPage.Steps.Select((s, i) => new { Step = s, Index = i }))
+                            foreach (var item in checkoutStepPages.Select((s, i) => new { Step = s, Index = i }))
                             {
                                 <li class="@(item.Index > 0 ? "pl-2" : "") flex items-baseline">
                                     @if (item.Index > 0)
@@ -169,7 +180,7 @@
                                     }
                                     @if (!passedStep && item.Step.Id != Model.Id && Model.CanGoBack)
                                     {
-                                        <a href="@item.Step.Url()" class="hover:text-@(Model.CheckoutPage.PrimaryColor)">@(item.Step.ShortStepName ?? item.Step.Name)</a>
+                                        <a href="@item.Step.Url()" class="hover:text-@(checkoutPage.PrimaryColor)">@(item.Step.ShortStepName ?? item.Step.Name)</a>
                                     }
                                     else
                                     {

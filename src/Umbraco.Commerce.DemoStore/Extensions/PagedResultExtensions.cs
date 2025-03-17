@@ -5,7 +5,7 @@ namespace Umbraco.Commerce.DemoStore;
 
 public static class PagedResultExtensions
 {
-    public static PagedResult<TTo> Cast<TFrom, TTo>(this PagedResult<TFrom> pagedResult) =>
+    public static PagedResult<TTo> CastItems<TFrom, TTo>(this PagedResult<TFrom> pagedResult) =>
         new(pagedResult.TotalItems, pagedResult.PageNumber, pagedResult.PageSize)
         {
             Items = pagedResult.Items.Cast<TTo>()

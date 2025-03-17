@@ -1,19 +1,25 @@
-﻿@using Umbraco.Commerce.Core.Models
+﻿@using Umbraco.Commerce.Core.Api
+@using Umbraco.Commerce.Core.Models
+@using Umbraco.Commerce.DemoStore
 @using Umbraco.Commerce.Extensions;
+@inject IUmbracoCommerceApi UmbracoCommerceApi
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CheckoutPaymentMethodPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
 
-    var order = await Model.Order;
-    var paymentMethods = await Model.PaymentMethods.Value.ToListAsync();
+    var store = Model.GetStore();
+    var order = await Model.GetCurrentOrderAsync();
+    var paymentMethods = await UmbracoCommerceApi.GetPaymentMethodsAsync(store!.Id).ToListAsync();
     var zeroValuePaymentMethod = paymentMethods.FirstOrDefault(x => x.Alias == "zeroValue");
     var nonZeroValuePaymentMethods = paymentMethods.Where(x => x.Alias != "zeroValue").ToList();
     var nonZeroValuePaymentMethodFees = await Task.WhenAll(nonZeroValuePaymentMethods.Select(x => x.TryCalculateFeeAsync()));
+    
+    var nextStep = Model.GetNextStep();
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderPaymentMethod", "CheckoutSurface"))
 {
-    <input type="hidden" name="nextStep" value="@(Model.NextStep?.Key)" />
+    <input type="hidden" name="nextStep" value="@(nextStep?.Key)" />
 
     <h3 class="text-xl font-medium mb-4 mt-8">Payment Method</h3>
 

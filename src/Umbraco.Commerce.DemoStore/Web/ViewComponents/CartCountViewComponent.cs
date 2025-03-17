@@ -10,8 +10,8 @@ public class CartCountViewComponent(IUmbracoCommerceApi commerceApi) : ViewCompo
 {
     public async Task<IViewComponentResult> InvokeAsync(IPublishedContent currentPage)
     {
-        StoreReadOnly store = currentPage.GetStore()!;
-        OrderReadOnly? order = await commerceApi.GetCurrentOrderAsync(store.Id);
+        var store = currentPage.GetStore()!;
+        var order = await commerceApi.GetCurrentOrderAsync(store.Id);
         return View("CartCount", (int)(order?.TotalQuantity ?? 0));
     }
 }

@@ -1,10 +1,17 @@
-﻿@using Umbraco.Commerce.DemoStore.Models;
+﻿@using Umbraco.Commerce.Core.Api
+@using Umbraco.Commerce.DemoStore
+@using Umbraco.Commerce.DemoStore.Models;
+@inject IUmbracoCommerceApi UmbracoCommerceApi
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<CheckoutInformationPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
 
-    var order = await Model.Order;
-    var countries = await Model.Countries;
+    var store = Model.GetStore();
+    var order = await Model.GetCurrentOrderAsync();
+    var countries = await UmbracoCommerceApi.GetCountriesAsync(store!.Id);
+    
+    var checkoutPage = Model.GetCheckoutPage()!;
+    var nextStep = Model.GetNextStep();
 }
 
 @section aside {
@@ -12,7 +19,7 @@
         @using (Html.BeginUmbracoForm("ApplyDiscountOrGiftCardCode", "CheckoutSurface", null, new { @class = "flex w-full m-0 frm-secondary" }))
         {
             <input type="text" name="code" placeholder="Discount / Gift Card Code" class="flex-1 py-2 px-4 border rounded placeholder-gray-700" />
-            <button class="ml-4 bg-@(Model.CheckoutPage.PrimaryColor) text-white px-4 rounded hover:bg-gray-900" type="submit">Apply</button>
+            <button class="ml-4 bg-@(checkoutPage.PrimaryColor) text-white px-4 rounded hover:bg-gray-900" type="submit">Apply</button>
         }
 
         @Html.ValidationMessage("code", new { @class = "block text-red-900 bg-red-300 rounded p-2 mt-4" })
@@ -35,7 +42,7 @@
 
 @using (Html.BeginUmbracoForm("UpdateOrderInformation", "CheckoutSurface"))
 {
-    <input type="hidden" name="nextStep" value="@(Model.NextStep?.Key)" />
+    <input type="hidden" name="nextStep" value="@(nextStep?.Key)" />
 
     <h3 class="text-xl font-medium mb-4">Contact Information</h3>
     <input name="email" type="email" placeholder="Email" class="block placeholder-gray-700 border border-gray-300 rounded py-2 px-4 mb-2 w-full"

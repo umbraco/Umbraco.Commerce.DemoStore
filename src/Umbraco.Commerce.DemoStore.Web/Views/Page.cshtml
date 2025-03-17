@@ -1,5 +1,7 @@
-﻿@using Umbraco.Commerce.DemoStore.Models;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.Page>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Umbraco.Commerce.DemoStore
+@using Umbraco.Commerce.DemoStore.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPage>
 @{
     Layout = "Layout.cshtml";
 }
@@ -21,12 +23,12 @@
             <!-- Top Bar -->
             <div class="border-b-4 border-gray-300 pb-2 -mt-2 md:mt-0">
                 <div class="flex justify-between w-full text-2xl md:hidden">
-                    <a href="@Model.HomePage.SearchPage?.Url()"><i class="fa fa-search"></i></a>
-                    <a href="@Model.HomePage.CartPage?.Url()"><i class="fa fa-shopping-cart"></i></a>
+                    <a href="@Model.GetSearchPage()?.Url()"><i class="fa fa-search"></i></a>
+                    <a href="@Model.GetCartPage()?.Url()"><i class="fa fa-shopping-cart"></i></a>
                 </div>
                 <div class="hidden w-full md:flex">
-                    <form action="@Model.HomePage.SearchPage?.Url()" method="get" class="flex flex-1 m-0 frm-secondary"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
-                    <div class="pl-6"><a href="@Model.HomePage.CartPage?.Url()" class="hover:text-teal-400"><i class="fa fa-shopping-cart"></i> Cart @(await Component.InvokeAsync("CartCount", new { currentPage = Model }))</a></div>
+                    <form action="@Model.GetSearchPage()?.Url()" method="get" class="flex flex-1 m-0 frm-secondary"><button type="submit" class="mr-2 hover:text-teal-400"><i class="fa fa-search"></i></button><input type="text" name="q" class="flex-1 p-1" placeholder="Search..." /></form>
+                    <div class="pl-6"><a href="@Model.GetCartPage()?.Url()" class="hover:text-teal-400"><i class="fa fa-shopping-cart"></i> Cart @(await Component.InvokeAsync("CartCount", new { currentPage = Model }))</a></div>
                 </div>
             </div>
 
@@ -57,9 +59,9 @@
                     <!-- Nav -->
                     <ul>
                         <li class="border-b border-gray-300 text-center md:text-left"><a href="/" class="block py-2 @(Model.ContentType.Alias == HomePage.ModelTypeAlias ? "font-bold" : "")">Home</a></li>
-                        @if (Model.HomePage.CategoryPages != null)
-                        {
-                            foreach (var category in Model.HomePage.CategoryPages)
+                        @{
+                            var categoryPages = Model.GetCategoryPages();
+                            foreach (var category in categoryPages)
                             {
                                 <li class="border-b border-gray-300 text-center md:text-left"><a href="@category.Url()" class="block py-2 hover:text-teal-400 @(category.Id == Model.Id ? "font-bold" : "")">@category.Name</a></li>
                             }
@@ -98,7 +100,7 @@
                     <h4 class="text-lg font-bold mb-2">Links</h4>
                     <ul>
                         <li><a href="/" class="hover:text-teal-400">Home</a></li>
-                        @foreach (var lnk in Model.HomePage.SiteFooterLinks)
+                        @foreach (var lnk in Model.GetHomePage().SiteFooterLinks!)
                         {
                             <li><a href="@lnk.Url()" class="hover:text-teal-400">@lnk.Name</a></li>
                         }

@@ -1,11 +1,11 @@
-﻿@using Umbraco.Commerce.Extensions;
+﻿@using Umbraco.Commerce.DemoStore
+@using Umbraco.Commerce.Extensions;
 @using Umbraco.Commerce.DemoStore.Models;
-@using Umbraco.Extensions;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CartPage>
 @{
     Layout = "Page.cshtml";
 
-    var order = await Model.Order;
+    var order = await Model.GetCurrentOrderAsync();
 }
 
 @section foot {
@@ -92,7 +92,7 @@
                     <td colspan="4">
                         <div class="pt-6 flex justify-end">
                             <button class="align-middle font-bold text-xl border-4 border-gray-900 px-6 py-3 hover:bg-teal-400 hover:border-teal-400 hover:text-white" title="Refresh Cart"><i class="fa fa-refresh"></i></button>
-                            <a href="@(Model.CheckoutPage!.Url())" class="align-middle font-bold border-4 border-gray-900 bg-gray-900 text-white px-6 py-3 ml-4 hover:bg-teal-400 hover:border-teal-400 hover:text-white">Checkout</a>
+                            <a href="@(Model.GetCheckoutPage()!.Url())" class="align-middle font-bold border-4 border-gray-900 bg-gray-900 text-white px-6 py-3 ml-4 hover:bg-teal-400 hover:border-teal-400 hover:text-white">Checkout</a>
                         </div>
                     </td>
                 </tr>

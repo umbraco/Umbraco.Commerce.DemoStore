@@ -14,8 +14,8 @@ public class FeaturedProductsViewComponent(
 {
     public IViewComponentResult Invoke(IPublishedContent currentPage)
     {
-        IEnumerable<ProductPage> featuredProducts = currentPage.GetHomePage()
-            .FeaturedProducts!.OfType<ProductPage>();
+        var featuredProducts = currentPage.GetHomePage()
+            .FeaturedProducts!.OfType<IProductPage>();
 
         return View("ProductList", featuredProducts);
     }

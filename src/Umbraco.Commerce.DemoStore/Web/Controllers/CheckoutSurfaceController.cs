@@ -33,8 +33,8 @@ public class CheckoutSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
                     .RedeemAsync(model.Code);
                 await commerceApi.SaveOrderAsync(order);
@@ -57,8 +57,8 @@ public class CheckoutSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
                     .UnredeemAsync(model.Code);
                 await commerceApi.SaveOrderAsync(order);
@@ -81,8 +81,8 @@ public class CheckoutSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
                     .SetPropertiesAsync(new Dictionary<string, string>
                     {
@@ -135,13 +135,13 @@ public class CheckoutSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow);
 
                 if (!string.IsNullOrWhiteSpace(model.ShippingOptionId))
                 {
-                    ShippingMethodReadOnly? shippingMethod = await commerceApi.GetShippingMethodAsync(model.ShippingMethod);
+                    var shippingMethod = await commerceApi.GetShippingMethodAsync(model.ShippingMethod);
                     Attempt<ShippingRate> shippingRateAttempt = await shippingMethod.TryCalculateRateAsync(model.ShippingOptionId, order);
                     await order.SetShippingMethodAsync(model.ShippingMethod, shippingRateAttempt.Result!.Option);
                 }
@@ -175,8 +175,8 @@ public class CheckoutSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
                     .SetPaymentMethodAsync(model.PaymentMethod);
                 await commerceApi.SaveOrderAsync(order);

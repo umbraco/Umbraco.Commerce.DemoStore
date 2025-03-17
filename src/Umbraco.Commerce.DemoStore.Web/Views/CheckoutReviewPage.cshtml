@@ -1,9 +1,15 @@
-﻿@using Umbraco.Commerce.Extensions;
+﻿@using Umbraco.Commerce.DemoStore
+@using Umbraco.Commerce.Extensions;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CheckoutReviewPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
 
-    var order = await Model.Order;
+    var order = await Model.GetCurrentOrderAsync();
+    
+    var cartPage = Model.GetCartPage();
+    var checkoutPage = Model.GetCheckoutPage()!;
+    var nextStep = Model.GetNextStep();
+    var prevStep = Model.GetPreviousStep();
 }
 
 @await Html.PartialAsync("OrderInformationSummary")
@@ -18,17 +24,17 @@
     </div>
 
     <div class="flex flex-col-reverse items-center justify-between mt-8 md:flex-row">
-        @if (Model.PreviousStep != null)
+        @if (prevStep != null)
         {
-            <div><a href="@(Model.PreviousStep.Url())" class="text-@(Model.CheckoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to @(Model.PreviousStep.Name)</a></div>
+            <div><a href="@(prevStep.Url())" class="text-@(checkoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to @(prevStep.Name)</a></div>
         }
         else
         {
-            <div><a href="@(Model.HomePage.CartPage.Url())" class="text-@(Model.CheckoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to Cart</a></div>
+            <div><a href="@(cartPage.Url())" class="text-@(checkoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to Cart</a></div>
         }
         <div class="mb-4 w-full md:mb-0 md:w-auto text-center">
-            <div id="continue-disabled" class="bg-gray-200 text-white px-4 py-4 w-full rounded cursor-not-allowed">Continue to @(Model.NextStep.Name)</div>
-            <button id="continue" class="bg-@(Model.CheckoutPage.PrimaryColor) text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit" style="display: none;">Continue to @(Model.NextStep.Name)</button>
+            <div id="continue-disabled" class="bg-gray-200 text-white px-4 py-4 w-full rounded cursor-not-allowed">Continue to @(nextStep.Name)</div>
+            <button id="continue" class="bg-@(checkoutPage.PrimaryColor) text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit" style="display: none;">Continue to @(nextStep.Name)</button>
         </div>
     </div>
 }

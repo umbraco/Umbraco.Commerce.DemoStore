@@ -23,7 +23,7 @@ public class ProductApiController(
     IPublishedContentQuery publishedContentQuery)
     : Controller
 {
-    [HttpPost()]
+    [HttpPost]
     [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof(ProductVariantDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProductVariant([FromBody] GetProductVariantDto model)
@@ -36,16 +36,16 @@ public class ProductApiController(
         }
 
         // Get the store from the product node
-        StoreReadOnly? store = productNode.GetStore();
+        var store = productNode.GetStore()!;
 
         // Find the variant with the matching attributes
-        ProductVariantItem? variant = productNode.Variants.FindByAttributes(model.Attributes);
+        var variant = productNode.Variants.FindByAttributes(model.Attributes);
 
         // If we have a variant, map it's data to our DTO
         if (variant != null)
         {
             // Convert variant into product snapshot
-            IProductSnapshot? snapshot = await productService.GetProductAsync(store.Id, productNode.Key.ToString("D"), variant.Content.Key.ToString("D"), Thread.CurrentThread.CurrentCulture.Name);
+            var snapshot = await productService.GetProductAsync(store.Id, productNode.Key.ToString("D"), variant.Content.Key.ToString("D"), Thread.CurrentThread.CurrentCulture.Name);
             if (snapshot != null)
             {
                 var multiVariantContent = variant.Content as ProductMultiVariant;

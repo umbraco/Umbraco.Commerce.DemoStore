@@ -33,8 +33,8 @@ public class CartSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order? order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
                     .AddProductAsync(postModel.ProductReference, postModel.ProductVariantReference, 1);
                 await commerceApi.SaveOrderAsync(order);
@@ -60,11 +60,11 @@ public class CartSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow);
 
-                foreach (OrderLineQuantityDto orderLine in postModel.OrderLines)
+                foreach (var orderLine in postModel.OrderLines)
                 {
                     await order.WithOrderLine(orderLine.Id)
                         .SetQuantityAsync(orderLine.Quantity);
@@ -93,8 +93,8 @@ public class CartSurfaceController(
         {
             await commerceApi.Uow.ExecuteAsync(async uow =>
             {
-                StoreReadOnly store = CurrentPage!.GetStore()!;
-                Order order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
+                var store = CurrentPage!.GetStore()!;
+                var order = await commerceApi.GetOrCreateCurrentOrderAsync(store.Id)!
                     .AsWritableAsync(uow)
                     .RemoveOrderLineAsync(postModel.OrderLineId);
                 await commerceApi.SaveOrderAsync(order);

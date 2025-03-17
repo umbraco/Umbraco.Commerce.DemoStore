@@ -1,7 +1,5 @@
 ﻿@using Umbraco.Commerce.DemoStore.Models;
-@using Umbraco.Extensions;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IProductGroupComp>
-
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IProductGroupPage>
 <a href="@(Model.Url())" class="block relative bg-gray-600 text-white hover:bg-gray-800">
     @if (Model.Image != null)
     {

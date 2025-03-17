@@ -15,7 +15,7 @@ public class ProductListByCollectionViewComponent(
     {
         var p = Request.Query.GetInt("p", 1);
         var ps = Request.Query.GetInt("ps", 12);
-
-        return View("PagedProductList", GetPagedProducts(collectionId, null, p, ps));
+        var model = GetPagedProducts(collectionId, null, p, ps);
+        return View("PagedProductList", model);
     }
 }

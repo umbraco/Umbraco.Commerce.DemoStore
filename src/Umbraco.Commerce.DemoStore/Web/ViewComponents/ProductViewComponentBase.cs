@@ -15,9 +15,9 @@ public abstract class ProductViewComponentBase(
     IUmbracoContextFactory umbracoContextFactory)
     : ViewComponent
 {
-    protected PagedResult<ProductPage> GetPagedProducts(int? collectionId, string category, int page, int pageSize)
+    protected PagedResult<IProductPage> GetPagedProducts(int? collectionId, string category, int page, int pageSize)
     {
-        if (examineManager.TryGetIndex("ExternalIndex", out IIndex? index))
+        if (examineManager.TryGetIndex("ExternalIndex", out var index))
         {
             var q = $"+(__NodeTypeAlias:{ProductPage.ModelTypeAlias} __NodeTypeAlias:{MultiVariantProductPage.ModelTypeAlias})";
 
@@ -31,25 +31,25 @@ public abstract class ProductViewComponentBase(
                 q += $" +categoryAliases:\"{category}\"";
             }
 
-            ISearcher? searcher = index.Searcher;
-            IBooleanOperation? query = searcher.CreateQuery().NativeQuery(q);
-            ISearchResults? results = query.OrderBy(new SortableField("name", SortType.String))
+            var searcher = index.Searcher;
+            var query = searcher.CreateQuery().NativeQuery(q);
+            var results = query.OrderBy(new SortableField("name", SortType.String))
                 .Execute(QueryOptions.SkipTake(pageSize * (page - 1), pageSize));
             var totalResults = results.TotalItemCount;
 
-            using UmbracoContextReference ctx = umbracoContextFactory.EnsureUmbracoContext();
+            using var ctx = umbracoContextFactory.EnsureUmbracoContext();
 
-            IOrderedEnumerable<ProductPage> items = results.ToPublishedSearchResults(ctx.UmbracoContext.Content)
+            var items = results.ToPublishedSearchResults(ctx.UmbracoContext.Content)
                 .Select(x => x.Content)
-                .OfType<ProductPage>()
+                .OfType<IProductPage>()
                 .OrderBy(x => x.SortOrder);
 
-            return new PagedResult<ProductPage>(totalResults, page, pageSize)
+            return new PagedResult<IProductPage>(totalResults, page, pageSize)
             {
                 Items = items
             };
         }
 
-        return new PagedResult<ProductPage>(0, page, pageSize);
+        return new PagedResult<IProductPage>(0, page, pageSize);
     }
 }

@@ -1,48 +1,59 @@
-﻿@using Umbraco.Commerce.DemoStore.Models;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOrderReviewPage>
+﻿@using Umbraco.Commerce.Core.Api
+@using Umbraco.Commerce.DemoStore
+@using Umbraco.Commerce.DemoStore.Models;
+@inject IUmbracoCommerceApi UmbracoCommerceApi
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ICheckoutStepPage>
 @{
-    var order = await Model.Order;
-    var paymentCountry = await Model.PaymentCountry;
-    var shippingCountry = await Model.ShippingCountry;
+    var order = await Model.GetCurrentOrderAsync();
+    if (order != null)
+    {
+        var paymentCountry = order.PaymentInfo.CountryId.HasValue
+            ? await UmbracoCommerceApi.GetCountryAsync(order.PaymentInfo.CountryId.Value)
+            : null;
+        
+        var shippingCountry = order.ShippingInfo.ShippingMethodId.HasValue
+            ? await UmbracoCommerceApi.GetShippingMethodAsync(order.ShippingInfo.ShippingMethodId.Value)
+            : null;
+        
+        <div class="border border-gray-300 p-6 rounded mb-8">
+            <h3 class="text-xl font-medium mb-4">Contact Information</h3>
+            <p class="mb-4">@order.CustomerInfo.Email</p>
+
+            <div class="flex w-full -mx-2">
+                <div class="flex-1 mx-2">
+                    <h3 class="text-xl font-medium mb-4">Billing Information</h3>
+                    <p class="">
+                        <strong>@order.CustomerInfo.FirstName @order.CustomerInfo.LastName</strong>
+                        <br />
+                        @Html.Raw(string.Join("<br />", new string[] {
+                                order.Properties["billingAddressLine1"],
+                                order.Properties["billingAddressLine2"],
+                                order.Properties["billingCity"],
+                                paymentCountry?.Name ?? "",
+                                order.Properties["billingZipCode"]
+                            }
+                            .Where(x => !x.IsNullOrWhiteSpace())
+                            .Select(Html.Encode)))
+                    </p>
+                </div>
+                <div class="flex-1 mx-2">
+                    <h3 class="text-xl font-medium mb-4">Shipping Information</h3>
+                    <p class="">
+                        <strong>@order.Properties["shippingFirstName"] @order.Properties["shippingLastName"]</strong>
+                        <br />
+                        @Html.Raw(string.Join("<br />", new string[] {
+                                order.Properties["shippingAddressLine1"],
+                                order.Properties["shippingAddressLine2"],
+                                order.Properties["shippingCity"],
+                                shippingCountry?.Name ?? "",
+                                order.Properties["shippingZipCode"]
+                            }
+                            .Where(x => !x.IsNullOrWhiteSpace())
+                            .Select(Html.Encode)))
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    }
 }
-
-<div class="border border-gray-300 p-6 rounded mb-8">
-    <h3 class="text-xl font-medium mb-4">Contact Information</h3>
-    <p class="mb-4">@order.CustomerInfo.Email</p>
-
-    <div class="flex w-full -mx-2">
-        <div class="flex-1 mx-2">
-            <h3 class="text-xl font-medium mb-4">Billing Information</h3>
-            <p class="">
-                <strong>@order.CustomerInfo.FirstName @order.CustomerInfo.LastName</strong>
-                <br />
-                @Html.Raw(string.Join("<br />", new string[] {
-                    order.Properties["billingAddressLine1"],
-                    order.Properties["billingAddressLine2"],
-                    order.Properties["billingCity"],
-                    paymentCountry.Name,
-                    order.Properties["billingZipCode"]
-                }
-                .Where(x => !x.IsNullOrWhiteSpace())
-                .Select(Html.Encode)))
-            </p>
-        </div>
-        <div class="flex-1 mx-2">
-            <h3 class="text-xl font-medium mb-4">Shipping Information</h3>
-            <p class="">
-                <strong>@order.Properties["shippingFirstName"] @order.Properties["shippingLastName"]</strong>
-                <br />
-                @Html.Raw(string.Join("<br />", new string[] {
-                    order.Properties["shippingAddressLine1"],
-                    order.Properties["shippingAddressLine2"],
-                    order.Properties["shippingCity"],
-                    shippingCountry.Name,
-                    order.Properties["shippingZipCode"]
-                }
-                .Where(x => !x.IsNullOrWhiteSpace())
-                .Select(Html.Encode)))
-            </p>
-        </div>
-    </div>
-
-</div>

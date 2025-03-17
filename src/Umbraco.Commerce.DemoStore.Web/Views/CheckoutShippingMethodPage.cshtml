@@ -1,23 +1,31 @@
-﻿@using Umbraco.Commerce.Extensions;
+﻿@using Umbraco.Commerce.Core.Api
+@using Umbraco.Commerce.DemoStore
+@using Umbraco.Commerce.Extensions
+@inject IUmbracoCommerceApi UmbracoCommerceApi
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Commerce.DemoStore.Models.CheckoutShippingMethodPage>
 @{
     Layout = "CheckoutStepPage.cshtml";
 
-    var order = await Model.Order;
-    var shippingCountry = await Model.ShippingCountry;
+    var store = Model.GetStore();
+    var order = await Model.GetCurrentOrderAsync();
+    var shippingCountry = order?.ShippingInfo.CountryId.HasValue ?? false
+        ? await UmbracoCommerceApi.GetCountryAsync(order.ShippingInfo.CountryId.Value)
+        : null;
     var selectedShippingMethodId = order!.ShippingInfo.ShippingMethodId ?? (shippingCountry != null && shippingCountry.DefaultShippingMethodId.HasValue
         ? shippingCountry.DefaultShippingMethodId.Value
         : null);
     var selectedShippingOptionId = selectedShippingMethodId.HasValue && order.ShippingInfo.ShippingMethodId.HasValue && selectedShippingMethodId == order.ShippingInfo.ShippingMethodId
         ? order.ShippingInfo.ShippingOption?.Id
         : null;
-    var shippingMethods = await Model.ShippingMethods.Value.ToListAsync();
+    var shippingMethods = await UmbracoCommerceApi.GetShippingMethodsAsync(store!.Id).ToListAsync();
     var shippingMethodsRates = await Task.WhenAll(shippingMethods.Select(sm => sm.TryCalculateRatesAsync()));
+    
+    var nextStep = Model.GetNextStep();
 }
 
 @using (Html.BeginUmbracoForm("UpdateOrderShippingMethod", "CheckoutSurface"))
 {
-    <input type="hidden" name="nextStep" value="@(Model.NextStep?.Key)" />
+    <input type="hidden" name="nextStep" value="@(nextStep?.Key)" />
 
     <h3 class="text-xl font-medium mb-4">Shipping Method</h3>
     <ul class="border border-gray-300 rounded">

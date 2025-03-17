@@ -15,7 +15,7 @@
         }
     </div>
 
-    @await Html.PartialAsync("Pagination", Model.Cast<IPublishedContent, object>())
+    @await Html.PartialAsync("Pagination", Model.CastItems<IPublishedContent, object>())
 }
 else
 {

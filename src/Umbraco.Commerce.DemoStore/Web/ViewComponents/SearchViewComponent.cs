@@ -28,12 +28,12 @@ public class SearchViewComponent(
 
         var result = new PagedResult<IPublishedContent>(0, 1, ps);
 
-        if (!q.IsNullOrWhiteSpace() && examineManager.TryGetIndex("ExternalIndex", out IIndex? index))
+        if (!q.IsNullOrWhiteSpace() && examineManager.TryGetIndex("ExternalIndex", out var index))
         {
             var searchTerms = Tokenize(q).ToList();
             var searchFields = new[] { "nodeName", "metaTitle", "description", "shortDescription", "longDescription", "metaDescription", "bodyText", "content" };
 
-            ISearcher? searcher = index.Searcher;
+            var searcher = index.Searcher;
             var query = new StringBuilder();
 
             query.Append("+__IndexType:content "); // Must be content
@@ -43,7 +43,7 @@ public class SearchViewComponent(
             // Ensure page contains all search terms in some way
             foreach (var term in searchTerms)
             {
-                StringBuilder groupedOr = searchFields.Aggregate(new StringBuilder(), (innerQuery, searchField) =>
+                var groupedOr = searchFields.Aggregate(new StringBuilder(), (innerQuery, searchField) =>
                 {
                     var format = searchField.Contains(" ") ? @"{0}:""{1}"" " : "{0}:{1}* ";
                     innerQuery.AppendFormat(format, searchField, term);
@@ -64,11 +64,11 @@ public class SearchViewComponent(
                 }
             }
 
-            IBooleanOperation? examineQuery = searcher.CreateQuery().NativeQuery(query.ToString());
-            ISearchResults? results = examineQuery.Execute(new QueryOptions(ps * (p - 1), ps * p));
+            var examineQuery = searcher.CreateQuery().NativeQuery(query.ToString());
+            var results = examineQuery.Execute(new QueryOptions(ps * (p - 1), ps * p));
             var totalResults = results.TotalItemCount;
 
-            IEnumerable<IPublishedContent> items = results.ToPublishedSearchResults(umbracoContextAccessor.GetRequiredUmbracoContext().Content)
+            var items = results.ToPublishedSearchResults(umbracoContextAccessor.GetRequiredUmbracoContext().Content)
                 .Select(x => x.Content);
 
             result = new PagedResult<IPublishedContent>(totalResults, p, ps)
