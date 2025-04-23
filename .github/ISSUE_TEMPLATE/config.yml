@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔗 Submit an issue
+    url: https://github.com/umbraco/Umbraco.Commerce.Issues/issues/new/choose
+    about: Please submit all issues related to Umbraco Commerce and related projects here.
