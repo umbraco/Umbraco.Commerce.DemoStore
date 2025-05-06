@@ -7,8 +7,10 @@
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.0" />
-        <PackageReference Include="Umbraco.Cms" Version="13.1.1" />
-        <PackageReference Include="Umbraco.Commerce" Version="13.1.14" />
+        <PackageReference Include="Umbraco.Cms" Version="13.8.0" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.8.0" />
+        <PackageReference Include="Umbraco.Commerce" Version="13.2.2" />
+        <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="13.2.2" />
     </ItemGroup>
 
     <ItemGroup>
