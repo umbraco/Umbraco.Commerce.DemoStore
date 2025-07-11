@@ -3,7 +3,6 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ICheckoutStepPage>
 @{
     var cartPage = Model.GetCartPage()!;
-    var checkoutPage = Model.GetCheckoutPage()!;
     var previousStep = Model.GetPreviousStep();
     var nextStep = Model.GetNextStep();
 }
@@ -12,17 +11,17 @@
     {
         if (previousStep != null)
         {
-            <div><a href="@(previousStep.Url())" class="text-@(checkoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to @(previousStep.Name)</a></div>
+            <div><a href="@(previousStep.Url())" class="uc-text-color hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to @(previousStep.Name)</a></div>
         }
         else
         {
-            <div><a href="@(cartPage.Url())" class="text-@(checkoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to Cart</a></div>
+            <div><a href="@(cartPage.Url())" class="uc-text-color hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to Cart</a></div>
         }
     }
     @if (nextStep != null)
     {
         <div class="mb-4 w-full md:mb-0 md:w-auto">
-            <button class="bg-@(checkoutPage.PrimaryColor) text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit">Continue to @(nextStep.Name)</button>
+            <button class="uc-bg-color text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit">Continue to @(nextStep.Name)</button>
         </div>
     }
 </div>

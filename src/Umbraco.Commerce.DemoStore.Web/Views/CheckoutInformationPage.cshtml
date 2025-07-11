@@ -19,7 +19,7 @@
         @using (Html.BeginUmbracoForm("ApplyDiscountOrGiftCardCode", "CheckoutSurface", null, new { @class = "flex w-full m-0 frm-secondary" }))
         {
             <input type="text" name="code" placeholder="Discount / Gift Card Code" class="flex-1 py-2 px-4 border rounded placeholder-gray-700" />
-            <button class="ml-4 bg-@(checkoutPage.PrimaryColor) text-white px-4 rounded hover:bg-gray-900" type="submit">Apply</button>
+            <button class="ml-4 uc-bg-color text-white px-4 rounded hover:bg-gray-900" type="submit">Apply</button>
         }
 
         @Html.ValidationMessage("code", new { @class = "block text-red-900 bg-red-300 rounded p-2 mt-4" })

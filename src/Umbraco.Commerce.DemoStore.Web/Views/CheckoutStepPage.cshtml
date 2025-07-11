@@ -9,6 +9,7 @@
 @{
     Layout = "Layout.cshtml";
     
+    var store = Model.GetStore();
     var order = await Model.GetCurrentOrderAsync();
     var paymentMethodId = order?.PaymentInfo?.PaymentMethodId;
     var paymentMethod = paymentMethodId.HasValue
@@ -21,6 +22,8 @@
     
     var checkoutPage = Model.GetCheckoutPage();
     var checkoutStepPages = checkoutPage?.Children().OfType<ICheckoutStepPage>().ToList() ?? [];
+
+    var storeImageUrl = store?.LogoImageUrl;
 }
 
 @section head {
@@ -41,10 +44,10 @@
     <!-- Layout -->
     <div class="relative flex flex-col min-h-full max-w-6xl mx-auto lg:flex-row-reverse lg:flex-row">
 
-        @if (checkoutPage.Logo != null)
+        @if (!string.IsNullOrWhiteSpace(storeImageUrl))
         {
             <div class="bg-white p-8 text-center lg:hidden">
-                <a href="/"><img src="@(checkoutPage.Logo.GetCropUrl(200))" class="inline-block" /></a>
+                <a href="/"><img src="@(storeImageUrl.GetCropUrl(200))" class="inline-block" /></a>
             </div>
         }
 
@@ -157,13 +160,13 @@
             <div class="hidden lg:block">
 
                 <div class="bg-white p-8 text-center">
-                    @if (checkoutPage.HasValue("logo"))
+                    @if (!string.IsNullOrWhiteSpace(storeImageUrl))
                     {
-                        <a href="/"><img src="@(checkoutPage.Value<IPublishedContent>("logo").GetCropUrl(200))" class="inline-block" /></a>
+                        <a href="/"><img src="@(storeImageUrl.GetCropUrl(200))" class="inline-block" /></a>
                     }
                     else
                     {
-                        <h1 class="text-3xl font-bold"><a href="/">Blendid.</a></h1>
+                        <h1 class="text-3xl font-bold"><a href="/">@(store?.Name ?? "Unknown").</a></h1>
                     }
                 </div>
 
@@ -180,7 +183,7 @@
                                     }
                                     @if (!passedStep && item.Step.Id != Model.Id && Model.CanGoBack)
                                     {
-                                        <a href="@item.Step.Url()" class="hover:text-@(checkoutPage.PrimaryColor)">@(item.Step.ShortStepName ?? item.Step.Name)</a>
+                                        <a href="@item.Step.Url()" class="hover:uc-text-color">@(item.Step.ShortStepName ?? item.Step.Name)</a>
                                     }
                                     else
                                     {
