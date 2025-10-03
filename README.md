@@ -36,7 +36,7 @@ Once you have all the files downloaded you can open the `Umbraco.Commerce.DemoSt
 *Optional* - Import `.\db\UmbracoCommerceDemoStore_v16.0.0.bacpac` using Data-tier application and update `ConnectionStrings` in `appsettings.json` to be similar like this:
 ```json
   "ConnectionStrings": {
-    "umbracoDbDSN": "Server=.;Database=UmbracoCommerceDemoStore_v13.1.0;User Id={your_db_username};Password={your_db_password};TrustServerCertificate=true;",
+    "umbracoDbDSN": "Server=.;Database=UmbracoCommerceDemoStore_v16.0.0;User Id={your_db_username};Password={your_db_password};TrustServerCertificate=true;",
     "umbracoDbDSN_ProviderName": "Microsoft.Data.SqlClient"
   }
 ```
