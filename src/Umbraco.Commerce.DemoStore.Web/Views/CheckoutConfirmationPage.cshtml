@@ -4,14 +4,13 @@
     Layout = "CheckoutStepPage.cshtml";
 
     var order = await Model.GetCurrentOrderAsync();
-    var checkoutPage = Model.GetCheckoutPage();
 }
 
 <div class="border border-gray-300 p-6 rounded mb-8 text-center">
     <span class="inline-flex items-center justify-center text-6xl border-2 border-green-500 rounded-full mb-4 w-24 h-24"><i class="fa fa-check text-green-500"></i></span>
     <h3 class="text-xl font-medium mb-4">Thank you for your order #@(order?.OrderNumber ?? order?.CartNumber ?? "")</h3>
     <p class="mb-4">A confirmation email has been sent to <strong>@(order?.CustomerInfo.Email ?? "your orders email address")</strong></p>
-    <p><a href="/" class="inline-block bg-@(checkoutPage!.PrimaryColor) text-white px-4 py-4 rounded hover:bg-gray-900">Return to Store</a></p>
+    <p><a href="/" class="inline-block uc-bg-color text-white px-4 py-4 rounded hover:bg-gray-900">Return to Store</a></p>
 </div>
 
 @await Html.PartialAsync("OrderInformationSummary")

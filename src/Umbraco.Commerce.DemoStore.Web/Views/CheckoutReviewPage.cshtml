@@ -26,15 +26,15 @@
     <div class="flex flex-col-reverse items-center justify-between mt-8 md:flex-row">
         @if (prevStep != null)
         {
-            <div><a href="@(prevStep.Url())" class="text-@(checkoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to @(prevStep.Name)</a></div>
+            <div><a href="@(prevStep.Url())" class="uc-text-color hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to @(prevStep.Name)</a></div>
         }
         else
         {
-            <div><a href="@(cartPage.Url())" class="text-@(checkoutPage.PrimaryColor) hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to Cart</a></div>
+            <div><a href="@(cartPage.Url())" class="uc-text-color hover:text-gray-900 hover:underline"><i class="fa fa-angle-left"></i> Return to Cart</a></div>
         }
         <div class="mb-4 w-full md:mb-0 md:w-auto text-center">
             <div id="continue-disabled" class="bg-gray-200 text-white px-4 py-4 w-full rounded cursor-not-allowed">Continue to @(nextStep.Name)</div>
-            <button id="continue" class="bg-@(checkoutPage.PrimaryColor) text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit" style="display: none;">Continue to @(nextStep.Name)</button>
+            <button id="continue" class="uc-bg-color text-white px-4 py-4 w-full rounded hover:bg-gray-900" type="submit" style="display: none;">Continue to @(nextStep.Name)</button>
         </div>
     </div>
 }

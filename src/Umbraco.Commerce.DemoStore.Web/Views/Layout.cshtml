@@ -15,6 +15,8 @@
             ? $"{homePage.SiteName} - {homePage.SiteDescription}" 
             : $"{page.Name} | {homePage.SiteName}";
     }
+    
+    var themeColor = Model.GetStore()?.ThemeColor ?? "#000000";
 }
 <html lang="en">
 <head>
@@ -30,6 +32,14 @@
     <style>
         .toastify-center {
             max-width: calc(100% - 30px);
+        }
+        .uc-text-color,
+        .hover\:uc-text-color:hover {
+            color: @(themeColor);
+        }
+        .uc-bg-color,
+        .hover\:uc-bg-color:hover {
+            background-color: @(themeColor);
         }
     </style>
     <link href="/css/gilroy.css" rel="stylesheet">
