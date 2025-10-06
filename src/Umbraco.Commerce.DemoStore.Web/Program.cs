@@ -15,14 +15,17 @@ WebApplication app = builder.Build();
 
 await app.BootUmbracoAsync();
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
- app.Use(async (context, next) =>
- {
-     context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
-     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
-     await next();
- });
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    await next();
+});
 
 FlurlHttp.Clients.WithDefaults(cfg => cfg.OnError(async (req) =>
 {
@@ -50,5 +53,5 @@ app.UseUmbraco()
         u.UseBackOfficeEndpoints();
         u.UseWebsiteEndpoints();
     });
-    
+
 await app.RunAsync();
