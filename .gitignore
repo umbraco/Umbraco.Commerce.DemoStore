@@ -493,3 +493,8 @@ $RECYCLE.BIN/
 /src/Umbraco.Commerce.DemoStore.Web/appsettings-schema.Umbraco.Cms.json
 
 .idea
+/src/Umbraco.Commerce.DemoStore.Web/appsettings-schema.Umbraco.Cms.json
+/src/Umbraco.Commerce.DemoStore.Web/appsettings-schema.Umbraco.Licenses.json
+/src/Umbraco.Commerce.DemoStore.Web/appsettings.Development.json
+/src/Umbraco.Commerce.DemoStore/umbraco-package-schema.json
+/src/Umbraco.Commerce.DemoStore.Web/umbraco-package-schema.json
