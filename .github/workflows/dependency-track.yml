@@ -1,0 +1,70 @@
+name: Build and Upload SBOMs to Dependency-Track
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # .NET SBOM
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore .NET dependencies
+        run: dotnet restore
+
+      - name: Install CycloneDX for .NET
+        run: dotnet tool install --global CycloneDX
+
+      - name: Generate SBOM for .NET
+        run: |
+          mkdir -p ./sbom
+          SOLUTION_FILE=$(find . -name "*.sln" | head -n 1)
+          if [ -z "$SOLUTION_FILE" ]; then
+            PROJECT_FILE=$(find . -name "*.csproj" -o -name "*.fsproj" -o -name "*.vbproj" | head -n 1)
+            if [ -z "$PROJECT_FILE" ]; then
+              echo "No solution or project files found!"
+              exit 1
+            else
+              TARGET_FILE="$PROJECT_FILE"
+            fi
+          else
+            TARGET_FILE="$SOLUTION_FILE"
+          fi
+          dotnet-CycloneDX "$TARGET_FILE" --output ./sbom --filename bom-dotnet.xml --output-format Xml --enable-github-licenses --github-bearer-token ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract major version from Umbraco.Commerce dependency
+      - name: Extract Umbraco.Commerce major version
+        id: extract-version
+        run: |
+          PROJECT_FILE="src/Umbraco.Commerce.DemoStore.Web/Umbraco.Commerce.DemoStore.Web.csproj"
+          COMMERCE_VERSION=$(grep -oP 'PackageReference Include="Umbraco.Commerce" Version="\K[^"]+' "$PROJECT_FILE")
+          MAJOR_VERSION=$(echo "$COMMERCE_VERSION" | grep -oP '^\d+')
+          echo "commerce_version=$COMMERCE_VERSION"
+          echo "major_version=$MAJOR_VERSION"
+          echo "major_version=$MAJOR_VERSION" >> $GITHUB_OUTPUT
+
+      # Upload .NET SBOM
+      - name: Upload .NET SBOM to Dependency-Track
+        env:
+          DTRACK_URL: ${{ secrets.DTRACK_URL }}
+          DTRACK_API_KEY: ${{ secrets.DTRACK_API_KEY }}
+        run: |
+          curl --fail-with-body -v -i -w "\nHTTP Status: %{http_code}\n" \
+            -X POST "$DTRACK_URL" \
+            -H "X-Api-Key: $DTRACK_API_KEY" \
+            -H "accept: application/json" \
+            -H "Content-Type: multipart/form-data" \
+            -F "autoCreate=true" \
+            -F "projectName=${{ github.event.repository.name }}" \
+            -F "projectVersion=${{ steps.extract-version.outputs.major_version }}" \
+            -F "bom=@./sbom/bom-dotnet.xml"
