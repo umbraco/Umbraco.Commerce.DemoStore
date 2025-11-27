@@ -3,7 +3,7 @@
 Welcome to the Umbraco Commerce Demo Store, an example webstore setup using Umbraco Commerce in [Umbraco](https://umbraco.com).
 
 ![Screenshot](assets/screenshot.png)
-
+ 
 ## About this Demo
 
 In this demo you will find a fully configured basic webstore using Umbraco Commerce on Umbraco. The store is based around a fictitious tea retailer called Blendid which lists a variety of teas from multiple companies and also displays them in categories. Where products have multiple pricing options, variant nodes are used to provide buying options for those particular product choices.

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <EnablePackageValidation>false</EnablePackageValidation>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="16.0.0" />
-    <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="16.0.0" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="16.1.0" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="16.1.0" />
-    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="16.1.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="17.0.0" />
+    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="17.0.0" />
   </ItemGroup>
 
 </Project>

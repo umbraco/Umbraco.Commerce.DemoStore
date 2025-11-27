@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <EnablePackageValidation>false</EnablePackageValidation>
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -9,8 +9,8 @@
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Umbraco.Cms" Version="16.0.0" />
-        <PackageReference Include="Umbraco.Commerce" Version="16.1.0" />
+        <PackageReference Include="Umbraco.Cms" Version="17.0.0" />
+        <PackageReference Include="Umbraco.Commerce" Version="17.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,9 +23,6 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
-        <RazorCompileOnBuild>false</RazorCompileOnBuild>
-        <RazorCompileOnPublish>false</RazorCompileOnPublish>
         <UserSecretsId>860d1774-797c-4384-8da4-362572cae7ed</UserSecretsId>
     </PropertyGroup>
 </Project>
