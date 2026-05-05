@@ -9,8 +9,14 @@
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Umbraco.Cms" Version="17.0.0" />
-        <PackageReference Include="Umbraco.Commerce" Version="17.0.0" />
+        <PackageReference Include="Umbraco.Cms" Version="17.3.5" />
+        <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="17.3.5" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="17.3.5" />
+        <PackageReference Include="Umbraco.Commerce" Version="17.1.3" />
+        <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="17.1.3" />
+        <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="17.1.3" />
+        <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="17.1.3" />
+        <PackageReference Include="Umbraco.Licenses" Version="17.0.2" />
     </ItemGroup>
 
     <ItemGroup>
