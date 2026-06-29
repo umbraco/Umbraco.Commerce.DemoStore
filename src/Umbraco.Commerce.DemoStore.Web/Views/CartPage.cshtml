@@ -44,7 +44,7 @@
                 @foreach (var item in order.OrderLines.Select((ol, i) => new { OrderLine = ol, Index = i }))
                 {
                     var node = Umbraco.Content(Guid.Parse(item.OrderLine.ProductReference))!;
-                    var url = node.ContentType.Alias == ProductVariant.ModelTypeAlias ? node.Parent!.Url() : node.Url();
+                    var url = node.ContentType.Alias == ProductVariant.ModelTypeAlias ? node.Parent()!.Url() : node.Url();
 
                     <tr class="block border-b py-2 md:table-row">
                         <td class="block py-4 md:table-cell">

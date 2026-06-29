@@ -111,7 +111,7 @@
             @using (Html.BeginUmbracoForm("AddToCart", "CartSurface"))
             {
                 <div class="py-10">
-                    <h1 class="text-2xl font-bold">@Model.Parent.Name - @Model.Name</h1>
+                    <h1 class="text-2xl font-bold">@Model.Parent()?.Name - @Model.Name</h1>
                     @{
                         await RenderVariantsAsync(Model);
                     }
