@@ -21,7 +21,7 @@ To get started with the Umbraco Commerce demo store you will need:
 * .NET SDK 10.0.100 or newer.
 * Optionally, an IDE such as Visual Studio, Visual Studio Code or JetBrains Rider. You can also run the site from the command line.
 
-This demo store supports two database editions. By default it uses a `sqlite` database, but it also comes with a `.\db\UmbracoCommerceDemoStore_v17.0.0.bacpac` file which is exported from a SQL Server 2022.
+This demo store supports two database editions. By default it uses a `sqlite` database, but it also comes with a `.\db\UmbracoCommerceDemoStore_v18.2.2.bacpac` file which is exported from a SQL Server 2022.
 
 `sqlite` edition is fine if you just want to look around the store, but if you want to mess around, SQL Server edition is less likely to lock up when things go wrong.
 
@@ -43,10 +43,10 @@ dotnet run --project src/Umbraco.Commerce.DemoStore.Web
 
 The site then runs at `https://localhost:44322`.
 
-*Optional* - Import `.\db\UmbracoCommerceDemoStore_v17.0.0.bacpac` using Data-tier application (or `sqlpackage /a:Import`) and update `ConnectionStrings` in `appsettings.json` to be similar like this:
+*Optional* - Import `.\db\UmbracoCommerceDemoStore_v18.2.2.bacpac` using Data-tier application (or `sqlpackage /a:Import`) and update `ConnectionStrings` in `appsettings.json` to be similar like this:
 ```json
   "ConnectionStrings": {
-    "umbracoDbDSN": "Server=.;Database=UmbracoCommerceDemoStore_v17.0.0;User Id={your_db_username};Password={your_db_password};TrustServerCertificate=true;",
+    "umbracoDbDSN": "Server=.;Database=UmbracoCommerceDemoStore_v18.2.2;User Id={your_db_username};Password={your_db_password};TrustServerCertificate=true;",
     "umbracoDbDSN_ProviderName": "Microsoft.Data.SqlClient"
   }
 ```

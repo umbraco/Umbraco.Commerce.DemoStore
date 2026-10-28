@@ -20,7 +20,7 @@ Do every step. Skipping the database steps leaves the shipped databases behind t
    - Start a throwaway SQL Server 2022 container (`mcr.microsoft.com/mssql/server:2022-latest`) on a free port.
    - `sqlpackage /a:Import` the current bacpac.
    - Run the site against it via env overrides `ConnectionStrings__umbracoDbDSN=<sql conn>` and `ConnectionStrings__umbracoDbDSN_ProviderName=Microsoft.Data.SqlClient`. Confirm the same log lines as step 3. Stop the site.
-   - `sqlpackage /a:Export` to a file named for the new version, `git rm` the old bacpac, remove the container.
+   - `sqlpackage /a:Export` to a file named for the new version. Only after the export succeeds: `git rm` the old bacpac (doing it first deletes `db/` and the export fails), then remove the container.
 5. Update every bacpac file name and database name in `README.md`.
 6. PR description: list version changes, migrations applied, and the bacpac rename.
 
