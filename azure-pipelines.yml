@@ -1,0 +1,37 @@
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+# The demo store isn't released as a package, so this pipeline only generates its SBOM (license check)
+# and uploads it to Dependency-Track, using the shared Umbraco.Build SBOM template.
+trigger:
+  branches:
+    include:
+      - main
+      - support/*
+
+pr: none
+
+resources:
+  repositories:
+    - repository: build
+      type: github
+      name: umbraco/Umbraco.Build
+      endpoint: umbraco
+
+variables:
+  - group: dependency-track
+  - name: productName
+    value: Umbraco.Commerce.DemoStore
+  - name: solution
+    value: Umbraco.Commerce.DemoStore.sln
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: self
+
+  - template: devops/templates/generate-sbom-template.yml@build
+    parameters:
+      # No version.json, so upload to project Umbraco.Commerce.DemoStore with the Umbraco Commerce
+      # major this branch targets as the version
+      sbom_project_version: '18'
