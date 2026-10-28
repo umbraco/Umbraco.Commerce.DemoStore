@@ -3,6 +3,8 @@
 Welcome to the Umbraco Commerce Demo Store, an example webstore setup using Umbraco Commerce in [Umbraco](https://umbraco.com).
 
 ![Screenshot](assets/screenshot.png)
+
+> This is the demo for the latest version of Umbraco Commerce. Demos for older versions live on the `support/{major}.x` branches, for example [`support/17.x`](https://github.com/umbraco/Umbraco.Commerce.DemoStore/tree/support/17.x).
  
 ## About this Demo
 
@@ -16,16 +18,16 @@ In the back office you'll find a suggested content structure for a working Umbra
 
 To get started with the Umbraco Commerce demo store you will need:
 
-* Visual Studio 2019.
-* .NET Core SDK 8.0.100 or newer.
+* .NET SDK 10.0.100 or newer.
+* Optionally, an IDE such as Visual Studio, Visual Studio Code or JetBrains Rider. You can also run the site from the command line.
 
-This demo store supports two database editions. By default it uses a `sqlite` database, but it also comes with a `.\db\UmbracoCommerceDemoStore_v16.0.0.bacpac` file which is exported from a SQL Server 2022.
+This demo store supports two database editions. By default it uses a `sqlite` database, but it also comes with a `.\db\UmbracoCommerceDemoStore_v17.0.0.bacpac` file which is exported from a SQL Server 2022.
 
-`sqlite` edition is fine if you just want to look around the store, but if you want to mess around, SQL Server edition is less likely be locked up when thing goes wrong.
+`sqlite` edition is fine if you just want to look around the store, but if you want to mess around, SQL Server edition is less likely to lock up when things go wrong.
 
 ## Getting Started
 
-Clone or download this repository locally (it includes all the files you will need including a fully configured SQLlite database)
+Clone or download this repository locally (it includes all the files you will need including a fully configured SQLite database)
 
 ````
 git clone https://github.com/umbraco/Umbraco.Commerce.DemoStore.git
@@ -33,15 +35,25 @@ git clone https://github.com/umbraco/Umbraco.Commerce.DemoStore.git
 
 Once you have all the files downloaded you can open the `Umbraco.Commerce.DemoStore.sln` solution file in the root of the repository in Visual Studio. Make sure the `Umbraco.Commerce.DemoStore.Web` project is the startup project by right clicking the project in the Solution Explorer and choosing `Set as StartUp Project`, and then press `Ctrl + F5` to launch the site.
 
-*Optional* - Import `.\db\UmbracoCommerceDemoStore_v16.0.0.bacpac` using Data-tier application and update `ConnectionStrings` in `appsettings.json` to be similar like this:
+To run it from the command line instead:
+
+````
+dotnet run --project src/Umbraco.Commerce.DemoStore.Web
+````
+
+The site then runs at `https://localhost:44322`.
+
+*Optional* - Import `.\db\UmbracoCommerceDemoStore_v17.0.0.bacpac` using Data-tier application (or `sqlpackage /a:Import`) and update `ConnectionStrings` in `appsettings.json` to be similar like this:
 ```json
   "ConnectionStrings": {
-    "umbracoDbDSN": "Server=.;Database=UmbracoCommerceDemoStore_v16.0.0;User Id={your_db_username};Password={your_db_password};TrustServerCertificate=true;",
+    "umbracoDbDSN": "Server=.;Database=UmbracoCommerceDemoStore_v17.0.0;User Id={your_db_username};Password={your_db_password};TrustServerCertificate=true;",
     "umbracoDbDSN_ProviderName": "Microsoft.Data.SqlClient"
   }
 ```
 
-To login to the back office you can do so using the credentails:
+If the database is older than the packages the site uses, it upgrades the database automatically the first time it runs.
+
+To log in to the back office, use these credentials:
 
 * **Email** `admin@example.com`
 * **Password** `password1234`
