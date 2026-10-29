@@ -15,7 +15,7 @@ Do every step. Skipping the database steps leaves the shipped databases behind t
 3. **SQLite** (`src/Umbraco.Commerce.DemoStore.Web/umbraco/Data/Umbraco.sqlite.db`):
    - From `src/Umbraco.Commerce.DemoStore.Web`: `ASPNETCORE_URLS=https://localhost:<port> dotnet run --no-build --no-launch-profile`. Unattended upgrade runs on boot.
    - Confirm in `umbraco/Logs/*.json`: `Unattended upgrade completed successfully` and `Umbraco Commerce migrations executed succesfully`, no `Error`/`Fatal`.
-   - Stop the site before committing (flushes the `-wal` file into the db). Commit `Umbraco.sqlite.db`. Leave `Umbraco.sqlite.db.bak` alone.
+   - Stop the site before committing (flushes the `-wal` file into the db). Commit `Umbraco.sqlite.db`.
 4. **SQL Server bacpac** (`db/UmbracoCommerceDemoStore_v{version}.bacpac`, `{version}` = the `Umbraco.Cms` version):
    - Start a throwaway SQL Server 2022 container (`mcr.microsoft.com/mssql/server:2022-latest`) on a free port.
    - `sqlpackage /a:Import` the current bacpac.
