@@ -1,55 +1,73 @@
-﻿using Examine;
-using Examine.Search;
-using System.Linq;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Web;
-using Umbraco.Extensions;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.PublishedCache;
+using Umbraco.Cms.Core.Search;
+using Umbraco.Cms.Core.Search.Querying;
+using Umbraco.Cms.Core.Search.Querying.Filtering;
+using Umbraco.Cms.Core.Search.Querying.Sorting;
+using Umbraco.Cms.Core.Services;
 using Umbraco.Commerce.Common.Models;
 using Umbraco.Commerce.DemoStore.Models;
 
 namespace Umbraco.Commerce.DemoStore.Web.ViewComponents;
 
 public abstract class ProductViewComponentBase(
-    IExamineManager examineManager,
-    IUmbracoContextFactory umbracoContextFactory)
+    ISearcherResolver searcherResolver,
+    IPublishedContentCache publishedContentCache,
+    IContentTypeService contentTypeService)
     : ViewComponent
 {
-    protected PagedResult<IProductPage> GetPagedProducts(int? collectionId, string category, int page, int pageSize)
+    protected async Task<PagedResult<IProductPage>> GetPagedProductsAsync(Guid? collectionKey, Guid? categoryKey, int page, int pageSize)
     {
-        if (examineManager.TryGetIndex("ExternalIndex", out var index))
+        ISearcher? searcher = searcherResolver.GetSearcher(Constants.Search.IndexAliases.PublishedContent);
+        if (searcher == null)
         {
-            var q = $"+(__NodeTypeAlias:{ProductPage.ModelTypeAlias} __NodeTypeAlias:{MultiVariantProductPage.ModelTypeAlias})";
-
-            if (collectionId.HasValue)
-            {
-                q += $" +searchPath:{collectionId.Value}";
-            }
-
-            if (!category.IsNullOrWhiteSpace())
-            {
-                q += $" +categoryAliases:\"{category}\"";
-            }
-
-            var searcher = index.Searcher;
-            var query = searcher.CreateQuery().NativeQuery(q);
-            var results = query.OrderBy(new SortableField("name", SortType.String))
-                .Execute(QueryOptions.SkipTake(pageSize * (page - 1), pageSize));
-            var totalResults = results.TotalItemCount;
-
-            using var ctx = umbracoContextFactory.EnsureUmbracoContext();
-
-            var items = results.ToPublishedSearchResults(ctx.UmbracoContext.Content)
-                .Select(x => x.Content)
-                .OfType<IProductPage>()
-                .OrderBy(x => x.SortOrder);
-
-            return new PagedResult<IProductPage>(totalResults, page, pageSize)
-            {
-                Items = items
-            };
+            return new PagedResult<IProductPage>(0, page, pageSize);
         }
 
-        return new PagedResult<IProductPage>(0, page, pageSize);
+        var productTypeKeys = new[] { ProductPage.ModelTypeAlias, MultiVariantProductPage.ModelTypeAlias }
+            .Select(x => contentTypeService.Get(x)?.Key.ToString("D"))
+            .OfType<string>()
+            .ToArray();
+
+        var filters = new List<Filter> { new KeywordFilter(Constants.Search.FieldNames.ContentTypeId, productTypeKeys, false) };
+
+        if (collectionKey.HasValue)
+        {
+            filters.Add(new KeywordFilter(Constants.Search.FieldNames.PathIds, [collectionKey.Value.ToString("D")], false));
+        }
+
+        if (categoryKey.HasValue)
+        {
+            // The multi node tree picker indexes the keys of the picked nodes in a field named after the property
+            filters.Add(new KeywordFilter("categories", [categoryKey.Value.ToString("D")], false));
+        }
+
+        SearchResult results = await searcher.SearchAsync(
+            Constants.Search.IndexAliases.PublishedContent,
+            filters: filters,
+            sorters: [new KeywordSorter(Constants.Search.FieldNames.Name, Direction.Ascending)],
+            culture: CultureInfo.CurrentUICulture.Name,
+            accessContext: AccessContext.BypassProtection(),
+            skip: pageSize * (page - 1),
+            take: pageSize);
+
+        // Searches only return keys, so read the actual content from the published cache
+        var items = new List<IProductPage>();
+        foreach (Document document in results.Documents)
+        {
+            IPublishedContent? content = await publishedContentCache.GetByIdAsync(document.Id);
+            if (content is IProductPage product)
+            {
+                items.Add(product);
+            }
+        }
+
+        return new PagedResult<IProductPage>(results.Total, page, pageSize)
+        {
+            Items = items.OrderBy(x => x.SortOrder)
+        };
     }
 }
