@@ -1,10 +1,10 @@
-﻿using Examine;
-using Examine.Search;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Text.RegularExpressions;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Core.PublishedCache;
+using Umbraco.Cms.Core.Search;
+using Umbraco.Cms.Core.Search.Querying;
 using Umbraco.Extensions;
 using Umbraco.Commerce.Common.Models;
 using Umbraco.Commerce.DemoStore.Web.Extensions;
@@ -13,65 +13,42 @@ namespace Umbraco.Commerce.DemoStore.Web.ViewComponents;
 
 [ViewComponent]
 public class SearchViewComponent(
-    IExamineManager examineManager,
-    IUmbracoContextAccessor umbracoContextAccessor)
+    ISearcherResolver searcherResolver,
+    IPublishedContentCache publishedContentCache)
     : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    public async Task<IViewComponentResult> InvokeAsync()
     {
-        // The logic for searching is mostly pulled from ezSearch
-        // https://github.com/umco/umbraco-ezsearch/blob/master/Src/Our.Umbraco.ezSearch/Web/UI/Views/MacroPartials/ezSearch.cshtml
-
         var q = Request.Query["q"].ToString();
         var p = Request.Query.GetInt("p", 1);
         var ps = Request.Query.GetInt("ps", 12);
 
         var result = new PagedResult<IPublishedContent>(0, 1, ps);
 
-        if (!q.IsNullOrWhiteSpace() && examineManager.TryGetIndex("ExternalIndex", out var index))
+        ISearcher? searcher = searcherResolver.GetSearcher(Constants.Search.IndexAliases.PublishedContent);
+        if (!q.IsNullOrWhiteSpace() && searcher != null)
         {
-            var searchTerms = Tokenize(q).ToList();
-            var searchFields = new[] { "nodeName", "metaTitle", "description", "shortDescription", "longDescription", "metaDescription", "bodyText", "content" };
+            SearchResult results = await searcher.SearchAsync(
+                Constants.Search.IndexAliases.PublishedContent,
+                query: q,
+                culture: CultureInfo.CurrentUICulture.Name,
+                accessContext: AccessContext.BypassProtection(),
+                skip: ps * (p - 1),
+                take: ps);
 
-            var searcher = index.Searcher;
-            var query = new StringBuilder();
-
-            query.Append("+__IndexType:content "); // Must be content
-            query.Append("-templateID:0 "); // Must have a template
-            query.Append("-umbracoNaviHide:1 "); // Must no be hidden
-
-            // Ensure page contains all search terms in some way
-            foreach (var term in searchTerms)
+            // Searches only return keys, so read the actual content from the published cache
+            var items = new List<IPublishedContent>();
+            foreach (Document document in results.Documents)
             {
-                var groupedOr = searchFields.Aggregate(new StringBuilder(), (innerQuery, searchField) =>
+                IPublishedContent? content = await publishedContentCache.GetByIdAsync(document.Id);
+                // Must have a template and not be hidden. Checked here as umbracoNaviHide is not indexed when no content sets it
+                if (content?.TemplateId > 0 && !content.Value<bool>("umbracoNaviHide"))
                 {
-                    var format = searchField.Contains(" ") ? @"{0}:""{1}"" " : "{0}:{1}* ";
-                    innerQuery.AppendFormat(format, searchField, term);
-                    return innerQuery;
-                });
-
-                query.Append("+(" + groupedOr.ToString() + ") ");
-            }
-
-            // Rank content based on positon of search terms in fields
-            for(var i = 0; i < searchFields.Length; i++)
-            {
-                foreach (var term in searchTerms)
-                {
-                    var searchField = searchFields[i];
-                    var format = searchField.Contains(" ") ? @"{0}:""{1}""^{2} " : "{0}:{1}*^{2} ";
-                    query.AppendFormat(format, searchField, term, searchFields.Length - i);
+                    items.Add(content);
                 }
             }
 
-            var examineQuery = searcher.CreateQuery().NativeQuery(query.ToString());
-            var results = examineQuery.Execute(new QueryOptions(ps * (p - 1), ps * p));
-            var totalResults = results.TotalItemCount;
-
-            var items = results.ToPublishedSearchResults(umbracoContextAccessor.GetRequiredUmbracoContext().Content)
-                .Select(x => x.Content);
-
-            result = new PagedResult<IPublishedContent>(totalResults, p, ps)
+            result = new PagedResult<IPublishedContent>(results.Total, p, ps)
             {
                 Items = items
             };
@@ -79,9 +56,4 @@ public class SearchViewComponent(
 
         return View("SearchResults", result);
     }
-
-    public IEnumerable<string> Tokenize(string input) =>
-        Regex.Matches(input, @"[\""].+?[\""]|[^ ]+")
-            .Select(m => m.Value.Trim('\"').ToLower())
-            .ToList();
 }

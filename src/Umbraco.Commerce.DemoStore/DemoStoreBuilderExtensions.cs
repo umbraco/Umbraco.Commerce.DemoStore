@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Umbraco.Commerce.Core.Events.Notification;
-using Umbraco.Commerce.DemoStore.Events;
 using Umbraco.Commerce.DemoStore.Web.Extractors;
 using Umbraco.Commerce.Cms.Extractors;
 using Umbraco.Commerce.Extensions;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
-using Umbraco.Cms.Core.Notifications;
 using Umbraco.Commerce.Core.Events.Notification.Handlers.Order;
 
 namespace Umbraco.Commerce.DemoStore;
@@ -35,8 +33,6 @@ public static class DemoStoreBuilderExtensions
             }
 
         });
-
-        umbracoBuilder.AddNotificationAsyncHandler<UmbracoApplicationStartingNotification, TransformExamineValues>();
 
         return umbracoBuilder;
     }

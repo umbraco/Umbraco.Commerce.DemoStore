@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFramework>net11.0</TargetFramework>
         <EnablePackageValidation>false</EnablePackageValidation>
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <!-- Works around an SDK 11 rc.3 static web assets compression failure with Umbraco.Cms.StaticAssets 19.0.0-beta1. Recheck on the next SDK. -->
+        <CompressionEnabled>false</CompressionEnabled>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Umbraco.Cms" Version="18.2.2" />
-        <PackageReference Include="Umbraco.Commerce" Version="18.1.10" />
+        <PackageReference Include="Umbraco.Cms" Version="19.0.0-beta1" />
+        <PackageReference Include="Umbraco.Commerce" Version="19.0.0-beta.1" />
     </ItemGroup>
 
     <ItemGroup>
