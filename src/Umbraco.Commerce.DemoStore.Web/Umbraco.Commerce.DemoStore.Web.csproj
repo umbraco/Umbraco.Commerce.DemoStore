@@ -5,14 +5,14 @@
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <!-- Works around an SDK 11 rc.3 static web assets compression failure with Umbraco.Cms.StaticAssets 19.0.0-beta1. Recheck on the next SDK. -->
+        <!-- Works around an SDK 11 static web assets compression failure with Umbraco.Cms.StaticAssets (still fails on SDK 11.0.100 with 19.0.0-rc1). Recheck on the next SDK or CMS release. -->
         <CompressionEnabled>false</CompressionEnabled>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Flurl.Http" Version="4.0.2" />
-        <PackageReference Include="Umbraco.Cms" Version="19.0.0-beta1" />
-        <PackageReference Include="Umbraco.Commerce" Version="19.0.0-beta.1" />
+        <PackageReference Include="Umbraco.Cms" Version="19.0.0-rc1" />
+        <PackageReference Include="Umbraco.Commerce" Version="19.0.0-rc.1" />
     </ItemGroup>
 
     <ItemGroup>
