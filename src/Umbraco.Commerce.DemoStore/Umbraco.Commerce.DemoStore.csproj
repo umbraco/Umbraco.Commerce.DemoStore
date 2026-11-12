@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="19.0.0-beta1" />
-    <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="19.0.0-beta1" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="19.0.0-beta.1" />
-    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="19.0.0-beta.1" />
-    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="19.0.0-beta.1" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="19.0.0-rc1" />
+    <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="19.0.0-rc1" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Startup" Version="19.0.0-rc.1" />
+    <PackageReference Include="Umbraco.Commerce.Cms.Web.Api.Storefront" Version="19.0.0-rc.1" />
+    <PackageReference Include="Umbraco.Commerce.Persistence.Sqlite" Version="19.0.0-rc.1" />
   </ItemGroup>
 
 </Project>
